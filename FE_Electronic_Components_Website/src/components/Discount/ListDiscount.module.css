@@ -1,0 +1,112 @@
+.container{
+    margin-top: 76px;
+    margin-bottom: 200px;
+}
+
+.title{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    margin-bottom: 100px;
+    height: 250px;
+    background-image: url(https://demo2.pavothemes.com/poco/wp-content/uploads/2020/09/breadcrumb1.jpg);
+}
+.title > h1{
+    font-size:36px;
+    font-weight: 600;
+}
+
+.container__orders{
+    width:85%;
+    margin-left: 7.5%;
+}
+.cart-item{
+    display:flex;
+    text-align: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-left: 30px;
+    height: 100px;
+    background-color: var(--milk-bg);
+    border-radius: 10px;
+}
+.cart-item > div {
+    width: 20%;
+}
+.icon {
+    cursor: pointer;
+    width: 25px;
+}
+.icon:hover{
+    background-color: var(--primary);
+}
+
+.name-item{
+    font-weight:600;
+    font-size: 20px;
+}
+.name-item > p{
+    cursor: pointer;
+}
+
+.input-quantity{
+    align-items: center;
+    text-align: center;
+}
+.input-quantity > input{
+    width: 45px;
+    height: 45px;
+}
+
+
+.price > p{
+    font-weight:600;
+    font-size: 19px;
+}
+
+.total-price > p {
+    font-weight:600;
+    font-size: 19px;
+}
+
+.text-confirm{
+    font-size:18px;
+    color: #00FF00;
+    font-weight: 500;
+}
+.text-cancel{
+    font-size:18px;
+    color: var(--red);
+    font-weight: 500;
+}
+.text-wait{
+    font-size:18px;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.status-wait{
+    display: block;
+}
+
+
+.button-cancle{
+    margin-top: 10px;
+    width: 130px;
+    height: 35px;
+    background-color: var(--red);
+    border-color: var(--red);
+}
+
+.main-content {
+    font-size: 32px;
+}
+
+.des_discount > p{
+    margin-top: 10px;
+    color:var(--green);
+    font-weight:600
+}
+.code__discount > h5{
+    color: var(--red);
+}

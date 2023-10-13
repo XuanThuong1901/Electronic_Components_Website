@@ -1,0 +1,35 @@
+.container{
+    margin-left: 160px;
+}
+.main-content {
+    height: 6rem;
+    background-color: rgba(1, 1, 1, 0.9);
+    /* background-image: url(https://sackim.com/wp-content/uploads/2020/01/1.jpg); */
+    display: block;
+    margin-bottom: 2rem;
+}
+.main-content > p{
+    margin-left: 25px;
+    padding-top: 20px;
+    color: var(--primary-dark);
+    font-size:40px;
+    font-weight: 500;
+}
+.button-main > button {
+    margin: 20px 40px;
+    padding: 40px 40px;
+    border-radius: 20px;
+    font-size: 20px;
+    font-weight: 600;
+    background-color: rgb(93, 175, 155);
+    border-radius: 10px;
+    border-color: black;
+
+}
+.button-main > button:hover {
+    /* Quy tắc khi di chuột vào nút */
+    background-color: rgb(47, 161, 121);
+    color: black;
+    border-color: black;
+    border-width: 2px;
+}

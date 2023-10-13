@@ -1,0 +1,45 @@
+.main-content {
+    height: 6rem;
+    background-color: rgba(1, 1, 1, 0.9);
+    /* background-image: url(https://sackim.com/wp-content/uploads/2020/01/1.jpg); */
+    display: block;
+    margin-bottom: 2rem;
+    margin-left: 170px;
+}
+.main-content >div > h1{
+    color: var(--primary-dark);
+    font-size:40px;
+    font-weight: 450;
+}
+.select-type{
+    display: flex;
+    margin-top: 80px;
+    margin-left: 40px;
+}
+.select-type > p{
+    font-size: 30px;
+    font-weight: 600;
+}
+.select-type-detail{
+    width: 200px;
+    margin-left: 10px;
+    font-size: 15px;
+    font-weight: 550;
+    border-color: black;
+    border-width: 2px;
+}
+.select-datetime{
+    display: flex;
+    margin-top: 20px;
+    margin-left: 40px;
+}
+.select-datetime > p{
+    font-size: 20px;
+    font-weight: 550;
+}
+.barchart{
+    /* width: 90%;
+    height: 700px; */
+    margin-top: 100px;
+    margin-left: 20px;
+}

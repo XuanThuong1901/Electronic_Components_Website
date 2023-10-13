@@ -1,0 +1,126 @@
+.cart-item{
+    display:flex;
+    text-align: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.cart-item > div {
+    width: 20%;
+}
+.icon {
+    cursor: pointer;
+    width: 25px;
+}
+.icon:hover{
+    background-color: var(--primary);
+}
+
+.name-item{
+    font-weight:600;
+    font-size: 20px;
+}
+.name-item > p {
+    cursor: pointer;
+}
+.input-quantity{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+.input-quantity > p{
+    margin-left: 6px;
+    margin-right: 6px;
+}
+.input-quantity > input{
+    width: 45px;
+    height: 45px;
+}
+
+
+.price > p{
+    font-weight:600;
+    font-size: 19px;
+}
+
+.total-price > p {
+    font-weight:600;
+    font-size: 19px;
+}
+.input-quantity > button {
+    width:30px;
+    height: 30px;
+    margin-left:3px;
+    margin-right: 3px;
+    border-color: #fff;
+}
+
+
+.message{
+    display:flex;
+    justify-content: center;
+}
+.message > p {
+    font-size:26px;
+    color: lime;
+}
+.handle__error{
+    display:flex;
+    justify-content: center;
+}
+.handle__error > p {
+    font-size:26px;
+    color: red;
+}
+.ischeck-pay{
+    font-size: 20px;
+}
+
+.set__payment{
+    margin-bottom:60px;
+    margin-top: 20px;
+    width: 300px;
+}
+.payment__method{
+    display: block;
+    margin-top: 50px;
+}
+.payment__method > p {
+    font-size: 20px;
+    font-weight: 600;
+}
+.payment__method > textarea{
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+.payment__map{
+    display:flex
+}
+.box__map{
+    margin-bottom: 100px;
+    margin-left: 100px;
+    margin-top: 50px;
+}
+.Check__out{
+    margin-bottom: 100px;
+    margin-top: 50px;
+}
+.Check__out > button{
+    width: 300px;
+    height: 50px;
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #000;
+}
+.Check__out > button:hover{
+    background-color: var(--primary-dark);
+}
+@media only screen and (max-width: 768px) {
+    .image-item{
+        display:none;
+    }
+    
+    .cart-item > div {
+        width: 25%;
+    }
+}

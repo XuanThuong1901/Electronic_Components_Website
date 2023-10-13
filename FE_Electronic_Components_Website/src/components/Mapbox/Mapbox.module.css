@@ -1,0 +1,19 @@
+.input_address{
+    display: flex;
+    margin-top: 30px;
+    margin-bottom: 50px;
+
+}
+.input_address > button{
+    width:80px;
+    height: 50px;
+    margin-left: 10px;
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+.input_address > input{
+    width: 300px;
+}
+.input_address > button:hover{
+    background-color: var(--primary-dark);
+}

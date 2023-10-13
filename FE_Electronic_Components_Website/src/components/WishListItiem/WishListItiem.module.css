@@ -1,0 +1,38 @@
+.main-content {
+    height: 15rem;
+    background-image: url(https://demo2.pavothemes.com/poco/wp-content/uploads/2020/09/breadcrumb1.jpg);
+    display: flex;
+    align-items: center;
+    margin-bottom: 5.6rem;
+}
+.column-image{
+    width:6.25rem;
+    vertical-align: middle;
+    padding: 0;
+}
+.column-des{
+    vertical-align: middle;
+    width: 40%;
+}
+.column-des > div{
+    padding-bottom: 0.2rem;
+    padding-left: 1.3rem;
+    padding-top: 0.2rem;
+    color: var(--grey-dark);
+    margin-bottom: 0.2rem;
+}
+
+.name-itiem{
+    color:var(--primary);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+.name-itiem:hover{
+    color: var(--primary-dark);
+}
+.column-button{
+    vertical-align: middle;
+}
+.remove-btn{
+    margin-left: 20px;
+}

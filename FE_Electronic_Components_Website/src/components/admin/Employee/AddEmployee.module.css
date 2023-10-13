@@ -1,0 +1,146 @@
+.main-content {
+    height: 6rem;
+    background-color: rgba(1, 1, 1, 0.9);
+    /* background-image: url(https://sackim.com/wp-content/uploads/2020/01/1.jpg); */
+    display: block;
+    margin-bottom: 1rem;
+    margin-left: 170px;
+}
+.main-content >div > h1{
+    color: var(--primary-dark);
+    font-size:40px;
+    font-weight: 500;
+}
+.container{
+    margin-top: 30px;
+    margin-left: 450px;
+    margin-right: 300px;
+    margin-bottom: 500px;
+}
+.container-button{
+    display: flex;
+    justify-content: flex-end;
+}
+.title{
+    display: flex;
+    justify-self: center;
+    justify-content:center;
+    align-items: center;
+    margin-bottom: 20px;
+    height: 100px;
+}
+.title > h1{
+    text-align: center;
+    font-size:40px;
+    font-weight: 600;
+}
+
+.form{
+    margin-top: 25px;
+    font-size:20px;
+    font-weight:550;
+}
+.form-image{
+    display: flex;
+    justify-content: center;
+}
+.form-image-detail{
+    width: 250px;
+    height: 250px;
+    border-radius: 60%;
+    overflow: hidden;
+}
+
+.button-add-spec{
+    padding: 7px 10px;
+    font-size:15px;
+    font-weight:550;
+    border-radius: 10px;
+    background-color: burlywood;
+}
+.specification {
+    display: block;
+    height: 250px;
+    margin: 30px;
+    position: relative;
+    background-color: white;
+    border-radius: 20px;
+}
+.specification-form{
+    padding-top: 20px;
+    margin: 0px 20px;
+    font-size:18px;
+    font-weight:550;
+}
+.specification-form-button{
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+.specification-form-button > button{
+    padding: 7px 30px;
+    margin: 0 20px;
+    font-size:18px;
+    font-weight:550;
+    border-radius: 10px;
+}
+.list{
+    margin: 10px;
+}
+.list-spec{
+    display: flex;
+    justify-content: space-between;
+    margin-left: 10px;
+    background-color: bisque;
+    border-color: black;
+    border-width: 2px;
+}
+.text-between{
+    margin-right: 200px;
+}
+.text-between-detail{
+    margin-right: 170px;
+}
+.list-spec > p{
+    
+    text-align: left;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    font-size:18px;
+    font-weight:550;
+}
+.list-spec > button{
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 0 20px;
+    font-size:16px;
+    font-weight:450;
+    border-radius: 5px;
+}
+.detail-button{
+    display: flex;
+    justify-content: flex-end;
+    /* margin-top: 20px; */
+    margin-bottom: 10px;
+}
+.detail-button > button{
+    margin-left: 20px;
+    padding: 10px;
+    padding-left: 50px;
+    padding-right: 50px;
+    color: black;
+    font-size: 20px;
+    font-weight: 600;
+    background-color: rgb(93, 255, 201);
+    border-radius: 10px;
+    border-color: black;
+    border-width: 2px;
+}
+.detail-button > button:hover {
+    /* Quy tắc khi di chuột vào nút */
+    background-color: rgb(0, 219, 146);
+    color: black;
+    border-color: black;
+    border-width: 2px;
+}
