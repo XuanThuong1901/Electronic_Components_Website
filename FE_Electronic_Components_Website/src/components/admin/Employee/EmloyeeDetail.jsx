@@ -22,7 +22,12 @@ const InfoEmployee = () => {
   const [address, setAddress] = useState("");
   const [avatar, setAvatar] = useState("");
   const [formattedBirthday, setFormattedBirthday] = useState(null);
-
+  const [nameError, setNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [birthdayError, setBirthdayError] = useState("");
+  const [identityCardError, setIdentityCardError] = useState("");
+  const [telephoneError, setTelephoneError] = useState("");
+  const [addressError, setAddressError] = useState("");
   // Các state để lưu dữ liệu sản phẩm
   // const [employee, setEmployee] = useState(null);
 
@@ -81,6 +86,47 @@ const InfoEmployee = () => {
   };
   
   const handleButton = (e) => {
+    if (!name) {
+      setNameError("VALIDATION_NAME_ERROR001");
+      return;
+    } else {
+      setNameError(""); // Đặt lại lỗi nếu trường không còn để trống
+    }
+
+    if (!email) {
+      setEmailError("VALIDATION_EMAIL_ERROR001");
+      return;
+    } else {
+      setEmailError("");
+    }
+
+    if (!birthday) {
+      setBirthdayError("VALIDATION_BIRTHDAY_ERROR001");
+      return;
+    } else {
+      setBirthdayError("");
+    }
+
+    if (!identityCard) {
+      setIdentityCardError("VALIDATION_IDENTITYCARD_ERROR001");
+      return;
+    } else {
+      setIdentityCardError("");
+    }
+
+    if (!telephone) {
+      setTelephoneError("VALIDATION_PHONENUMBER_ERROR001");
+      return;
+    } else {
+      setTelephoneError("");
+    }
+
+    if (!address) {
+      setAddressError("VALIDATION_ADDRESS_ERROR001");
+      return;
+    } else {
+      setAddressError("");
+    }
     const user = {
       name: name,
       birthday: new Date(birthday),
@@ -202,17 +248,17 @@ const InfoEmployee = () => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required
             />
+            <p className={classes["error"]}>{nameError}</p>
           </Form.Group>
           <Form.Group controlId="email">
             <Form.Label className={classes["form"]}>Email</Form.Label>
             <Form.Control
               type="text"
               value={email}
-              // onChange={(e) => setName(e.target.value)}
-              required
+              onChange={(e) => setEmail(e.target.value)}
             />
+            <p className={classes["error"]}>{emailError}</p>
           </Form.Group>
 
           <Form.Group controlId="role">
@@ -221,7 +267,6 @@ const InfoEmployee = () => {
               as="select"
               value={role}
               onChange={(e) => handleRole(e.target.value)}
-              required
             >
               <option value={2}>Quản lý</option>
               <option value={3}>Nhân viên</option>
@@ -233,9 +278,9 @@ const InfoEmployee = () => {
               type="date"
               value={birthday}
               onChange={handleBirthdayChange}
-              required
             />
           </Form.Group>
+          <p className={classes["error"]}>{birthdayError}</p>
           <Form.Group controlId="">
             <Form.Label className={classes["form"]}>Giới tính</Form.Label>
             <div>
@@ -260,20 +305,20 @@ const InfoEmployee = () => {
           <Form.Group controlId="identityCard">
             <Form.Label className={classes["form"]}>CCCD</Form.Label>
             <Form.Control
-              type="text"
+              type="number"
               value={identityCard}
               onChange={(e) => setIdentityCard(e.target.value)}
-              required
             />
+            <p className={classes["error"]}>{identityCardError}</p>
           </Form.Group>
           <Form.Group controlId="telephone">
             <Form.Label className={classes["form"]}>Số điện thoại</Form.Label>
             <Form.Control
-              type="text"
+              type="number"
               value={telephone}
               onChange={(e) => setTelephone(e.target.value)}
-              required
             />
+            <p className={classes["error"]}>{telephoneError}</p>
           </Form.Group>
           <Form.Group controlId="address">
             <Form.Label className={classes["form"]}>Địa chỉ</Form.Label>
@@ -281,8 +326,8 @@ const InfoEmployee = () => {
               type="text"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              required
             />
+            <p className={classes["error"]}>{addressError}</p>
           </Form.Group>
         </Form>
         <ToastContainer

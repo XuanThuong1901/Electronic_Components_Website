@@ -72,6 +72,10 @@
     font-size:18px;
     font-weight:550;
 }
+.error{
+    margin-top: 5px;
+    color: red;
+}
 .specification-form-button{
     display: flex;
     justify-content: center;

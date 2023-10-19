@@ -17,7 +17,7 @@ const AddProduct = () => {
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [selectedSupplier, setSelectedSupplier] = useState(0);
   const [selectedTax, setSelectedTax] = useState(0);
-  const [quantity, setQuantity] = useState("");
+  const [quantity, setQuantity] = useState(0);
   const [feature, setFeature] = useState("");
   const [contents, setContents] = useState("");
   const [imageProduct, setImageProduct] = useState([]);
@@ -79,6 +79,176 @@ const AddProduct = () => {
     e.preventDefault();
   };
 
+  const handleAddProduct = () => {
+    const newProduct = {
+      productName: productName,
+      category: selectedCategory,
+      supplier: selectedSupplier,
+      tax: selectedTax,
+      quantity: quantity,
+      feature: feature,
+      contents: contents,
+      priceList: priceList,
+      specification: specifications,
+    };
+    formData.append("productDTO", JSON.stringify(newProduct));
+
+    if (newProduct.productName.trim() === "") {
+      return toast.error("VALIDATION_NAME_PRODUCT_ERROR001", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+    if (newProduct.category === 0) {
+      return toast.error("VALIDATION_CATEGORY_PRODUCT_ERROR001", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+    if (newProduct.supplier === 0) {
+      return toast.error("VALIDATION_SUPPLIER_PRODUCT_ERROR001", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+    if (newProduct.tax === 0) {
+      return toast.error("VALIDATION_TAX_PRODUCT_ERROR001", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+    if (newProduct.feature.trim() === "") {
+      return toast.error("VALIDATION_FEATURE_PRODUCT_ERROR001", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+    if (newProduct.contents.trim() === "") {
+      return toast.error("VALIDATION_CONTENTS_PRODUCT_ERROR001", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+    if (newProduct.priceList.length === 0) {
+      return toast.error("VALIDATION_PRICE_PRODUCT_ERROR001", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+    if (newProduct.specification.length === 0) {
+      return toast.error("VALIDATION_SPECIFICATION_PRODUCT_ERROR001", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+
+    if (
+      newProduct.productName.trim() !== "" &&
+      newProduct.category !== 0 &&
+      newProduct.supplier !== 0 &&
+      newProduct.tax !== 0 &&
+      newProduct.quantity === 0 &&
+      newProduct.feature.trim() !== "" &&
+      newProduct.contents.trim() !== "" &&
+      newProduct.priceList.length !== 0 &&
+      newProduct.specification.length !== 0
+    ) {
+      api
+        .post("/product/add", formData, {
+          headers: {
+            access_token: token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(() => {
+          toast.success("ADD_PRODUCT_SUCCESS", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          setTimeout(() => {
+            navigate("/admin/product");
+          }, 2000);
+        })
+        .catch((err) => {
+          return toast.error("ADD_PRODUCT_ERROR001", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        });
+    } else {
+      return toast.error("ADD_PRODUCT_ERROR001", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+  };
+
   //Image
   const handleImageChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -112,6 +282,7 @@ const AddProduct = () => {
   const toggleForm = () => {
     setShowFormSpecifications((prevShowForm) => !prevShowForm);
   };
+
   const viewSpecification = () => {
     return (
       <div>
@@ -144,7 +315,7 @@ const AddProduct = () => {
               controlId="parameter"
               className={classes["specification-form"]}
             >
-              <Form.Label>Thông số</Form.Label>
+              <Form.Label>Giá trị thông số</Form.Label>
               <Form.Control
                 type="text"
                 value={parameter}
@@ -223,21 +394,22 @@ const AddProduct = () => {
                 required
               />
             </Form.Group>
-            <Form.Group controlId="type"
-              className={classes["specification-form"]}>
-                <Form.Label>Loại</Form.Label>
-            <Form.Control
-            className={classes["select-type-detail"]}
-              as="select"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              required
+            <Form.Group
+              controlId="type"
+              className={classes["specification-form"]}
             >
-              <option value="export">Giá bán</option>
-              <option value="import">Giá nhập</option>
-              
-            </Form.Control>
-          </Form.Group>
+              <Form.Label>Loại</Form.Label>
+              <Form.Control
+                className={classes["select-type-detail"]}
+                as="select"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                required
+              >
+                <option value="export">Giá bán</option>
+                <option value="import">Giá nhập</option>
+              </Form.Control>
+            </Form.Group>
 
             <div className={classes["specification-form-button"]}>
               <button type="button" onClick={handleAddPrice}>
@@ -274,78 +446,6 @@ const AddProduct = () => {
   };
 
   //handleAddProduct
-  const handleAddProduct = () => {
-    const newProduct = {
-      productName: productName,
-      category: selectedCategory,
-      supplier: selectedSupplier,
-      tax: selectedTax,
-      quantity: quantity,
-      feature: feature,
-      contents: contents,
-      priceList: priceList,
-      specification: specifications,
-    };
-    formData.append("productDTO", JSON.stringify(newProduct));
-
-    if (
-      newProduct.productName.trim() !== "" &&
-      newProduct.category !== 0 &&
-      newProduct.supplier !== 0 &&
-      newProduct.tax !== 0 &&
-      newProduct.quantity !== 0 &&
-      newProduct.feature.trim() !== "" &&
-      newProduct.contents.trim() !== "" &&
-      newProduct.priceList.length !== 0 &&
-      newProduct.specification.length !== 0
-    ) {
-      api
-        .post("/product/add", formData, {
-          headers: {
-            access_token: token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(() => {
-          toast.success("Thêm sản phẩm thành công", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          setTimeout(() => {
-            navigate("/admin/product");
-          }, 2000);
-        })
-        .catch((err) => {
-          return toast.error("Thêm sản phẩm không thành công", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-        });
-    } else {
-      return toast.error("Nhận đủ thông tin cho sản phẩm", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
-  };
 
   return (
     <div>
@@ -408,7 +508,6 @@ const AddProduct = () => {
               type="text"
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
-              required
             />
           </Form.Group>
 
@@ -418,7 +517,6 @@ const AddProduct = () => {
               as="select"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              required
             >
               <option value="">Select Category</option>
               {category.map((category) => (
@@ -435,7 +533,6 @@ const AddProduct = () => {
               as="select"
               value={selectedSupplier}
               onChange={(e) => setSelectedSupplier(e.target.value)}
-              required
             >
               <option value="">Select Supplier</option>
               {supplier.map((supplier) => (
@@ -452,7 +549,6 @@ const AddProduct = () => {
               as="select"
               value={selectedTax}
               onChange={(e) => setSelectedTax(e.target.value)}
-              required
             >
               <option value="">Select Tax</option>
               {tax.map((tax) => (
@@ -463,13 +559,23 @@ const AddProduct = () => {
             </Form.Control>
           </Form.Group>
 
-          <Form.Group controlId="quantity">
+          {/* <Form.Group controlId="quantity">
             <Form.Label className={classes["form"]}>Số lượng</Form.Label>
             <Form.Control
               type="number"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
               required
+            />
+          </Form.Group> */}
+
+          <Form.Group controlId="contents">
+            <Form.Label className={classes["form"]}>Mô tả</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              value={contents}
+              onChange={(e) => setContents(e.target.value)}
             />
           </Form.Group>
 
@@ -480,18 +586,6 @@ const AddProduct = () => {
               rows={3}
               value={feature}
               onChange={(e) => setFeature(e.target.value)}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group controlId="contents">
-            <Form.Label className={classes["form"]}>Nội dung</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              value={contents}
-              onChange={(e) => setContents(e.target.value)}
-              required
             />
           </Form.Group>
 
@@ -506,7 +600,7 @@ const AddProduct = () => {
                   Thêm giá sản phẩm
                 </button>
               )}
-               <div className={classes["list"]}>
+              <div className={classes["list"]}>
                 {!showFormListPrice &&
                   viewPrice(handleAddPrice, toggleFormPrice)}
                 <table className={classes["spec-table"]}>
@@ -519,18 +613,13 @@ const AddProduct = () => {
                   </thead>
                   <tbody>
                     {priceList.map((price) => (
-                      <tr
-                        className={classes["table-header"]}
-                        key={price.id}
-                      >
+                      <tr className={classes["table-header"]} key={price.id}>
                         <td>{formatCurrency(price.price)}</td>
-                        <td>{price.type === "export" ? "Giá bán" : "Giá mua"}</td>
                         <td>
-                          <button
-                            onClick={() =>
-                              handleRemovePrice(price.id)
-                            }
-                          >
+                          {price.type === "export" ? "Giá bán" : "Giá mua"}
+                        </td>
+                        <td>
+                          <button onClick={() => handleRemovePrice(price.id)}>
                             Xóa
                           </button>
                         </td>
@@ -562,7 +651,7 @@ const AddProduct = () => {
                   <thead>
                     <tr className={classes["table-header"]}>
                       <th>Tên thông số</th>
-                      <th>Thông số</th>
+                      <th>Giá trị thông số</th>
                       <th></th>
                     </tr>
                   </thead>

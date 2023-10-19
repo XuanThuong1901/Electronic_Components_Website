@@ -33,7 +33,7 @@ const Customer = ({ customer, setIsCheckHandle }) => {
       .then((res) => {
         console.log(res);
         setIsCheckHandle(true);
-        return toast.success("Cập nhật trạng thái tài khoản thành công", {
+        return toast.success("UPDATE_STATUS_USER_SUCCESS", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: true,
@@ -46,7 +46,7 @@ const Customer = ({ customer, setIsCheckHandle }) => {
       })
       .catch((err) => {
         console.log(err);
-        return toast.error(<div>{err.response.data.message}</div>, {
+        return toast.error("UPDATE_STATUS_USER_ERROR001", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: true,

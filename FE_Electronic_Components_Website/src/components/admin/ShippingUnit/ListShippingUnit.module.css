@@ -23,6 +23,11 @@
     background-color: rgb(93, 255, 201);
     border-radius: 10px;
 }
+.error{
+    margin-top: 5px;
+    color: red;
+    font-size: 14px;
+}
 .add > button:hover{
     background-color: rgb(0, 219, 146);
     font-weight: 550;
@@ -159,7 +164,7 @@
 }
 .shipping {
     display: block;
-    height: 450px;
+    height: 500px;
     width: 40%;
     justify-content: center;
     /* margin: 30px 200px; */

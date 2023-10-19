@@ -53,7 +53,7 @@ const Order = ({ order, setIsCheckHandle}) => {
   const HandleStatus = (index) => {
     setShowSubtable(false)
     if (order.status.idstatus === 3 && (index === 5 || index === 6)) {
-      return toast.error("Đơn hàng chưa được xác nhận", {
+      return toast.error("VALIDATION_CONFIRMED_ORDER_ERROR001", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,
@@ -65,7 +65,7 @@ const Order = ({ order, setIsCheckHandle}) => {
       });
     }
     if (order.status.idstatus === 4 && index === 7) {
-      return toast.error("Đơn hàng đã được xác nhận không thể hủy", {
+      return toast.error("VALIDATION_CANCELED_ORDER_ERROR001", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,
@@ -77,7 +77,7 @@ const Order = ({ order, setIsCheckHandle}) => {
       });
     }
     if (order.status.idstatus === 4 && index === 6) {
-      return toast.error("Đơn hàng chưa được giao đi", {
+      return toast.error("VALIDATION_DELIVERY_ORDER_ERROR001", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,
@@ -89,7 +89,7 @@ const Order = ({ order, setIsCheckHandle}) => {
       });
     }
     if (order.status.idstatus === 5 && (index === 7 || index === 4)) {
-      return toast.error("Đơn hàng đang giao không thể xác nhận hoặc hủy", {
+      return toast.error("VALIDATION_DELIVERY_ORDER_ERROR001", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,
@@ -102,7 +102,7 @@ const Order = ({ order, setIsCheckHandle}) => {
     }
     if (order.status.idstatus === 6) {
       return toast.error(
-        "Đơn hàng đã hoàn thành, không thể thay đổi trạng thái",
+        "VALIDATION_DELIVERED_ORDER_ERROR001",
         {
           position: "top-right",
           autoClose: 5000,
@@ -125,7 +125,7 @@ const Order = ({ order, setIsCheckHandle}) => {
             })
             .then((res) => {
               console.log(res);
-              toast.success("Cập nhật trạng thái đơn hàng thành công", {
+              toast.success("CONFIRMED_ORDER_SUCCESS", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -138,7 +138,7 @@ const Order = ({ order, setIsCheckHandle}) => {
             })
             .catch((err) => {
               console.log(err);
-              toast.error(<div>{err.response.data.message}</div>, {
+              toast.error("VALIDATION_CONFIRMED_ORDER_ERROR001", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -159,7 +159,7 @@ const Order = ({ order, setIsCheckHandle}) => {
             })
             .then((res) => {
               console.log(res);
-              toast.success("Cập nhật trạng thái đơn hàng thành công", {
+              toast.success("DELIVERY_ORDER_SUCCESS", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -172,7 +172,7 @@ const Order = ({ order, setIsCheckHandle}) => {
             })
             .catch((err) => {
               console.log(err);
-              toast.error(<div>{err.response.data.message}</div>, {
+              toast.error("VALIDATION_DELIVERY_ORDER_ERROR001", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -193,7 +193,7 @@ const Order = ({ order, setIsCheckHandle}) => {
             })
             .then((res) => {
               console.log(res);
-              toast.success("Cập nhật trạng thái đơn hàng thành công", {
+              toast.success("DELIVERED_ORDER_SUCCESS", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -206,7 +206,7 @@ const Order = ({ order, setIsCheckHandle}) => {
             })
             .catch((err) => {
               console.log(err);
-              toast.error(<div>{err.response.data.message}</div>, {
+              toast.error("VALIDATION_DELIVERED_ORDER_ERROR001", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -227,7 +227,7 @@ const Order = ({ order, setIsCheckHandle}) => {
             })
             .then((res) => {
               console.log(res);
-              toast.success("Cập nhật trạng thái đơn hàng thành công", {
+              toast.success("CANCELED_ORDER_SUCCESS", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -240,7 +240,7 @@ const Order = ({ order, setIsCheckHandle}) => {
             })
             .catch((err) => {
               console.log(err);
-              toast.error(<div>{err.response.data.message}</div>, {
+              toast.error("VALIDATION_CANCELED_ORDER_ERROR001", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,

@@ -110,7 +110,7 @@ const PaymentDetail = () => {
 
   const CheckOut = () => {
     if (items.length === 0) {
-      return toast.error("Giỏ hàng không có sản phẩm", {
+      return toast.error("VALIDATION_DETAIL_ORDER_ERROR001", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,
@@ -122,7 +122,7 @@ const PaymentDetail = () => {
       });
     }
     if (pays === 0) {
-      return toast.error("Vui lòng chọn phương thức thanh toán", {
+      return toast.error("VALIDATION_PAYMENT_ORDER_ERROR001", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,
@@ -134,7 +134,7 @@ const PaymentDetail = () => {
       });
     }
     if (selectedShipper === 0) {
-      return toast.error("Vui lòng chọn đơn vị vận chuyển", {
+      return toast.error("VALIDATION_SHIPPING_UNIT_ORDER_ERROR001", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,
@@ -146,7 +146,7 @@ const PaymentDetail = () => {
       });
     }
     if (address === "") {
-      return toast.error("Vui lòng nhập địa chỉ", {
+      return toast.error("VALIDATION_ADDRESS_ORDER_ERROR001", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,
@@ -158,7 +158,7 @@ const PaymentDetail = () => {
       });
     }
     if (telephone === "") {
-      return toast.error("Vui lòng nhập số điện thoại", {
+      return toast.error("VALIDATION_TELEPHONE_ORDER_ERROR001", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,
@@ -194,7 +194,7 @@ const PaymentDetail = () => {
           .then((res) => {
             console.log(res);
             setValue(value + 1);
-            toast.success("Đặt Hàng Thành Công", {
+            toast.success("ORDER_SUCCESS", {
               position: "top-right",
               autoClose: 5000,
               hideProgressBar: true,
@@ -211,7 +211,7 @@ const PaymentDetail = () => {
           .catch((err) => {
             console.log(err);
             setError(err.response.data.message);
-            toast.error(<div>{err.response.data.message}</div>, {
+            toast.error("ORDER_ERROR001", {
               position: "top-right",
               autoClose: 5000,
               hideProgressBar: true,

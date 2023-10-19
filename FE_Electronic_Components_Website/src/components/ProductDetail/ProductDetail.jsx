@@ -58,7 +58,7 @@ const ProductDetail = () => {
         },
       })
       .then(function (res) {
-        toast.success("Thêm vào giỏ hàng thành công", {
+        toast.success("ADD_CART_SUCCESS", {
           position: "top-right",
           autoClose: 1500,
           hideProgressBar: false,
@@ -71,7 +71,7 @@ const ProductDetail = () => {
       })
       .catch(function (res) {
         console.log(res);
-        toast.warn("Thao tác thất bại", {
+        toast.warn("VALIDATION_ADD_CART_ERROR001", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,

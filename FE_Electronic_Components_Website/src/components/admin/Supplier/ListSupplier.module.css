@@ -160,13 +160,18 @@
 }
 .supplier {
     display: block;
-    height: 450px;
+    height: 500px;
     width: 40%;
     justify-content: center;
     margin-left: 500px;
-    position: unset;
+    position: absolute;
     background-color: white;
     border-radius: 20px;
+}
+.error{
+    margin-top: 5px;
+    color: red;
+    font-size: 14px;
 }
 .supplier-update {
     display: flex;

@@ -32,7 +32,7 @@ const ChangePassword = () => {
     const isCheckNewPassword = () => {
         if(newpassword !==  resetPassword)
         {
-            setErrorPassword("Mật khẩu chưa khớp")
+            setErrorPassword("UPDATE_PASSWORD_CONFIRM_ERROR001")
         }
         else{
             setErrorPassword("")
@@ -53,7 +53,7 @@ const ChangePassword = () => {
                     }
                 )
                 .then(res =>{
-                    toast.success('Cập nhập thông tin thành công', {
+                    toast.success('UPDATE_PASSWORD_SUCCESS', {
                         position: "top-right",
                         autoClose: 2000,
                         hideProgressBar: true,
@@ -73,7 +73,7 @@ const ChangePassword = () => {
                     console.log(error)
                     if(error===""){
                         return(
-                        toast.error('Thao tác thất bại', {
+                        toast.error('UPDATE_PASSWORD_ERROR001', {
                         position: "top-right",
                         autoClose: 2000,
                         hideProgressBar: true,

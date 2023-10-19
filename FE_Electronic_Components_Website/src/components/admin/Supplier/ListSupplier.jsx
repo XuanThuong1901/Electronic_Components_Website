@@ -18,7 +18,10 @@ const ListSupplier = () => {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [telephone, setTelephone] = useState("");
-
+  const [supplierNameError, setSupplierNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [addressError, setAddressError] = useState("");
+  const [telephoneError, setTelephoneError] = useState("");
   const getSuppliers = async () => {
     const res = await api.get("/supplier", {});
     return res;
@@ -61,11 +64,37 @@ const ListSupplier = () => {
   };
   const handleAddSupplier = () => {
     if (
-      supplierName.trim() !== "" &&
-      email.trim() !== "" &&
-      address.trim() !== "" &&
-      telephone.trim() !== ""
-    ) {
+      supplierName.trim() === "" &&
+      email.trim() === "" &&
+      address.trim() === "" &&
+      telephone.trim() === ""
+    ){
+        if (supplierName.trim() === "") {
+          setSupplierNameError("VALIDATION_NAME_SUPPLIER_ERROR001");
+        } else {
+          setSupplierNameError("");
+        }
+  
+        if (email.trim() === "") {
+          setEmailError("VALIDATION_EMAIL_SUPPLIER_ERROR001");
+        } else {
+          setEmailError("");
+        }
+  
+        if (address.trim() === "") {
+          setAddressError("VALIDATION_ADDRESS_SUPPLIER_ERROR001");
+        } else {
+          setAddressError("");
+        }
+  
+        if (telephone.trim() === "") {
+          setTelephoneError("VALIDATION_TELEPHONE_SUPPLIER_ERROR001");
+        } else {
+          setTelephoneError("");
+        }
+  
+        return;
+    }
         api
           .post(`/supplier/add`,{ supplierName, email, telephone, address }, {
             headers: {
@@ -79,7 +108,7 @@ const ListSupplier = () => {
         setEmail("");
         setAddress("");
         setTelephone("");
-        toast.success("Thêm nhà cung cấp thành công", {
+        toast.success("ADD_SUPPLIER_SUCCESS", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: true,
@@ -91,7 +120,7 @@ const ListSupplier = () => {
         });
         })
         .catch((err) => {
-          return toast.error("Thêm nhà cung cấp thất bại", {
+          return toast.error("ADD_SUPPLIER_ERROR001", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -103,7 +132,6 @@ const ListSupplier = () => {
           });
         })
       
-    }
   };
   const viewAddSupplier = () => {
     return (
@@ -130,8 +158,8 @@ const ListSupplier = () => {
                 type="text"
                 value={supplierName}
                 onChange={(e) => setSupplierName(e.target.value)}
-                required
               />
+              <p className={classes["error"]}>{supplierNameError}</p>
             </Form.Group>
             <Form.Group controlId="email" className={classes["supplier-form"]}>
               <Form.Label>Email</Form.Label>
@@ -139,9 +167,10 @@ const ListSupplier = () => {
                 type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
               />
+              <p className={classes["error"]}>{emailError}</p>
             </Form.Group>
+            
             <Form.Group
               controlId="address"
               className={classes["supplier-form"]}
@@ -151,8 +180,9 @@ const ListSupplier = () => {
                 type="text"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                required
               />
+            <p className={classes["error"]}>{addressError}</p>
+
             </Form.Group>
             <Form.Group
               controlId="telephone"
@@ -163,8 +193,8 @@ const ListSupplier = () => {
                 type="text"
                 value={telephone}
                 onChange={(e) => setTelephone(e.target.value)}
-                required
               />
+              <p className={classes["error"]}>{telephoneError}</p>
             </Form.Group>
             <div className={classes["supplier-form-button"]}>
               <button type="button" onClick={handleAddSupplier}>

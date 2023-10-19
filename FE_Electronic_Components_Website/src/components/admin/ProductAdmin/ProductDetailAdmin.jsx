@@ -104,6 +104,176 @@ const ProductDetailAdmin = () => {
     e.preventDefault();
   };
 
+  const handleUpdateProduct = () => {
+    
+    const updateProduct = {
+
+      productName: productName,
+      category: selectedCategory,
+      supplier: selectedSupplier,
+      tax: selectedTax,
+      quantity: quantity,
+      feature: feature,
+      contents: contents,
+      priceList: priceList,
+      specification: specifications,
+    };
+    formData.append("productDTO", JSON.stringify(updateProduct));
+    if (updateProduct.productName.trim() === "") {
+      return toast.success("VALIDATION_NAME_PRODUCT_ERROR001", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+    if (updateProduct.category === 0) {
+      return toast.success("VALIDATION_CATEGORY_PRODUCT_ERROR001", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+    if (updateProduct.supplier === 0) {
+      return toast.success("VALIDATION_SUPPLIER_PRODUCT_ERROR001", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+    if (updateProduct.tax === 0) {
+      return toast.success("VALIDATION_TAX_PRODUCT_ERROR001", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+    if (updateProduct.feature.trim() === "") {
+      return toast.success("VALIDATION_FEATURE_PRODUCT_ERROR001", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+    if (updateProduct.contents.trim() === "") {
+      return toast.success("VALIDATION_CONTENTS_PRODUCT_ERROR001", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+    if (updateProduct.priceList.length === 0) {
+      return toast.success("VALIDATION_PRICE_PRODUCT_ERROR001", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+    if (updateProduct.specification.length === 0) {
+      return toast.success("VALIDATION_SPECIFICATION_PRODUCT_ERROR001", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+    if (
+      updateProduct.productName.trim() !== "" &&
+      updateProduct.category !== 0 &&
+      updateProduct.supplier !== 0 &&
+      updateProduct.tax !== 0 &&
+      updateProduct.quantity !== 0 &&
+      updateProduct.feature.trim() !== "" &&
+      updateProduct.contents.trim() !== "" &&
+      updateProduct.priceList.length !== 0 &&
+      updateProduct.specification.length !== 0
+    ) {
+      api
+        .post(`/product/update/${idproduct}`, formData, {
+          headers: {
+            access_token: token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(() => {
+          toast.success("UPDATE_PRODUCT_SUCCESS", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          setTimeout(() => {
+            navigate("/admin/product");
+          }, 2000);
+        })
+        .catch((err) => {
+          return toast.error("UPDATE_PRODUCT_ERROR001", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        });
+    } else {
+      return toast.error("UPDATE_PRODUCT_ERROR001", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+  };
+
   //Image
   const handleImageChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -295,80 +465,7 @@ const ProductDetailAdmin = () => {
   };
 
   //handleAddProduct
-  const handleAddProduct = () => {
-    
-    const updateProduct = {
-
-      productName: productName,
-      category: selectedCategory,
-      supplier: selectedSupplier,
-      tax: selectedTax,
-      quantity: quantity,
-      feature: feature,
-      contents: contents,
-      priceList: priceList,
-      specification: specifications,
-    };
-    formData.append("productDTO", JSON.stringify(updateProduct));
-
-    if (
-      updateProduct.productName.trim() !== "" &&
-      updateProduct.category !== 0 &&
-      updateProduct.supplier !== 0 &&
-      updateProduct.tax !== 0 &&
-      updateProduct.quantity !== 0 &&
-      updateProduct.feature.trim() !== "" &&
-      updateProduct.contents.trim() !== "" &&
-      updateProduct.priceList.length !== 0 &&
-      updateProduct.specification.length !== 0
-    ) {
-      api
-        .post(`/product/update/${idproduct}`, formData, {
-          headers: {
-            access_token: token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(() => {
-          toast.success("Thêm sản phẩm thành công", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          setTimeout(() => {
-            navigate("/admin/product");
-          }, 2000);
-        })
-        .catch((err) => {
-          return toast.error("Thêm sản phẩm không thành công", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-        });
-    } else {
-      return toast.error("Nhận đủ thông tin cho sản phẩm", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
-  };
+  
 
   return (
     <div>
@@ -387,7 +484,7 @@ const ProductDetailAdmin = () => {
       <Form
         onSubmit={(e) => {
           e.preventDefault();
-          handleAddProduct();
+          handleUpdateProduct();
         }}
       >
         <div className={classes["add-product"]}>

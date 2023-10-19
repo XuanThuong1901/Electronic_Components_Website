@@ -47,7 +47,7 @@ const OrderDetail = () => {
           },
         })
         .then(() => {
-          toast.success("Đã Huỷ Đơn Hàng", {
+          toast.success("CANCELED_ORDER_SUCCESS", {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: true,
@@ -64,7 +64,7 @@ const OrderDetail = () => {
       // navigate('/orders')
     } catch (error) {
       console.log(error);
-      toast.success("Huỷ Đơn Hàng thất bại", {
+      toast.success("VALIDATION_CANCELED_ORDER_ERROR001", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,

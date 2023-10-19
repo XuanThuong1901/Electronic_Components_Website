@@ -89,7 +89,7 @@ const ItiemCheckOut = () => {
             })
             .then(function (res) {
                 console.log(res)
-                toast.success('Tăng số lượng thành công', {
+                toast.success('UPDATE_CART_SUCCESS', {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: true,
@@ -108,7 +108,7 @@ const ItiemCheckOut = () => {
             })
             .catch(function (res) {
                 console.log(res)
-                toast.error('Thao tác thất bại', {
+                toast.error('VALIDATION_UPDATE_CART_ERROR001', {
                     position: "top-right",
                     autoClose: 2000,
                     hideProgressBar: true,
@@ -121,7 +121,7 @@ const ItiemCheckOut = () => {
             });
         }
         else{
-            toast.error('Số lượng tồn không đủ', {
+            toast.error('VALIDATION_UPDATE_CART_ERROR001', {
                 position: "top-right",
                 autoClose: 2000,
                 hideProgressBar: true,
@@ -148,7 +148,7 @@ const ItiemCheckOut = () => {
             })
             .then(function (res) {
                 console.log(res)
-                toast.success('Giảm số lượng thành công', {
+                toast.success('UPDATE_CART_SUCCESS', {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: true,
@@ -167,7 +167,7 @@ const ItiemCheckOut = () => {
             })
             .catch(function (res) {
                 console.log(res)
-                toast.error('Thao tác thất bại', {
+                toast.error('VALIDATION_UPDATE_CART_ERROR001', {
                     position: "top-right",
                     autoClose: 2000,
                     hideProgressBar: true,
@@ -181,7 +181,7 @@ const ItiemCheckOut = () => {
         }
         else
         {
-            toast.error('Thao tác thất bại', {
+            toast.error('VALIDATION_UPDATE_CART_ERROR001', {
                 position: "top-right",
                 autoClose: 2000,
                 hideProgressBar: true,
@@ -202,7 +202,7 @@ const ItiemCheckOut = () => {
         })
         .then(function (res) {
             console.log(res)
-            toast.success('Đã xoá khỏi giỏ hàng', {
+            toast.success('DELETE_CART_SUCCESS', {
                 position: "top-right",
                 autoClose: 2000,
                 hideProgressBar: true,
@@ -221,7 +221,7 @@ const ItiemCheckOut = () => {
         })
         .catch(function (res) {
             console.log(res)
-            toast.warn('Thao tác thất bại', {
+            toast.warn('VALIDATION_DELETE_CART_ERROR001', {
                 position: "top-right",
                 autoClose: 2000,
                 hideProgressBar: true,

@@ -13,34 +13,34 @@ const validateLogin = (values) => {
   const errors = {};
 
   if (!values.email || values.email.trim().length === 0) {
-    errors.email = "Xin hãy nhập email !";
+    errors.email = "VALIDATION_EMAIL_ERROR001";
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = "Email không hợp lệ !";
+    errors.email = "VALIDATION_EMAIL_ERROR002";
   }
 
   if (!values.password || values.password.trim().length === 0) {
-    errors.password = "Xin hãy nhập mật khẩu !";
+    errors.password = "VALIDATION_PASSWORD_ERROR001";
   } else if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(values.password)) {
-    errors.password = "Mật khẩu không hợp lệ !";
+    errors.password = "VALIDATION_PASSWORD_ERROR002";
   }
   if (!values.name || values.name.trim().length === 0) {
-    errors.name = "Xin hãy nhập tên của bạn !";
+    errors.name = "VALIDATION_NAME_ERROR001";
   } else if (!/[,#-\/\s\!\@\$.....]/.test(values.name)) {
-    errors.name = "Tên không hợp lệ !";
+    errors.name = "VALIDATION_NAME_ERROR002";
   }
-  if (!values.phone || values.telephone.trim().length === 0) {
-    errors.phone = "Xin hãy nhập số điện thoại của bạn !";
+  if (!values.telephone || values.telephone.trim().length === 0) {
+    errors.telephone = "VALIDATION_PHONENUMBER_ERROR001";
   } else if (
     !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(
-      values.phone
+      values.telephone 
     )
   ) {
-    errors.phone = "số điện thoại không hợp lệ !";
+    errors.telephone = "VALIDATION_PHONENUMBER_ERROR002";
   }
   if (!values.address || values.address.trim().length === 0) {
-    errors.address = "Xin hãy nhập địa chỉ của bạn !";
+    errors.address = "VALIDATION_ADDRESS_ERROR001";
   } else if (!/[,#-\/\s\!\@\$.....]/.test(values.address)) {
-    errors.address = "địa chỉ không hợp lệ !";
+    errors.address = "VALIDATION_ADDRESS_ERROR002";
   }
   // if (values.checkpassword != values.password) {
   //   errors.checkpassword = "Mật khẩu không trùng khớp !";
@@ -57,12 +57,12 @@ const Register = () => {
       .post(`/api/auth/register/customer`, values)
       .then(function (res) {
         console.log(res);
-        alert("Đăng Ký Thành công");
+        alert("REGISTER_SUCCESS");
         navigate("/");
       })
       .catch((err) => {
         console.log(err);
-        toast.error("Thao tác thất bại", {
+        toast.error("REGISTER_ERROR001", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: true,
@@ -73,7 +73,7 @@ const Register = () => {
           theme: "colored",
         });
         if (err === "Email already in use.") {
-          formikRegister.errors.email = "Email đã tồn tại !";
+          formikRegister.errors.email = "VALIDATION_EMAIL_ERROR003";
         }
       });
        formikRegister.handleSubmit();

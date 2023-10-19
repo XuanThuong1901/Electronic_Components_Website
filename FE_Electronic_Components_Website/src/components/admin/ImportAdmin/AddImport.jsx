@@ -25,6 +25,9 @@ const AddImport = () => {
   const [nameProduct, setNameProduct] = useState("");
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
+  const [nameError, setNameError] = useState("");
+  const [supplierError, setSupplierError] = useState("");
+  const [detailImportError, setDetailImportError] = useState("");
 
   const getSupplier = async () => {
     const res = await api.get("/supplier", {});
@@ -63,7 +66,7 @@ const AddImport = () => {
     if (selectedSupplier !== 0)
       setShowFormDetailImport((prevShowForm) => !prevShowForm);
     else {
-      return toast.error("Chọn đơn vị nhà cung cấp", {
+      return toast.error("VALIDATION_SUPPLIER_IMPORT_ERROR001", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,
@@ -184,6 +187,25 @@ const AddImport = () => {
 
   //handleAddProduct
   const handleAddImport = () => {
+    if (!importName) {
+      setNameError("VALIDATION_NAME_ERROR001");
+      return;
+    } else {
+      setNameError(""); // Đặt lại lỗi nếu trường không còn để trống
+    }
+    if (selectedSupplier === 0) {
+      setSupplierError("VALIDATION_SUPPLIER_ERROR001");
+      return;
+    } else {
+      setSupplierError(""); // Đặt lại lỗi nếu trường không còn để trống
+    }
+    if (detailImport.length === 0) {
+      setDetailImportError("VALIDATION_DETAIL_IMPORT_ERROR001");
+      return;
+    } else {
+      setDetailImportError(""); // Đặt lại lỗi nếu trường không còn để trống
+    }
+
     const newImport = {
       importStockName: importName,
       contents: contents,
@@ -203,7 +225,7 @@ const AddImport = () => {
           },
         })
         .then(() => {
-          toast.success("Lập phiếu nhập thành công", {
+          toast.success("IMPORT_SUCCESS", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -218,7 +240,7 @@ const AddImport = () => {
           }, 2000);
         })
         .catch((err) => {
-          return toast.error("Lập phiếu nhập thất bại, vui lòng thử lại", {
+          return toast.error("VALIDATION_IMPORT_ERROR001", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -230,7 +252,7 @@ const AddImport = () => {
           });
         });
     } else {
-      return toast.error("Nhận đủ thông tin cho phiếu nhập", {
+      return toast.error("VALIDATION_IMPORT_ERROR001", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,
@@ -268,8 +290,8 @@ const AddImport = () => {
               type="text"
               value={importName}
               onChange={(e) => setImportName(e.target.value)}
-              required
             />
+            <p className={classes["error"]}>{nameError}</p>
           </Form.Group>
 
           <Form.Group controlId="selectedSupplier">
@@ -278,7 +300,6 @@ const AddImport = () => {
               as="select"
               value={selectedSupplier}
               onChange={(e) => setSelectedSupplier(e.target.value)}
-              required
             >
               <option value="">Chọn nhà cung cấp</option>
               {supplier.map((supplier) => (
@@ -287,6 +308,7 @@ const AddImport = () => {
                 </option>
               ))}
             </Form.Control>
+            <p className={classes["error"]}>{supplierError}</p>
           </Form.Group>
 
           <Form.Group controlId="contents">
@@ -296,7 +318,6 @@ const AddImport = () => {
               rows={3}
               value={contents}
               onChange={(e) => setContents(e.target.value)}
-              required
             />
           </Form.Group>
 
@@ -339,6 +360,7 @@ const AddImport = () => {
                 ))}
               </div>
             </div>
+            <p className={classes["error"]}>{detailImportError}</p>
           </Form.Group>
 
           <div className={classes["add-product"]}>

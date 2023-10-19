@@ -138,3 +138,7 @@
     background-color: rgb(0, 219, 146);
     color: black;
 }
+.error{
+    margin-top: 5px;
+    color: red;
+}

@@ -92,7 +92,7 @@ const InfoUser = () => {
 
   const isCheckNewPassword = (e) => {
     if(e !== newPassword)
-        setErrorNewPassword("Mật khẩu không khớp")
+        setErrorNewPassword("VALIDATION_PASSWORD_CONLIFT_ERROR001")
     else{
         setErrorNewPassword("")
     }
@@ -180,7 +180,7 @@ const InfoUser = () => {
         headers:{
             access_token: token,
       }}).then(()=> {
-        return toast.success("Thay đổi mật khẩu thành công", {
+        return toast.success("UPDATE_PASSWORD_SUCCESS", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -192,7 +192,7 @@ const InfoUser = () => {
         })
       })
       .catch((err)=> {
-        return toast.error("Cập nhật thất bại vui lòng thử lại", {
+        return toast.error("UPDATE_PASSWORD_ERROR001", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -223,7 +223,7 @@ const InfoUser = () => {
           access_token: token,
         }
       }).then(() => {
-        toast.success("Cập nhật thông tin nhân viên thành công", {
+        toast.success("UPDATE_STATUS_USER_SUCCESS", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: true,
@@ -235,7 +235,7 @@ const InfoUser = () => {
         });
       })
       .catch((err) => {
-        return toast.error("Cập nhật thất bại vui lòng thử lại", {
+        return toast.error("UPDATE_STATUS_USER_ERROR001", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: true,

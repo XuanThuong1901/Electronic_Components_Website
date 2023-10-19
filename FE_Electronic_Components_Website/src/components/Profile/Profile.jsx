@@ -93,7 +93,7 @@ const Profile = () => {
           }
         )
         .then((res) => {
-          toast.success("Cập nhập thông tin thành công", {
+          toast.success("UPDATE_USER_SUCCESS", {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: true,
@@ -109,7 +109,7 @@ const Profile = () => {
         })
         .catch((err) => {
           console.log(err);
-          toast.error("Thao tác thất bại", {
+          toast.error("UPDATE_USER_ERROR001", {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: true,

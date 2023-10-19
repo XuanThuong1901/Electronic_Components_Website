@@ -4,6 +4,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { NavLink,useNavigate } from "react-router-dom";
 import ReactDOM from "react-dom";
 import { Fragment } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import api from '../../../../apiRequest/axios'
 import AuthContext from "../../../../apiRequest/Authprovider";
 import classes from "./Authentication.module.css";
@@ -17,16 +18,16 @@ const validateLogin = (values) => {
   const errors = {};
 
   if (!values.email || values.email.trim().length === 0) {
-    errors.email = "Xin hãy nhập email của bạn !"; }
-  // } else if (!/^[A-Za-z]+$/.test(values.username)) {
-  //   errors.username = "Tên không hợp lệ !";
-  // }
+    errors.email = "VALIDATION_EMAIL_ERROR001"; }
+  else if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.username)) {
+    errors.email = "VALIDATION_EMAIL_ERROR002";
+  }
 
   if (!values.password || values.password.trim().length === 0) {
-    errors.password = "Xin hãy nhập mật khẩu !"; }
-  // } else if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(values.password)) {
-  //   errors.password = "Mật khẩu không hợp lệ !";
-  // }
+    errors.password = "VALIDATION_PASSWORD_ERROR001"; }
+   else if (!/(?=.*\d)[A-Za-z\d]{6,}$/.test(values.password)) {
+    errors.password = "VALIDATION_PASSWORD_ERROR002";
+  }
 
   return errors;
 };
@@ -51,6 +52,7 @@ const LoginForm = (props) => {
   });
 
   const handlesubmit = async(values) => {
+    
     try{
         const res = await api.post("/api/auth/login",values);
         if(res.data === null)
@@ -86,11 +88,21 @@ const LoginForm = (props) => {
 
         localStorage.setItem('token',res.data.token);
         localStorage.setItem('timeOut',res.data.expireTime)
-        props.setToken(res.data.token)  
+        props.setToken(res.data.token)
+        toast.success("UPDATE_PRODUCT_SUCCESS", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
     }
     catch(err){
         console.log(err)
-        setError("Sai thông tin đăng nhập")
+        setError("LOGIN_ERROR001")
     } 
 }
     

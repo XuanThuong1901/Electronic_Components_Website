@@ -17,6 +17,10 @@
     margin-right: 300px;
     margin-bottom: 500px;
 }
+.error{
+    margin-top: 5px;
+    color: red;
+}
 .title{
     display: flex;
     justify-self: center;

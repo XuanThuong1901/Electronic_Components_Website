@@ -114,7 +114,7 @@ const Supplier = ({ supplier, setIsCheckHandle }) => {
             })
         .then(() => {
           setIsCheckHandle(true);
-          toast.success("Thay đổi thông tin thành công", {
+          toast.success("UPDATE_SUPPLIER_SUCCESS", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -125,7 +125,7 @@ const Supplier = ({ supplier, setIsCheckHandle }) => {
             theme: "light",
           });
         }).catch((err) => {
-          return toast.error("Thay đổi thông tin thất bại", {
+          return toast.error("UPDATE_SUPPLIER_ERROR001", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -146,7 +146,7 @@ const Supplier = ({ supplier, setIsCheckHandle }) => {
       .delete(`/supplier/delete/${supplier.idsupplier}`)
       .then((res) => {
         setIsCheckHandle(true);
-        return toast.error("Xóa thành công nhà cung cấp", {
+        return toast.error("DELETE_SUPPLIER_SUCCESS", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -158,7 +158,7 @@ const Supplier = ({ supplier, setIsCheckHandle }) => {
         });
       })
       .catch((err) => {
-        return toast.error("Nhà cung cấp đã tồn tại sản phẩm không thể xóa", {
+        return toast.error("DELETE_SUPPLIER_ERROR001", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: true,

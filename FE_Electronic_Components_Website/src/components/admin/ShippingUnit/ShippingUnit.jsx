@@ -112,7 +112,7 @@ const ShippingUnit = ({ shippingUnit, setIsCheckHandle }) => {
             })
         .then(() => {
           setIsCheckHandle(true);
-          toast.success("Thay đổi thông tin thành công", {
+          toast.success("UPDATE_SHIPPING_UNIT_SUCCESS", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -123,7 +123,7 @@ const ShippingUnit = ({ shippingUnit, setIsCheckHandle }) => {
             theme: "light",
           });
         }).catch((err) => {
-          return toast.error("Thay đổi thông tin thất bại", {
+          return toast.error("UPDATE_SHIPPING_UNIT_ERROR001", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -142,7 +142,7 @@ const ShippingUnit = ({ shippingUnit, setIsCheckHandle }) => {
       .delete(`/shipping_unit/delete/${shippingUnit.idshippingUnit}`)
       .then((res) => {
         setIsCheckHandle(true);
-        return toast.error("Xóa đơn vị vận chuyển thành công", {
+        return toast.error("DELETE_SHIPPING_UNIT_SUCCESS", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -154,7 +154,7 @@ const ShippingUnit = ({ shippingUnit, setIsCheckHandle }) => {
         });
       })
       .catch((err) => {
-        return toast.error("Không thể xóa đơn vị vận chuyển này", {
+        return toast.error("DELETE_SHIPPING_UNIT_ERROR001", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: true,

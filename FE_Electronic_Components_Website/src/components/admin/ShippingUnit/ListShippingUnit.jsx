@@ -18,6 +18,10 @@ const ListShippingUnit = () => {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [telephone, setTelephone] = useState("");
+  const [shippingUnitNameError, setShippingUnitNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [addressError, setAddressError] = useState("");
+  const [telephoneError, setTelephoneError] = useState("");
 
   const getShippingUnit = async () => {
     const res = await api.get("/shipping_unit", {});
@@ -61,11 +65,38 @@ const ListShippingUnit = () => {
   };
   const handleAddSupplier = () => {
     if (
-      shippingUnitName.trim() !== "" &&
-      email.trim() !== "" &&
-      address.trim() !== "" &&
-      telephone.trim() !== ""
-    ) {
+      shippingUnitName.trim() === "" &&
+      email.trim() === "" &&
+      address.trim() === "" &&
+      telephone.trim() === ""
+    ){
+        if (shippingUnitName.trim() === "") {
+          setShippingUnitNameError("VALIDATION_NAME_SHIPPING_UNIT_ERROR001");
+        } else {
+          setShippingUnitNameError("");
+        }
+  
+        if (email.trim() === "") {
+          setEmailError("VALIDATION_EMAIL_SHIPPING_UNIT_ERROR001");
+        } else {
+          setEmailError("");
+        }
+  
+        if (address.trim() === "") {
+          setAddressError("VALIDATION_ADDRESS_SHIPPING_UNIT_ERROR001");
+        } else {
+          setAddressError("");
+        }
+  
+        if (telephone.trim() === "") {
+          setTelephoneError("VALIDATION_TELEPHONE_SHIPPING_UNIT_ERROR001");
+        } else {
+          setTelephoneError("");
+        }
+  
+        return;
+    } 
+
         api
           .post(`/shipping_unit/add`,{ shippingUnitName, email, telephone, address }, {
             headers: {
@@ -79,7 +110,7 @@ const ListShippingUnit = () => {
           setEmail("");
           setAddress("");
           setTelephone("");
-          toast.success("Cập nhật trạng thái đơn hàng thành công", {
+          toast.success("ADD_SHIPPING_UNIT_SUCCESS", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -92,7 +123,7 @@ const ListShippingUnit = () => {
         });
       
     }
-  };
+  ;
   const viewSupplier = () => {
     return (
       <div>
@@ -118,8 +149,8 @@ const ListShippingUnit = () => {
                 type="text"
                 value={shippingUnitName}
                 onChange={(e) => setShippingUnitName(e.target.value)}
-                required
               />
+              <p className={classes["error"]}>{shippingUnitNameError}</p>
             </Form.Group>
             <Form.Group controlId="email" className={classes["shipping-form"]}>
               <Form.Label>Email</Form.Label>
@@ -127,8 +158,8 @@ const ListShippingUnit = () => {
                 type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
               />
+              <p className={classes["error"]}>{emailError}</p>
             </Form.Group>
             <Form.Group
               controlId="address"
@@ -139,8 +170,8 @@ const ListShippingUnit = () => {
                 type="text"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                required
               />
+              <p className={classes["error"]}>{addressError}</p>
             </Form.Group>
             <Form.Group
               controlId="telephone"
@@ -151,8 +182,8 @@ const ListShippingUnit = () => {
                 type="text"
                 value={telephone}
                 onChange={(e) => setTelephone(e.target.value)}
-                required
               />
+              <p className={classes["error"]}>{telephoneError}</p>
             </Form.Group>
             <div className={classes["shipping-form-button"]}>
               <button type="button" onClick={handleAddSupplier}>
