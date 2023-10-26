@@ -21,7 +21,7 @@ const AddImport = () => {
   const [showFormDetailImport, setShowFormDetailImport] = useState(true);
 
   const [detailImport, setDetailImport] = useState([]);
-  // const [idProduct, setIdProduct] = useState(0);
+  const [idProduct, setIdProduct] = useState(0);
   const [nameProduct, setNameProduct] = useState("");
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
@@ -106,7 +106,7 @@ const AddImport = () => {
                 onChange={(e) => setNameProduct(e.target.value)}
                 required
               >
-                <option value="">Chọn sản phẩm</option>
+                <option >Chọn sản phẩm</option>
                 {product.map((item) => {
                   
                   console.log(selectedSupplier)
@@ -290,6 +290,7 @@ const AddImport = () => {
               type="text"
               value={importName}
               onChange={(e) => setImportName(e.target.value)}
+              required
             />
             <p className={classes["error"]}>{nameError}</p>
           </Form.Group>
@@ -300,6 +301,7 @@ const AddImport = () => {
               as="select"
               value={selectedSupplier}
               onChange={(e) => setSelectedSupplier(e.target.value)}
+              required
             >
               <option value="">Chọn nhà cung cấp</option>
               {supplier.map((supplier) => (

@@ -140,7 +140,7 @@ const ProductDetail = () => {
                     <ShoppingBasketIcon
                       className={classes["icon-add"]}
                     ></ShoppingBasketIcon>
-                    ADD TO CART
+                    THÊM VÀO GIỎ HÀNG
                   </button>
                   <div
                     className={classes["wish-button"]}

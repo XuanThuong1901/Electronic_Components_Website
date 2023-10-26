@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IImportStockService {
 
-    ImportStocks addImportStock(ImportStockDTO importStock, String tokenHeader);
+    boolean addImportStock(ImportStockDTO importStock, String tokenHeader);
 
     List<ImportStocks> getAllImportStock();
 

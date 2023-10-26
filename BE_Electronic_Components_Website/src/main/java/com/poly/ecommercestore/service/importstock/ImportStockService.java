@@ -6,6 +6,7 @@ import com.poly.ecommercestore.entity.embeddable.DetailImportStockId;
 import com.poly.ecommercestore.repository.*;
 import com.poly.ecommercestore.DTO.system.DetailImportDTO;
 import com.poly.ecommercestore.DTO.system.ImportStockDTO;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,57 +46,60 @@ public class ImportStockService implements IImportStockService{
     private final int COMPLETED = 9;
 
     @Override
-    public ImportStocks addImportStock(ImportStockDTO importStock, String tokenHeader) {
+    @Transactional
+    public boolean addImportStock(ImportStockDTO importStock, String tokenHeader) {
 
-        if(importStock.getDetailImportStocks() == null)
-            return null;
+        try{
+            if(importStock.getDetailImportStocks() == null)
+                return false;
 
-        Accounts account = getUserByToken(tokenHeader);
+            Accounts account = getUserByToken(tokenHeader);
 //        Employers employer = employerRepository.getEmployersById(importStock.getEmployer());
-        if(account.getEmployer() == null)
-            return null;
+            if(account.getEmployer() == null)
+                return false;
 
-        Suppliers supplier = supplierRepository.getReferenceById(importStock.getSupplier());
-        if(supplier == null)
-            return null;
+            Suppliers supplier = supplierRepository.getReferenceById(importStock.getSupplier());
 
-        Status status = statusRepository.getReferenceById(PROCESSING);
-        if(supplier == null)
-            return null;
+            Status status = statusRepository.getReferenceById(PROCESSING);
 
-        ImportStocks newImportStock = new ImportStocks();
-        newImportStock.setEmployer(account.getEmployer());
-        newImportStock.setSupplier(supplier);
-        newImportStock.setStatus(status);
-        newImportStock.setImportStockName(importStock.getImportStockName());
-        newImportStock.setContents(importStock.getContents());
-        newImportStock.setDateAdded(new Date());
-        newImportStock.setUpdatedDate(new Date());
+            ImportStocks newImportStock = new ImportStocks();
+            newImportStock.setEmployer(account.getEmployer());
+            newImportStock.setSupplier(supplier);
+            newImportStock.setStatus(status);
+            newImportStock.setImportStockName(importStock.getImportStockName());
+            newImportStock.setContents(importStock.getContents());
+            newImportStock.setDateAdded(new Date());
+            newImportStock.setUpdatedDate(new Date());
 
-        newImportStock = importStockRepository.save(newImportStock);
+            newImportStock = importStockRepository.save(newImportStock);
 
-        List<DetailImportStocks> newDetailImportStocks = new ArrayList<>();
-        BigDecimal amount = new BigDecimal(0);
-        for (DetailImportDTO detailImport : importStock.getDetailImportStocks()){
+            List<DetailImportStocks> newDetailImportStocks = new ArrayList<>();
+            BigDecimal amount = new BigDecimal(0);
+            for (DetailImportDTO detailImport : importStock.getDetailImportStocks()){
 
-            Products product = productRepository.getProductByName(detailImport.getProduct());
+//                System.out.printf(detailImport.getProduct().toString());
+                Products product = productRepository.getProductByName(detailImport.getProduct());
 
-            if(product == null)
-                return null;
+                DetailImportStockId detailImportStockId = new DetailImportStockId(newImportStock.getIDImportStock(), product.getIDProduct());
 
-            DetailImportStockId detailImportStockId = new DetailImportStockId(newImportStock.getIDImportStock(), product.getIDProduct());
-
-            DetailImportStocks detailImportStockTemp = new DetailImportStocks(detailImportStockId, detailImport.getQuantity(), detailImport.getPrice(), newImportStock, product);
-            newDetailImportStocks.add(detailImportStockTemp);
-            amount = amount.add(detailImport.getPrice().multiply(BigDecimal.valueOf(detailImport.getQuantity())));
-            product.setQuantity(product.getQuantity() + detailImport.getQuantity());
-            productRepository.save(product);
+                DetailImportStocks detailImportStockTemp = new DetailImportStocks(detailImportStockId, detailImport.getQuantity(), detailImport.getPrice(), newImportStock, product);
+                newDetailImportStocks.add(detailImportStockTemp);
+                amount = amount.add(detailImport.getPrice().multiply(BigDecimal.valueOf(detailImport.getQuantity())));
+                product.setQuantity(product.getQuantity() + detailImport.getQuantity());
+                productRepository.save(product);
+            }
+            System.out.printf("\n333");
+            newImportStock.setAmount(amount);
+            importStockRepository.save(newImportStock);
+            System.out.printf("\n444");
+            detailImportStockRepository.saveAll(newDetailImportStocks);
+            System.out.printf("\n444");
+            return true;
+        }catch (Exception e){
+            return false;
         }
-        newImportStock.setAmount(amount);
-        importStockRepository.save(newImportStock);
-        detailImportStockRepository.saveAll(newDetailImportStocks);
 
-        return newImportStock;
+
     }
 
     @Override

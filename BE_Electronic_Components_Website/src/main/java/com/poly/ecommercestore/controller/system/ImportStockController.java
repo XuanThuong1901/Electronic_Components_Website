@@ -27,6 +27,7 @@ public class ImportStockController {
 
     @PostMapping("/add")
     public ResponseEntity<?> addImport(@RequestHeader("access_token") String tokenHeader, @RequestBody ImportStockDTO importStock){
+        System.out.printf(importStock.toString());
         if(importStock.getImportStockName() == null){
             return ResponseEntity.badRequest().body(Message.VALIDATION_NAME_IMPORT_ERROR001);
         }
@@ -40,7 +41,7 @@ public class ImportStockController {
             return ResponseEntity.badRequest().body(Message.VALIDATION_DETAIL_IMPORT_ERROR001);
         }
 
-        if(importStockService.addImportStock(importStock, tokenHeader) == null){
+        if(!importStockService.addImportStock(importStock, tokenHeader)){
             return ResponseEntity.badRequest().body(Message.VALIDATION_IMPORT_ERROR001);
         }
 

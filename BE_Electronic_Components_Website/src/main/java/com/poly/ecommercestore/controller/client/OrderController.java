@@ -43,7 +43,11 @@ public class OrderController {
         if(!ValidateInput.isPhoneNumber(order.getTelephone()))
             return ResponseEntity.badRequest().body(Message.VALIDATION_TELEPHONE_ORDER_ERROR002);
 
-        if(orderService.addOrder(tokenHeader, order) == null){
+        int check = orderService.addOrder(tokenHeader, order);
+        if(check == 0){
+            return ResponseEntity.badRequest().body(Message.ORDER_ERROR001);
+        }
+        if(check == 2){
             return ResponseEntity.badRequest().body(Message.ORDER_ERROR001);
         }
 

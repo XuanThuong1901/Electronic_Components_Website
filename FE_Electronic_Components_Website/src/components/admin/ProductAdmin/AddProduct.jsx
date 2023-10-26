@@ -35,6 +35,8 @@ const AddProduct = () => {
   const [supplier, setSupplier] = useState([]);
   const [tax, setTax] = useState([]);
 
+  const [productNameError, setProductNameError] = useState('');
+
   const getCategory = async () => {
     const res = await api.get("/category/detail", {});
     console.log("categoryDetail: ", res);
@@ -80,6 +82,14 @@ const AddProduct = () => {
   };
 
   const handleAddProduct = () => {
+
+    // if (productName.trim() === '') {
+    //   setProductNameError('Tên sản phẩm không được để trống');
+    // } else {
+    //   setProductNameError('');
+    // }
+    // if()
+
     const newProduct = {
       productName: productName,
       category: selectedCategory,
@@ -508,7 +518,9 @@ const AddProduct = () => {
               type="text"
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
+              required
             />
+            {/* {productNameError && <p style={{ color: 'red' }}>{productNameError}</p>} */}
           </Form.Group>
 
           <Form.Group controlId="selectedCategory">
@@ -517,6 +529,7 @@ const AddProduct = () => {
               as="select"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
+              required
             >
               <option value="">Select Category</option>
               {category.map((category) => (
@@ -533,6 +546,7 @@ const AddProduct = () => {
               as="select"
               value={selectedSupplier}
               onChange={(e) => setSelectedSupplier(e.target.value)}
+              required
             >
               <option value="">Select Supplier</option>
               {supplier.map((supplier) => (
@@ -549,6 +563,7 @@ const AddProduct = () => {
               as="select"
               value={selectedTax}
               onChange={(e) => setSelectedTax(e.target.value)}
+              required
             >
               <option value="">Select Tax</option>
               {tax.map((tax) => (
@@ -576,6 +591,7 @@ const AddProduct = () => {
               rows={3}
               value={contents}
               onChange={(e) => setContents(e.target.value)}
+              required
             />
           </Form.Group>
 
@@ -586,6 +602,7 @@ const AddProduct = () => {
               rows={3}
               value={feature}
               onChange={(e) => setFeature(e.target.value)}
+              required
             />
           </Form.Group>
 

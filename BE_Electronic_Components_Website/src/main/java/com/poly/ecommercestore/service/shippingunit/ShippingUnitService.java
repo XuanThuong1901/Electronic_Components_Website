@@ -33,10 +33,10 @@ public class ShippingUnitService implements IShippingUnitService{
         Accounts user = tokenService.getAccountByToken(tokenHeader);
         if(user == null || user.getRole().getIDRole() != 2)
             return false;
-        System.out.println(shippingUnitRepository.getShippingUnits(shippingUnit.getShippingUnitName(), shippingUnit.getEmail(), shippingUnit.getTelephone()));
 
         if(shippingUnitRepository.getShippingUnits(shippingUnit.getShippingUnitName(), shippingUnit.getEmail(), shippingUnit.getTelephone()).size() != 0)
             return false;
+        System.out.println("11");
 
         ShippingUnits newShippingUnit = new ShippingUnits(shippingUnit.getShippingUnitName(), shippingUnit.getEmail(), shippingUnit.getTelephone(), shippingUnit.getAddress());
         shippingUnitRepository.save(newShippingUnit);
@@ -56,9 +56,7 @@ public class ShippingUnitService implements IShippingUnitService{
         if(updateShippingUnit == null)
             return false;
 
-        updateShippingUnit.setShippingUnitName(shippingUnit.getShippingUnitName());
-        updateShippingUnit.setEmail(shippingUnit.getEmail());
-        updateShippingUnit.setTelephone(shippingUnit.getTelephone());
+
         updateShippingUnit.setAddress(shippingUnit.getAddress());
 
         if (shippingUnitRepository.save(updateShippingUnit) == null)

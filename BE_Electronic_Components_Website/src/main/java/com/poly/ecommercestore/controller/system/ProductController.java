@@ -40,7 +40,7 @@ public class ProductController {
     public ResponseEntity<?> getProductByDetailCategoryByPage(@PathVariable(value = "id") int id, @PathVariable(value = "page") int page){
         System.out.printf("id:" +id + "page: " + page);
 
-        return ResponseEntity.ok(productService.getProductByCategoryByPage(id, page, SIZE));
+        return ResponseEntity.ok(productService.getProductByCategoryByPage(id, page, 6));
     }
 
     @GetMapping("/product={id}")
@@ -106,9 +106,12 @@ public class ProductController {
             return ResponseEntity.badRequest().body(Message.VALIDATION_SPECIFICATION_PRODUCT_ERROR001);
         }
 
-        boolean isCheck = productService.addProduct(product, imageProduct, tokenHeader);
-        if(!isCheck)
+        int isCheck = productService.addProduct(product, imageProduct, tokenHeader);
+        if(isCheck == 0)
             return ResponseEntity.badRequest().body(Message.ADD_PRODUCT_ERROR001);
+//        if(isCheck == 1)
+//            return ResponseEntity.badRequest().body(Message.VALIDATION_PRODUCT_ALREADY_EXIST_ERROR001);
+
         return ResponseEntity.ok(Message.ADD_PRODUCT_SUCCESS);
     }
 

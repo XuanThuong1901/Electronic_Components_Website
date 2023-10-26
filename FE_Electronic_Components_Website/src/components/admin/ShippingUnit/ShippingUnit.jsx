@@ -15,6 +15,9 @@ const ShippingUnit = ({ shippingUnit, setIsCheckHandle }) => {
   const navigate = useNavigate();
   const [showFormUpdate, setShowFormUpdate] = useState(false);
   const [address, setAddress] = useState("");
+  const [shippingUnitName, setShippingUnitName] = useState("");
+  const [email, setEmail] = useState("");
+  const [telephone, setTelephone] = useState("");
  
   const toggleForm = () => {
     setShowFormUpdate((prevShowForm) => !prevShowForm);
@@ -22,6 +25,9 @@ const ShippingUnit = ({ shippingUnit, setIsCheckHandle }) => {
 
   useEffect(() => {
     setAddress(shippingUnit.address);
+    setEmail(shippingUnit.email);
+    setShippingUnitName(shippingUnit.shippingUnitName);
+    setTelephone(shippingUnit.telephone);
   }, [])
 
   const viewUpdateShipping = () => {
@@ -45,7 +51,7 @@ const ShippingUnit = ({ shippingUnit, setIsCheckHandle }) => {
               controlId="shippingUnitName"
               className={classes["shipping-form"]}
             >
-              <Form.Label>Tên nhà cung cấp</Form.Label>
+              <Form.Label>Tên đơn vị vận chuyển</Form.Label>
               <Form.Control
                 type="text"
                 value={shippingUnit.shippingUnitName}
@@ -105,14 +111,14 @@ const ShippingUnit = ({ shippingUnit, setIsCheckHandle }) => {
       address.trim() !== ""
     ) {
         api
-          .post(`/shipping_unit/update/${shippingUnit.idshippingUnit}`,{ address }, {
+          .post(`/shipping_unit/update/${shippingUnit.idshippingUnit}`,{ shippingUnitName, email, telephone, address }, {
             headers: {
               access_token: token,
             },
             })
         .then(() => {
           setIsCheckHandle(true);
-          toast.success("UPDATE_SHIPPING_UNIT_SUCCESS", {
+          toast.success("Cập nhật đơn vị vận chuyển thành công", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -123,7 +129,7 @@ const ShippingUnit = ({ shippingUnit, setIsCheckHandle }) => {
             theme: "light",
           });
         }).catch((err) => {
-          return toast.error("UPDATE_SHIPPING_UNIT_ERROR001", {
+          return toast.error("Cập nhật thất bại !", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -142,7 +148,7 @@ const ShippingUnit = ({ shippingUnit, setIsCheckHandle }) => {
       .delete(`/shipping_unit/delete/${shippingUnit.idshippingUnit}`)
       .then((res) => {
         setIsCheckHandle(true);
-        return toast.error("DELETE_SHIPPING_UNIT_SUCCESS", {
+        return toast.error("Xóa đơn vị vận chuyển thành công", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -154,7 +160,7 @@ const ShippingUnit = ({ shippingUnit, setIsCheckHandle }) => {
         });
       })
       .catch((err) => {
-        return toast.error("DELETE_SHIPPING_UNIT_ERROR001", {
+        return toast.success("Đơn vị vận chuyển này không thể xóa !", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: true,
@@ -169,17 +175,18 @@ const ShippingUnit = ({ shippingUnit, setIsCheckHandle }) => {
 
   return (
     <div className={classes["container__orders"]}>
+      {showFormUpdate&& viewUpdateShipping(handleUpdateShipping, toggleForm)}
       <div className={classes["cart-item"]} key={shippingUnit.idshippingUnit}>
-        <div className={classes["item"]}>
+        <div className={classes["item"]} onClick={toggleForm}>
           <p>{shippingUnit.shippingUnitName}</p>
         </div>
-        <div className={classes["item"]}>
+        <div className={classes["item"]} onClick={toggleForm}>
           <p>{shippingUnit.email}</p>
         </div>
-        <div className={classes["item"]}>
+        <div className={classes["item"]} onClick={toggleForm}>
           <p>{shippingUnit.address}</p>
         </div>
-        <div className={classes["item"]}>
+        <div className={classes["item"]} onClick={toggleForm}>
           <p>{shippingUnit.telephone}</p>
         </div>
         <div>

@@ -36,15 +36,15 @@ const ListShippingUnit = () => {
         console.log(err);
       });
   }, []);
-//   const reducer = () =>{
-//     getShippingUnit()
-//     .then((res) => {
-//       setShippingUnit(res.data);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-//   }
+  //   const reducer = () =>{
+  //     getShippingUnit()
+  //     .then((res) => {
+  //       setShippingUnit(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  //   }
 
   if (isCheckHandle === true) {
     getShippingUnit()
@@ -65,65 +65,80 @@ const ListShippingUnit = () => {
   };
   const handleAddSupplier = () => {
     if (
-      shippingUnitName.trim() === "" &&
-      email.trim() === "" &&
-      address.trim() === "" &&
+      shippingUnitName.trim() === "" ||
+      email.trim() === "" ||
+      address.trim() === "" ||
       telephone.trim() === ""
-    ){
-        if (shippingUnitName.trim() === "") {
-          setShippingUnitNameError("VALIDATION_NAME_SHIPPING_UNIT_ERROR001");
-        } else {
-          setShippingUnitNameError("");
-        }
-  
-        if (email.trim() === "") {
-          setEmailError("VALIDATION_EMAIL_SHIPPING_UNIT_ERROR001");
-        } else {
-          setEmailError("");
-        }
-  
-        if (address.trim() === "") {
-          setAddressError("VALIDATION_ADDRESS_SHIPPING_UNIT_ERROR001");
-        } else {
-          setAddressError("");
-        }
-  
-        if (telephone.trim() === "") {
-          setTelephoneError("VALIDATION_TELEPHONE_SHIPPING_UNIT_ERROR001");
-        } else {
-          setTelephoneError("");
-        }
-  
-        return;
-    } 
+    ) {
+      if (shippingUnitName.trim() === "") {
+        setShippingUnitNameError("Tên không được để trống !");
+      } else {
+        setShippingUnitNameError("");
+      }
 
-        api
-          .post(`/shipping_unit/add`,{ shippingUnitName, email, telephone, address }, {
-            headers: {
-              access_token: token,
-            },
-            })
-        .then(() => {
+      if (email.trim() === "") {
+        setEmailError("Email không được để trống !");
+      } else {
+        setEmailError("");
+      }
+
+      if (address.trim() === "") {
+        setAddressError("Địa chỉ không được để trống !");
+      } else {
+        setAddressError("");
+      }
+
+      if (telephone.trim() === "") {
+        setTelephoneError("Số điện thoại không được để chống");
+      } else {
+        setTelephoneError("");
+      }
+
+      return;
+    }
+
+    api
+      .post(
+        `/shipping_unit/add`,
+        { shippingUnitName, email, telephone, address },
+        {
+          headers: {
+            access_token: token,
+          },
+        }
+      )
+      .then(() => {
         setShowFormAdd(true);
         setIsCheckHandle(true);
         setShippingUnitName("");
-          setEmail("");
-          setAddress("");
-          setTelephone("");
-          toast.success("ADD_SHIPPING_UNIT_SUCCESS", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+        setEmail("");
+        setAddress("");
+        setTelephone("");
+        toast.success("Thêm đơn vị vận chuyển thành công", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
         });
-      
-    }
-  ;
+      })
+      .catch((err)=> {
+        console.log(err)
+        toast.error("Có thông tin trùng với đơn vị vận chuyển có trước đó !", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      })
+  };
   const viewSupplier = () => {
     return (
       <div>
@@ -236,21 +251,24 @@ const ListShippingUnit = () => {
           </div>
         </div>
         {shippingUnit.map((item) => (
-          <ShippingUnit shippingUnit={item} setIsCheckHandle={setIsCheckHandle} />
+          <ShippingUnit
+            shippingUnit={item}
+            setIsCheckHandle={setIsCheckHandle}
+          />
         ))}
       </div>
       <ToastContainer
-          position="top-right"
-          autoClose={2000}
-          hideProgressBar
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-        />
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </div>
   );
 };

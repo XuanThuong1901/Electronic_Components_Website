@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface IProductService {
 
-    boolean addProduct(ProductDTO product, List<MultipartFile> imageProduct, String iDEmployer);
+    int addProduct(ProductDTO product, List<MultipartFile> imageProduct, String iDEmployer);
 
     boolean updateProduct(String tokenHeader , int iDProduct, ProductDTO productDTO, List<MultipartFile> imageProduct);
 

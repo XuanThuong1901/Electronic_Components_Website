@@ -16,7 +16,12 @@ const Profile = () => {
   const [amount, setAmount] = useState(0);
   const [complete, setComplete] = useState(0);
   const [cancel, setCancel] = useState(0); 
-  const [unfinished, setUnfinished] = useState(0); 
+  const [unfinished, setUnfinished] = useState(0);
+  const [errors, setErrors] = useState({
+    name: '',
+    telephone: '',
+    address: ''
+  });
   
   const navigate = useNavigate();
   // const {auth,setAuth} = useContext(AuthContext)
@@ -77,6 +82,26 @@ const Profile = () => {
 
 
   const handleSubmit = (e) => {
+    const updatedErrors = {};
+  
+  if (!info.customers.name) {
+    updatedErrors.name = 'Tên không được để trống !';
+  }else{
+    updatedErrors.name = '';
+  }
+
+  if (!info.customers.telephone) {
+    updatedErrors.telephone = 'Số điện thoại không được để trống !';
+  }else{
+    updatedErrors.telephone = '';
+  }
+
+  if (!info.customers.address) {
+    updatedErrors.address = 'Địa chỉ không được để trống !';
+  }else{
+    updatedErrors.address = '';
+  }
+  if (info.customers.name && info.customers.telephone && info.customers.address) {
     try {
       api
         .post(
@@ -123,6 +148,11 @@ const Profile = () => {
     } catch (error) {
       console.log(error);
     }
+  } else {
+    // Nếu có lỗi, cập nhật trạng thái errors và hiển thị thông báo lỗi
+    setErrors(updatedErrors);
+  }
+   
   };
   const handleChange = (e) => {
     setInfo((info) => ({
@@ -155,6 +185,7 @@ const Profile = () => {
                         type="text"
                         onChange={handleChange}
                       />
+                      {errors.name && <p className={classes["error-message"]}>{errors.name}</p>}
                     </div>
                   </div>
                   <hr></hr>
@@ -178,6 +209,7 @@ const Profile = () => {
                         type="text"
                         onChange={handleChange}
                       />
+                      {errors.telephone && <p className={classes["error-message"]}>{errors.telephone}</p>}
                     </div>
                   </div>
                   <hr />
@@ -193,6 +225,7 @@ const Profile = () => {
                         type="text"
                         onChange={handleChange}
                       />
+                      {errors.address && <p className={classes["error-message"]}>{errors.address}</p>}
                     </div>
                   </div>
                 </div>

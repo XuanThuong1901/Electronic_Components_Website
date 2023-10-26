@@ -86,43 +86,42 @@ const InfoEmployee = () => {
   };
   
   const handleButton = (e) => {
-    if (!name) {
-      setNameError("VALIDATION_NAME_ERROR001");
+    if (!name) { 
+      setNameError("Tên không được để trống !");
       return;
     } else {
       setNameError(""); // Đặt lại lỗi nếu trường không còn để trống
     }
 
     if (!email) {
-      setEmailError("VALIDATION_EMAIL_ERROR001");
+      setEmailError("Email không được để trống !");
       return;
     } else {
       setEmailError("");
     }
 
     if (!birthday) {
-      setBirthdayError("VALIDATION_BIRTHDAY_ERROR001");
+      setBirthdayError("Ngày sinh không được để trống !");
       return;
     } else {
       setBirthdayError("");
     }
 
     if (!identityCard) {
-      setIdentityCardError("VALIDATION_IDENTITYCARD_ERROR001");
+      setIdentityCardError("Số căn cước công dân không được để trống !");
       return;
     } else {
       setIdentityCardError("");
     }
 
     if (!telephone) {
-      setTelephoneError("VALIDATION_PHONENUMBER_ERROR001");
+      setTelephoneError("Số điện thoại không được để trống !");
       return;
     } else {
       setTelephoneError("");
     }
-
     if (!address) {
-      setAddressError("VALIDATION_ADDRESS_ERROR001");
+      setAddressError("Địa chỉ không được để trống !");
       return;
     } else {
       setAddressError("");

@@ -26,8 +26,12 @@ public class SupplierService implements ISupplierService{
     @Override
     public Boolean addSupplier(String tokenHeader, SupplierDTO supplier) {
         Accounts user = getUserByToken(tokenHeader);
-        if(user.getRole().getRole().equals("admin"))
+        if(user == null || user.getRole().getIDRole() != 2)
             return false;
+
+        if(supplierRepository.getSuppliers(supplier.getSupplierName(), supplier.getEmail(), supplier.getTelephone()).size() != 0)
+            return false;
+
         Suppliers newSupplier = new Suppliers(supplier.getSupplierName(), supplier.getEmail(), supplier.getTelephone(), supplier.getAddress());
 
         supplierRepository.save(newSupplier);

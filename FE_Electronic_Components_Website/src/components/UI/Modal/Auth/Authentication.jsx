@@ -19,7 +19,7 @@ const validateLogin = (values) => {
 
   if (!values.email || values.email.trim().length === 0) {
     errors.email = "VALIDATION_EMAIL_ERROR001"; }
-  else if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.username)) {
+  else if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{4,}$/i.test(values.email)) {
     errors.email = "VALIDATION_EMAIL_ERROR002";
   }
 
@@ -127,7 +127,7 @@ const LoginForm = (props) => {
       <LabledInput
         name="password"
         label="Mật khẩu"
-        placeholder="Nhập 8 kí tự có ít nhất 1 chữ cái viết hoa và 1 số"
+        placeholder="Nhập mật khẩu"
         required={true}
         type="password"
         value={formikLogin.values.password}

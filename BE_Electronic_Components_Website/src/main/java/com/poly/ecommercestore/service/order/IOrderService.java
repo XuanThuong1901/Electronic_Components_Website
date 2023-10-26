@@ -13,7 +13,7 @@ public interface IOrderService {
 
     List<Orders> getAllOrder(String tokenHeader);
 
-    Orders addOrder(String tokenHeader ,OrderDTO orderDTO);
+    int addOrder(String tokenHeader ,OrderDTO orderDTO);
 
     Boolean statusConfirmedOrder(String tokenHeader, int iDOrder);
 

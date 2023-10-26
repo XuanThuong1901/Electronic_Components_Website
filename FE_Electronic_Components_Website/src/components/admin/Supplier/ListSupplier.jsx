@@ -70,25 +70,25 @@ const ListSupplier = () => {
       telephone.trim() === ""
     ){
         if (supplierName.trim() === "") {
-          setSupplierNameError("VALIDATION_NAME_SUPPLIER_ERROR001");
+          setSupplierNameError("Tên nhà cung cấp không được để trống !");
         } else {
           setSupplierNameError("");
         }
   
         if (email.trim() === "") {
-          setEmailError("VALIDATION_EMAIL_SUPPLIER_ERROR001");
+          setEmailError("Email không được để trống !");
         } else {
           setEmailError("");
         }
   
         if (address.trim() === "") {
-          setAddressError("VALIDATION_ADDRESS_SUPPLIER_ERROR001");
+          setAddressError("Địa chỉ không được để trống !");
         } else {
           setAddressError("");
         }
   
         if (telephone.trim() === "") {
-          setTelephoneError("VALIDATION_TELEPHONE_SUPPLIER_ERROR001");
+          setTelephoneError("Số điện thoại không được để trống !");
         } else {
           setTelephoneError("");
         }
@@ -108,7 +108,7 @@ const ListSupplier = () => {
         setEmail("");
         setAddress("");
         setTelephone("");
-        toast.success("ADD_SUPPLIER_SUCCESS", {
+        toast.success("Thêm nhà cung cấp thành công", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: true,
@@ -120,7 +120,7 @@ const ListSupplier = () => {
         });
         })
         .catch((err) => {
-          return toast.error("ADD_SUPPLIER_ERROR001", {
+          return toast.error("Có thông tin trùng với nhà cung cấp có trước đó !", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,

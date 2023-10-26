@@ -14,9 +14,9 @@ const Supplier = ({ supplier, setIsCheckHandle }) => {
   const navigate = useNavigate();
   const [showFormUpdate, setShowFormUpdate] = useState(false);
   const [address, setAddress] = useState("");
-  // const [supplierName, setSupplierName] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [telephone, setTelephone] = useState("");
+  const [supplierName, setSupplierName] = useState("");
+  const [email, setEmail] = useState("");
+  const [telephone, setTelephone] = useState("");
 
   const toggleForm = () => {
     setShowFormUpdate((prevShowForm) => !prevShowForm);
@@ -24,6 +24,9 @@ const Supplier = ({ supplier, setIsCheckHandle }) => {
 
   useEffect(() => {
     setAddress(supplier.address);
+    setSupplierName(supplier.supplierName);
+    setEmail(supplier.email);
+    setTelephone(supplier.telephone);
   }, [])
 
   const viewUpdateSupplier = () => {
@@ -107,14 +110,14 @@ const Supplier = ({ supplier, setIsCheckHandle }) => {
       address.trim() !== ""
     ) {
         api
-          .post(`/supplier/update/${supplier.idsupplier}`,{ address }, {
+          .post(`/supplier/update/${supplier.idsupplier}`,{supplierName, email, telephone, address}, {
             headers: {
               access_token: token,
             },
             })
         .then(() => {
           setIsCheckHandle(true);
-          toast.success("UPDATE_SUPPLIER_SUCCESS", {
+          toast.success("Cập nhật thành công", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -125,7 +128,7 @@ const Supplier = ({ supplier, setIsCheckHandle }) => {
             theme: "light",
           });
         }).catch((err) => {
-          return toast.error("UPDATE_SUPPLIER_ERROR001", {
+          return toast.error("Cập nhật thất bại !", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -146,7 +149,7 @@ const Supplier = ({ supplier, setIsCheckHandle }) => {
       .delete(`/supplier/delete/${supplier.idsupplier}`)
       .then((res) => {
         setIsCheckHandle(true);
-        return toast.error("DELETE_SUPPLIER_SUCCESS", {
+        return toast.success("Xóa thành công nhà cung cấp", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -158,7 +161,7 @@ const Supplier = ({ supplier, setIsCheckHandle }) => {
         });
       })
       .catch((err) => {
-        return toast.error("DELETE_SUPPLIER_ERROR001", {
+        return toast.error("Nhà cung cấp này không thể xóa !", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: true,

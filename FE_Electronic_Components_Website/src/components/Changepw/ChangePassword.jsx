@@ -13,6 +13,7 @@ const ChangePassword = () => {
     const [password, setPassword] = useState("");
     const [newpassword, setNewPassword] = useState("");
     const [resetPassword,setResetPassword] = useState("");
+    const [errorNewPassword, setErrorNewPassword] = useState("");
     const [errorPassword, setErrorPassword] = useState("");
     const [error,setError] = useState("")
     const navigate = useNavigate()
@@ -32,10 +33,10 @@ const ChangePassword = () => {
     const isCheckNewPassword = () => {
         if(newpassword !==  resetPassword)
         {
-            setErrorPassword("UPDATE_PASSWORD_CONFIRM_ERROR001")
+            setErrorNewPassword("UPDATE_PASSWORD_CONFIRM_ERROR001")
         }
         else{
-            setErrorPassword("")
+            setErrorNewPassword("")
         }
     }
 
@@ -85,18 +86,7 @@ const ChangePassword = () => {
                         }));
                     }
                     else{
-                        return(
-                            toast.error(<div>{error}</div>, {
-                                position: "top-right",
-                                autoClose: 2000,
-                                hideProgressBar: true,
-                                closeOnClick: true,
-                                pauseOnHover: true,
-                                draggable: true,
-                                progress: undefined,
-                                theme: "colored",
-                                })
-                            )
+                        setErrorPassword("Mật khẩu không đúng !")
                     }   
                 })
                 
@@ -124,6 +114,9 @@ const ChangePassword = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              {errorPassword !== "" && <div className={classes["password-error"]}>
+                <p>{errorPassword}</p>
+                </div>}
             </Form.Group>
             <Form.Group
               controlId="parameter"
@@ -150,8 +143,8 @@ const ChangePassword = () => {
                 required
               />
             </Form.Group>
-            {errorPassword !== "" && <div className={classes["password-error"]}>
-                <p>{errorPassword}</p>
+            {errorNewPassword !== "" && <div className={classes["password-error"]}>
+                <p>{errorNewPassword}</p>
                 </div>}
             <div className={classes["login"]}>
               <button type="button" onClick={handleSubmit}>

@@ -149,7 +149,7 @@ public class AuthController {
         if(!ValidateInput.containsGmail(accountDTO.getEmail()))
             return ResponseEntity.badRequest().body(Message.VALIDATION_EMAIL_ERROR002);
         try {
-            System.out.printf(accountDTO.getEmail() + "  pass: " + accountDTO.getPassword());
+//            System.out.printf(accountDTO.getEmail() + "  pass: " + accountDTO.getPassword());
             Accounts account = authService.getAccountByLogin(accountDTO.getEmail(), accountDTO.getPassword());
             String email = accountDTO.getEmail();
 

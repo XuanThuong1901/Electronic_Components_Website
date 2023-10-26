@@ -63,7 +63,7 @@ public class ProductService implements IProductService{
 
     @Transactional
     @Override
-    public boolean addProduct(ProductDTO product, List<MultipartFile> imageProduct, String tokenHeader) {
+    public int addProduct(ProductDTO product, List<MultipartFile> imageProduct, String tokenHeader) {
 
         try {
             Accounts user = tokenService.getAccountByToken(tokenHeader);
@@ -71,7 +71,17 @@ public class ProductService implements IProductService{
 
             Suppliers supplier = supplierRepository.findById(product.getSupplier()).get();
 
+//            Products pd = productRepository.checkProduct(supplier, product.getProductName());
+//            if(pd != null){
+//                return 2;
+//            }
+
             Tax tax = taxRepository.findById(product.getTax()).get();
+
+//            Products checkProduct = productRepository.getProductByName(product.getProductName());
+//            System.out.printf(checkProduct.toString());
+//            if(checkProduct == null)
+//                return 0;
 
             Products newProduct = new Products();
             newProduct.setProductName(product.getProductName());
@@ -112,9 +122,9 @@ public class ProductService implements IProductService{
             productRepository.save(newProduct);
 
 
-            return true;
+            return 1;
         }catch (Exception e){
-            return false;
+            return 0;
         }
     }
 

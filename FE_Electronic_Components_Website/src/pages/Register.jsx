@@ -25,17 +25,14 @@ const validateLogin = (values) => {
   }
   if (!values.name || values.name.trim().length === 0) {
     errors.name = "VALIDATION_NAME_ERROR001";
-  } else if (!/[,#-\/\s\!\@\$.....]/.test(values.name)) {
+  } else if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(values.name)) {
     errors.name = "VALIDATION_NAME_ERROR002";
   }
-  if (!values.telephone || values.telephone.trim().length === 0) {
-    errors.telephone = "VALIDATION_PHONENUMBER_ERROR001";
-  } else if (
-    !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(
-      values.telephone 
-    )
-  ) {
-    errors.telephone = "VALIDATION_PHONENUMBER_ERROR002";
+  if (!values.phone || values.telephone.trim().length === 0)  {
+    errors.phone = "VALIDATION_PHONENUMBER_ERROR001";
+  } 
+  else if (!/^0\d{9}$/.test(values.phone)) {
+    errors.phone = "VALIDATION_PHONENUMBER_ERROR002";
   }
   if (!values.address || values.address.trim().length === 0) {
     errors.address = "VALIDATION_ADDRESS_ERROR001";
@@ -53,28 +50,45 @@ const Register = () => {
   const navigate = useNavigate();
 
   const handlesubmit = (values) => {
-    api
-      .post(`/api/auth/register/customer`, values)
-      .then(function (res) {
-        console.log(res);
+    api.post(`/api/auth/register/customer`, values)
+    .then(function (res) {
+        
+        console.log(res)
+
         alert("REGISTER_SUCCESS");
         navigate("/");
       })
       .catch((err) => {
-        console.log(err);
-        toast.error("REGISTER_ERROR001", {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-        if (err === "Email already in use.") {
-          formikRegister.errors.email = "VALIDATION_EMAIL_ERROR003";
+
+        console.log(err.response.data);
+        let data = "";
+        data = err.response.data;
+        console.log(data);
+        if (data.toString() === "VALIDATION_EMAIL_ERROR003") {
+          toast.error("VALIDATION_EMAIL_ERROR003", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
         }
+        else{
+          toast.error("REGISTER_ERROR001", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        }
+        
       });
        formikRegister.handleSubmit();
   };
@@ -117,7 +131,7 @@ const Register = () => {
           <LabledInput
             name="password"
             label="Mật khẩu"
-            placeholder="Nhập 8 kí tự có ít nhất 1 chữ cái viết hoa và 1 số"
+            placeholder="Nhập mật khẩu ít nhất 6 kí tự"
             required={true}
             type="password"
             value={formikRegister.values.password}
@@ -148,7 +162,7 @@ const Register = () => {
             name="name"
             label="Họ tên của bạn"
             placeholder="Nhập họ tên của bạn"
-            required={false}
+            required={true}
             value={formikRegister.values.name}
             onChange={formikRegister.handleChange}
             onBlur={formikRegister.handleBlur}
@@ -191,7 +205,18 @@ const Register = () => {
             Đăng Ký
           </Button>
         </form>
-        
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
       </div>
     </div>
   );

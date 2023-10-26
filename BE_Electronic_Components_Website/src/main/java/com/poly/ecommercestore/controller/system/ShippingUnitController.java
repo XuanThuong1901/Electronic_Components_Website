@@ -26,6 +26,7 @@ public class ShippingUnitController {
 
     @PostMapping("/add")
     private ResponseEntity<?> addShippingUnit(@RequestHeader("access_token")String tokenHeader, @RequestBody ShippingUnitDTO shippingUnit){
+        System.out.printf("1");
         if(shippingUnit.getShippingUnitName().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_NAME_SHIPPING_UNIT_ERROR001);
         }
@@ -42,7 +43,7 @@ public class ShippingUnitController {
             return ResponseEntity.badRequest().body(Message.VALIDATION_TELEPHONE_SHIPPING_UNIT_ERROR002);
         }
 
-        if(shippingUnitService.addShippingUnit(tokenHeader, shippingUnit) == null)
+        if(shippingUnitService.addShippingUnit(tokenHeader, shippingUnit) == false)
             return ResponseEntity.badRequest().body(Message.ADD_SHIPPING_UNIT_ERROR001);
 
         return ResponseEntity.ok(Message.ADD_SHIPPING_UNIT_SUCCESS);
@@ -50,16 +51,16 @@ public class ShippingUnitController {
 
     @PostMapping("/update/{id}")
     public ResponseEntity<?> updateShippingUnit(@RequestHeader("access_token") String tokenHeader, @RequestBody ShippingUnitDTO shippingUnit, @PathVariable(value = "id") int id){
-        if(shippingUnit.getShippingUnitName().isEmpty()){
+        if(shippingUnit.getShippingUnitName() == null || shippingUnit.getShippingUnitName().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_NAME_SHIPPING_UNIT_ERROR001);
         }
-        if(shippingUnit.getEmail().isEmpty()){
+        if(shippingUnit.getEmail() == null || shippingUnit.getEmail().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_EMAIL_SHIPPING_UNIT_ERROR001);
         }
-        if(shippingUnit.getTelephone().isEmpty()){
+        if(shippingUnit.getTelephone() == null || shippingUnit.getTelephone().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_TELEPHONE_SHIPPING_UNIT_ERROR001);
         }
-        if(shippingUnit.getAddress().isEmpty()){
+        if(shippingUnit.getAddress() == null || shippingUnit.getAddress().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_ADDRESS_SHIPPING_UNIT_ERROR001);
         }
         if(shippingUnitService.updateShippingUnit(tokenHeader, shippingUnit, id) == null){

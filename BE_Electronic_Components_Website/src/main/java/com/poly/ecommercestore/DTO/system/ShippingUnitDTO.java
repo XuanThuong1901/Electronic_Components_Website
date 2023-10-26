@@ -21,10 +21,10 @@ public class ShippingUnitDTO {
     }
 
     public ShippingUnitDTO(String shippingUnitName, String email, String telephone, String address) {
-        this.shippingUnitName = (shippingUnitName != "") ? shippingUnitName : "N/A";
-        this.email = (email != "") ? email : "N/A";
-        this.telephone = (telephone != "") ? telephone : "N/A";
-        this.address = (address != "") ? address : "N/A";
+        this.shippingUnitName = (shippingUnitName != null) ? shippingUnitName : "N/A";
+        this.email = (email != null) ? email : "N/A";
+        this.telephone = (telephone != null) ? telephone : "N/A";
+        this.address = (address != null) ? address : "N/A";
 //        this.shippingCost = shippingCost;
     }
 
