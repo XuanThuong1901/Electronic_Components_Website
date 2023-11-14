@@ -23,8 +23,8 @@ const AddImport = () => {
   const [detailImport, setDetailImport] = useState([]);
   const [idProduct, setIdProduct] = useState(0);
   const [nameProduct, setNameProduct] = useState("");
-  const [price, setPrice] = useState(0);
-  const [quantity, setQuantity] = useState(0);
+  const [price, setPrice] = useState();
+  const [quantity, setQuantity] = useState();
   const [nameError, setNameError] = useState("");
   const [supplierError, setSupplierError] = useState("");
   const [detailImportError, setDetailImportError] = useState("");
@@ -128,7 +128,7 @@ const AddImport = () => {
             >
               <Form.Label>Giá sản phẩm</Form.Label>
               <Form.Control
-                type="text"
+                type="number"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 required
@@ -140,7 +140,7 @@ const AddImport = () => {
             >
               <Form.Label>Số lượng nhập</Form.Label>
               <Form.Control
-                type="text"
+                type="number"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
                 required
@@ -161,6 +161,15 @@ const AddImport = () => {
   };
 
   const handleAddDetailImport = () => {
+    if (parseFloat(price) <= 0 || isNaN(parseFloat(price))) {
+      alert("Giá sản phẩm phải là một số dương.");
+      return; // Không thực hiện thêm giá nếu không hợp lệ
+    }
+
+    if (parseFloat(quantity) <= 0 || isNaN(parseFloat(quantity))) {
+      alert("Số lượng sản phẩm phải là một số dương.");
+      return; // Không thực hiện thêm giá nếu không hợp lệ
+    }
     if (nameProduct !== "" && price !== 0 && quantity !== 0) {
       const newDetailImport = {
         product: nameProduct,
@@ -188,19 +197,19 @@ const AddImport = () => {
   //handleAddProduct
   const handleAddImport = () => {
     if (!importName) {
-      setNameError("VALIDATION_NAME_ERROR001");
+      setNameError("Tên phiếu nhập không được để trống !");
       return;
     } else {
       setNameError(""); // Đặt lại lỗi nếu trường không còn để trống
     }
     if (selectedSupplier === 0) {
-      setSupplierError("VALIDATION_SUPPLIER_ERROR001");
+      setSupplierError("Bạn chưa chọn nhà cung cấp !");
       return;
     } else {
       setSupplierError(""); // Đặt lại lỗi nếu trường không còn để trống
     }
     if (detailImport.length === 0) {
-      setDetailImportError("VALIDATION_DETAIL_IMPORT_ERROR001");
+      setDetailImportError("Phiếu nhập chưa tồn tại sản phâm nhập !");
       return;
     } else {
       setDetailImportError(""); // Đặt lại lỗi nếu trường không còn để trống
@@ -225,7 +234,7 @@ const AddImport = () => {
           },
         })
         .then(() => {
-          toast.success("IMPORT_SUCCESS", {
+          toast.success("Tạo phiếu nhập thành công", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -240,7 +249,7 @@ const AddImport = () => {
           }, 2000);
         })
         .catch((err) => {
-          return toast.error("VALIDATION_IMPORT_ERROR001", {
+          return toast.error("Tạo phiếu nhập thất bại, vui lòng thử lại !", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -252,7 +261,7 @@ const AddImport = () => {
           });
         });
     } else {
-      return toast.error("VALIDATION_IMPORT_ERROR001", {
+      return toast.error("Tạo phiếu nhập thất bại, vui lòng thử lại !", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,

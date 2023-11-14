@@ -2,12 +2,12 @@ package com.poly.ecommercestore.common;
 
 public class Message {
     // LOGIN
-    public static String VALIDATION_EMAIL_ERROR001 = "VALIDATION_EMAIL_ERROR001";
-    public static String VALIDATION_EMAIL_ERROR002 = "VALIDATION_EMAIL_ERROR002";
-    public static String VALIDATION_PASSWORD_ERROR001 = "VALIDATION_PASSWORD_ERROR001";
-    public static String VALIDATION_PASSWORD_ERROR002 = "VALIDATION_PASSWORD_ERROR002";
-    public static String LOGIN_SUCCESS = "LOGIN_SUCCESS";
-    public static String LOGIN_ERROR001 = "LOGIN_ERROR001";
+    public static String VALIDATION_EMAIL_ERROR001 = "Email trống !";
+    public static String VALIDATION_EMAIL_ERROR002 = "Email sai kiểu định dạng !";
+    public static String VALIDATION_PASSWORD_ERROR001 = "Password trống !";
+    public static String VALIDATION_PASSWORD_ERROR002 = "Password quá ngắn !";
+    public static String LOGIN_SUCCESS = "Đăng nhập thành công";
+    public static String LOGIN_ERROR001 = "Đăng nhập thất bại !";
 
     //EMPLOYEE
 
@@ -31,8 +31,8 @@ public class Message {
 
     //UPDATE PASSWORD
     public static String UPDATE_PASSWORD_CONFIRM_ERROR001 = "UPDATE_USER_ERROR001";
-    public static String UPDATE_PASSWORD_ERROR001 = "UPDATE_USER_ERROR001";
-    public static String UPDATE_PASSWORD_SUCCESS = "UPDATE_USER_SUCCESS";
+    public static String UPDATE_PASSWORD_ERROR001 = "UPDATE_PASSWORD_ERROR001";
+    public static String UPDATE_PASSWORD_SUCCESS = "UPDATE_PASSWORD_SUCCESS";
 
     //UPDATE STATUS
         public static String UPDATE_STATUS_USER_ERROR001 = "UPDATE_STATUS_USER_ERROR001";
@@ -107,7 +107,7 @@ public class Message {
     public static String VALIDATION_IMAGE_PRODUCT_ERROR001 = "VALIDATION_IMAGE_PRODUCT_ERROR001";
     public static String VALIDATION_SPECIFICATION_PRODUCT_ERROR001 = "VALIDATION_SPECIFICATION_PRODUCT_ERROR001";
     public static String VALIDATION_PRODUCT_ALREADY_EXIST_ERROR001 = "VALIDATION_PRODUCT_ALREADY_EXIST_ERROR001";
-
+    public static String VALIDATION_NAME_PRODUCT_ERROR002 = "VALIDATION_NAME_PRODUCT_ERROR002";
 
     public static String ADD_PRODUCT_SUCCESS = "ADD_PRODUCT_SUCCESS";
     public static String ADD_PRODUCT_ERROR001 = "ADD_PRODUCT_ORDER_ERROR001";

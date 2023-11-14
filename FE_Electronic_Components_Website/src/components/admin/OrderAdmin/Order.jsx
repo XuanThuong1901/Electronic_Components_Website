@@ -53,65 +53,65 @@ const Order = ({ order, setIsCheckHandle}) => {
   const HandleStatus = (index) => {
     setShowSubtable(false)
     if (order.status.idstatus === 3 && (index === 5 || index === 6)) {
-      return toast.error("VALIDATION_CONFIRMED_ORDER_ERROR001", {
+      return toast.error("Không thể cập nhật trạng thái đơn hàng !", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 2000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored",
+        theme: "light",
       });
     }
     if (order.status.idstatus === 4 && index === 7) {
-      return toast.error("VALIDATION_CANCELED_ORDER_ERROR001", {
+      return toast.error("Không thể cập nhật trạng thái đơn hàng !", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 2000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored",
+        theme: "light",
       });
     }
     if (order.status.idstatus === 4 && index === 6) {
-      return toast.error("VALIDATION_DELIVERY_ORDER_ERROR001", {
+      return toast.error("Không thể cập nhật trạng thái đơn hàng !", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 2000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored",
+        theme: "light",
       });
     }
     if (order.status.idstatus === 5 && (index === 7 || index === 4)) {
-      return toast.error("VALIDATION_DELIVERY_ORDER_ERROR001", {
+      return toast.error("Không thể cập nhật trạng thái đơn hàng !", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 2000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored",
+        theme: "light",
       });
     }
     if (order.status.idstatus === 6) {
       return toast.error(
-        "VALIDATION_DELIVERED_ORDER_ERROR001",
+        "Không thể cập nhật trạng thái đơn hàng !",
         {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 2000,
           hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "colored",
+          theme: "light",
         }
       );
     } else {
@@ -125,7 +125,7 @@ const Order = ({ order, setIsCheckHandle}) => {
             })
             .then((res) => {
               console.log(res);
-              toast.success("CONFIRMED_ORDER_SUCCESS", {
+              toast.success("Cập nhật trạng thái thành công", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -138,7 +138,7 @@ const Order = ({ order, setIsCheckHandle}) => {
             })
             .catch((err) => {
               console.log(err);
-              toast.error("VALIDATION_CONFIRMED_ORDER_ERROR001", {
+              toast.error("Cập nhật trạng thái thất bại !", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -159,7 +159,7 @@ const Order = ({ order, setIsCheckHandle}) => {
             })
             .then((res) => {
               console.log(res);
-              toast.success("DELIVERY_ORDER_SUCCESS", {
+              toast.success("Cập nhật trạng thái thành công", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -172,7 +172,7 @@ const Order = ({ order, setIsCheckHandle}) => {
             })
             .catch((err) => {
               console.log(err);
-              toast.error("VALIDATION_DELIVERY_ORDER_ERROR001", {
+              toast.error("Cập nhật trạng thái thất bại !", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -193,7 +193,7 @@ const Order = ({ order, setIsCheckHandle}) => {
             })
             .then((res) => {
               console.log(res);
-              toast.success("DELIVERED_ORDER_SUCCESS", {
+              toast.success("Cập nhật trạng thái thành công", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -206,7 +206,7 @@ const Order = ({ order, setIsCheckHandle}) => {
             })
             .catch((err) => {
               console.log(err);
-              toast.error("VALIDATION_DELIVERED_ORDER_ERROR001", {
+              toast.error("Cập nhật trạng thái thất bại !", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -227,7 +227,7 @@ const Order = ({ order, setIsCheckHandle}) => {
             })
             .then((res) => {
               console.log(res);
-              toast.success("CANCELED_ORDER_SUCCESS", {
+              toast.success("Cập nhật trạng thái thành công", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -240,7 +240,7 @@ const Order = ({ order, setIsCheckHandle}) => {
             })
             .catch((err) => {
               console.log(err);
-              toast.error("VALIDATION_CANCELED_ORDER_ERROR001", {
+              toast.error("Cập nhật trạng thái thất bại !", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,

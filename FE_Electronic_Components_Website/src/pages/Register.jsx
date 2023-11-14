@@ -13,35 +13,42 @@ const validateLogin = (values) => {
   const errors = {};
 
   if (!values.email || values.email.trim().length === 0) {
-    errors.email = "VALIDATION_EMAIL_ERROR001";
+    errors.email = "Email không được để trống !";
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = "VALIDATION_EMAIL_ERROR002";
+    errors.email = "Email sai kiểu định dạng !";
+  }else{
+    errors.email = "";
   }
 
   if (!values.password || values.password.trim().length === 0) {
-    errors.password = "VALIDATION_PASSWORD_ERROR001";
-  } else if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(values.password)) {
-    errors.password = "VALIDATION_PASSWORD_ERROR002";
+    errors.password = "Mật khẩu không được để trống !";
+  } else if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(values.password)) {
+    errors.password = "Mật khẩu từ 6 kí tự trở lên !";
+  }else{
+    errors.password = "";
   }
   if (!values.name || values.name.trim().length === 0) {
-    errors.name = "VALIDATION_NAME_ERROR001";
+    errors.name = "Tên không được để trống !";
   } else if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(values.name)) {
-    errors.name = "VALIDATION_NAME_ERROR002";
+    errors.name = "Tên sai kiểu định dạng !";
+  }else{
+    errors.name = "";
   }
-  if (!values.phone || values.telephone.trim().length === 0)  {
-    errors.phone = "VALIDATION_PHONENUMBER_ERROR001";
+  if (!values.telephone || values.telephone.trim().length === 0)  {
+    errors.telephone = "Số điện thoại không được để trống !";
   } 
-  else if (!/^0\d{9}$/.test(values.phone)) {
-    errors.phone = "VALIDATION_PHONENUMBER_ERROR002";
+  else if (!/^0\d{9}$/.test(values.telephone)) {
+    errors.telephone = "Số điện thoại sai kiểu định dạng !";
+  }else{
+    errors.telephone = "";
   }
   if (!values.address || values.address.trim().length === 0) {
-    errors.address = "VALIDATION_ADDRESS_ERROR001";
+    errors.address = "Địa chỉ không được để trống !";
   } else if (!/[,#-\/\s\!\@\$.....]/.test(values.address)) {
-    errors.address = "VALIDATION_ADDRESS_ERROR002";
+    errors.address = "Địa chỉ sai kiểu định dạng !";
+  }else{
+    errors.address = "";
   }
-  // if (values.checkpassword != values.password) {
-  //   errors.checkpassword = "Mật khẩu không trùng khớp !";
-  // }
 
   return errors;
 };
@@ -55,7 +62,7 @@ const Register = () => {
         
         console.log(res)
 
-        alert("REGISTER_SUCCESS");
+        alert("Đăng ký thành công");
         navigate("/");
       })
       .catch((err) => {
@@ -65,7 +72,7 @@ const Register = () => {
         data = err.response.data;
         console.log(data);
         if (data.toString() === "VALIDATION_EMAIL_ERROR003") {
-          toast.error("VALIDATION_EMAIL_ERROR003", {
+          toast.error("Email này đã được đăng ký !", {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: true,
@@ -77,7 +84,7 @@ const Register = () => {
           });
         }
         else{
-          toast.error("REGISTER_ERROR001", {
+          toast.error("Đăng ký thất bại !", {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: true,
@@ -143,21 +150,6 @@ const Register = () => {
                 : null
             }
           />
-          {/* <LabledInput
-        name="checkpassword"
-        label="Nhập lại Mật khẩu"
-        placeholder="Nhập 8 kí tự có ít nhất 1 chữ cái viết hoa và 1 số"
-        required={true}
-        type="password"
-        //value={formikRegister.values.checkpassword}
-        //onChange={formikRegister.handleChange}
-        onBlur={formikRegister.handleBlur}
-        error={
-            formikRegister.touched.checkpassword && formikRegister.errors.checkpassword
-            ? formikRegister.errors.checkpassword
-            : null
-        }
-      />  */}
           <LabledInput
             name="name"
             label="Họ tên của bạn"
@@ -174,6 +166,7 @@ const Register = () => {
           />
           <LabledInput
             name="telephone"
+            type="tel"
             label="Số điện thoại"
             placeholder="Nhập số điện thoại của bạn"
             required={true}

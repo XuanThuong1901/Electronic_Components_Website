@@ -48,7 +48,7 @@ const Employee = ({ employee, setIsCheckHandle }) => {
       })
       .catch((err) => {
         console.log(err);
-        return toast.error(<div>Tài khoản hiện tại đang đăng nhập, không thể cập nhật trạng thái{err.response.data.message}</div>, {
+        return toast.error("Tài khoản hiện tại đang đăng nhập, không thể cập nhật trạng thái", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: true,

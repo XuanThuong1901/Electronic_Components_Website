@@ -57,7 +57,7 @@ const Import = ({imports, setIsCheckHandle}) => {
             })
             .then((res) => {
               console.log(res);
-              toast.success("COMPLETE_IMPORT_SUCCESS", {
+              toast.success("Cập nhật trạng thái phiếu nhập thành công", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -70,7 +70,7 @@ const Import = ({imports, setIsCheckHandle}) => {
             })
             .catch((err) => {
               console.log(err);
-              toast.error("VALIDATION_COMPLETE_IMPORT_ERROR001", {
+              toast.error("Cập nhật trạng thái phiếu nhập thất bại, vui lòng thử lại !", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: true,

@@ -95,7 +95,7 @@ public class ProductController {
         if(product.getFeature().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_FEATURE_PRODUCT_ERROR001);
         }
-
+        System.out.print(product.getPriceList());
         if(product.getPriceList().size() == 0){
             return ResponseEntity.badRequest().body(Message.VALIDATION_PRICE_PRODUCT_ERROR001);
         }
@@ -109,8 +109,8 @@ public class ProductController {
         int isCheck = productService.addProduct(product, imageProduct, tokenHeader);
         if(isCheck == 0)
             return ResponseEntity.badRequest().body(Message.ADD_PRODUCT_ERROR001);
-//        if(isCheck == 1)
-//            return ResponseEntity.badRequest().body(Message.VALIDATION_PRODUCT_ALREADY_EXIST_ERROR001);
+        if(isCheck == 2)
+            return ResponseEntity.badRequest().body(Message.VALIDATION_NAME_PRODUCT_ERROR002);
 
         return ResponseEntity.ok(Message.ADD_PRODUCT_SUCCESS);
     }

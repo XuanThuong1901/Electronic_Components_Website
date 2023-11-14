@@ -27,6 +27,11 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
     @Query("SELECT product FROM Products product WHERE product.productName = :productName")
     public Products getProductByName(@Param("productName") String productName);
 
+    @Query("SELECT product FROM Products product WHERE LOWER(product.productName) = LOWER(:productName)")
+    public Products getProductName(@Param("productName") String productName);
+
+    boolean existsByProductName(String productName);
+
 //    @Query("SELECT product FROM Products product WHERE product.productName = :productName")
 //    public Products getProductByName(@Param("productName") String productName);
 

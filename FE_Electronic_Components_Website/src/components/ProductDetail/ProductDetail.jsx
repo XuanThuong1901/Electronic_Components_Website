@@ -51,6 +51,18 @@ const ProductDetail = () => {
   }, []);
 
   const handleAddToCart = async (id_item) => {
+    if(quantity > items.quantity){
+      return toast.warn("Số lượng sản phẩm không đủ !", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
     api
       .post(`cart/add/${id_item}`, {quantity}, {
         headers: {
@@ -58,7 +70,7 @@ const ProductDetail = () => {
         },
       })
       .then(function (res) {
-        toast.success("ADD_CART_SUCCESS", {
+        toast.success("Thêm sản phẩm vào giỏ thành công", {
           position: "top-right",
           autoClose: 1500,
           hideProgressBar: false,
@@ -71,7 +83,7 @@ const ProductDetail = () => {
       })
       .catch(function (res) {
         console.log(res);
-        toast.warn("VALIDATION_ADD_CART_ERROR001", {
+        toast.warn("Thêm sản phẩm vào giỏ thất bại !", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,

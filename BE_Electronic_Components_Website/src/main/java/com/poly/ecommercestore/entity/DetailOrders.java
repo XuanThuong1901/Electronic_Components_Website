@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @Data
 @Entity
 @Table(name = "DetailOrders")
+@JsonIgnoreProperties("detailOrder")
 public class DetailOrders {
 
     @EmbeddedId
@@ -28,17 +29,15 @@ public class DetailOrders {
     @Column(name = "LineAmount")
     private BigDecimal lineAmount;
 
-    @JsonIgnoreProperties("detailOrder")
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "IDOrder", referencedColumnName = "IDOrder", insertable = false, updatable = false)
     private Orders order;
 
-    @JsonIgnoreProperties("detailOrder")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "IDProduct", referencedColumnName = "IDProduct", insertable = false, updatable = false)
     private Products product;
 
-    @JsonIgnoreProperties("detailOrder")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "IDTax")
     private Tax tax;

@@ -55,20 +55,6 @@ public class ImageProductService implements IImageProductService{
 
     @Override
     public Boolean delete(int idProduct) {
-//        List<ImageProducts> imageProductsList = imageProductRepository.getImageProductsByProduct(idProduct);
-//        for(ImageProducts imageProduct : imageProductsList)
-//        {
-//
-//        }
-//        try {
-//            imageProductRepository.deleteById(idImg);
-//            return true;
-//        }
-//        catch (Exception e)
-//        {
-//            System.out.printf(e.toString());
-//            return false;
-//        }
         return false;
     }
 

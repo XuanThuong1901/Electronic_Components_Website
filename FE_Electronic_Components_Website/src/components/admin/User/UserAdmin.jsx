@@ -25,6 +25,7 @@ const InfoUser = () => {
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [enterNewPassword, setEnterNewPassword] = useState("");
+  const [errorConliftPassword, setErrorConliftPassword] = useState("");
   const [errorNewPassword, setErrorNewPassword] = useState("");
   const [showViewNewPassword, setShowViewNewPassword] = useState(true);
   
@@ -91,10 +92,16 @@ const InfoUser = () => {
   };
 
   const isCheckNewPassword = (e) => {
-    if(e !== newPassword)
-        setErrorNewPassword("VALIDATION_PASSWORD_CONLIFT_ERROR001")
+    if(newPassword.length < 5){
+      setErrorNewPassword("Mật khẩu phải từ 6 ký tự trở lên !")
+    }
     else{
-        setErrorNewPassword("")
+      setErrorNewPassword("")
+    }
+    if(e !== newPassword)
+        setErrorConliftPassword("Mật khẩu xác nhận không đúng !")
+    else{
+      setErrorConliftPassword("")
     }
 };
 
@@ -118,7 +125,7 @@ const InfoUser = () => {
               controlId="specificationName"
               className={classes["specification-form"]}
             >
-              <Form.Label>Mật khẩu củ</Form.Label>
+              <Form.Label>Mật khẩu hiện tại</Form.Label>
               <Form.Control
               className={classes["specification-form-text"]}
                 type="password"
@@ -135,10 +142,16 @@ const InfoUser = () => {
               <Form.Control
                 type="password"
                 value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+                onChange={(e) => {
+                  setNewPassword(e.target.value);
+                  isCheckNewPassword()
+                }}
                 required
               />
             </Form.Group>
+            {errorNewPassword !== "" && <div className={classes["password-error"]}>
+                <p>{errorNewPassword}</p>
+                </div>}
             <Form.Group
               controlId="parameter"
               className={classes["specification-form"]}
@@ -152,11 +165,11 @@ const InfoUser = () => {
                 required
               />
             </Form.Group>
-            {errorNewPassword !== "" && <div className={classes["password-error"]}>
-                <p>{errorNewPassword}</p>
+            {errorConliftPassword !== "" && <div className={classes["password-error"]}>
+                <p>{errorConliftPassword}</p>
                 </div>}
             <div className={classes["specification-form-button"]}>
-              <button type="button" onClick={handleNewPassword}>
+              <button type="submit" onClick={handleNewPassword}>
                 Thay đổi
               </button>
               <button type="button" onClick={toggleForm}>
@@ -180,7 +193,8 @@ const InfoUser = () => {
         headers:{
             access_token: token,
       }}).then(()=> {
-        return toast.success("UPDATE_PASSWORD_SUCCESS", {
+        
+        return toast.success("Thay đổi mật khẩu thành công", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -190,9 +204,10 @@ const InfoUser = () => {
             progress: undefined,
             theme: "light",
         })
+       
       })
       .catch((err)=> {
-        return toast.error("UPDATE_PASSWORD_ERROR001", {
+        return toast.error("Mật khẩu hiện tại không đúng !", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -203,11 +218,22 @@ const InfoUser = () => {
             theme: "colored",
           });
       })
-      setShowViewNewPassword(true);
+      
     }
   };
   
   const handleButtonUpdate = () => {
+    if(name.length === 0 || identityCard.length === 0 || telephone.length === 0 || address.length === 0 ){
+      return;
+    }
+    if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(name)) {
+      alert("Sai kiểu định dạng tên !");
+      return;
+    }
+    if (!/^0\d{9}$/.test(telephone)) {
+      alert("Sai kiểu định dạng số điện thoại !");
+      return;
+    }
     const user = {
       name: name,
       birthday: new Date(birthday),
@@ -223,7 +249,7 @@ const InfoUser = () => {
           access_token: token,
         }
       }).then(() => {
-        toast.success("UPDATE_STATUS_USER_SUCCESS", {
+        toast.success("Cập nhật thông tin thành công", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: true,
@@ -235,7 +261,7 @@ const InfoUser = () => {
         });
       })
       .catch((err) => {
-        return toast.error("UPDATE_STATUS_USER_ERROR001", {
+        return toast.error("Cập nhật thông tin thất bại !", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: true,
@@ -362,7 +388,7 @@ const InfoUser = () => {
           <Form.Group controlId="identityCard">
             <Form.Label className={classes["form"]}>CCCD</Form.Label>
             <Form.Control
-              type="text"
+              type="number"
               value={identityCard}
               onChange={(e) => setIdentityCard(e.target.value)}
               required
@@ -371,7 +397,7 @@ const InfoUser = () => {
           <Form.Group controlId="telephone">
             <Form.Label className={classes["form"]}>Số điện thoại</Form.Label>
             <Form.Control
-              type="text"
+              type="number"
               value={telephone}
               onChange={(e) => setTelephone(e.target.value)}
               required

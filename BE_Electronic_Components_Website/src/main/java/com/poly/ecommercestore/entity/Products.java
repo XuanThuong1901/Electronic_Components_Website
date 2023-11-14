@@ -36,36 +36,24 @@ public class Products {
     @Column(name = "Guarantee")
     private String guarantee;
 
-    @JsonIgnoreProperties("product")
-    @Fetch(FetchMode.JOIN)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "IDCategory")
     private Categories category;
 
-    @JsonIgnoreProperties("product")
-    @Fetch(FetchMode.JOIN)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "IDSupplier")
     private Suppliers supplier;
 
-    @JsonIgnoreProperties("product")
-    @Fetch(FetchMode.JOIN)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "IDTax")
     private Tax tax;
 
-    @JsonIgnoreProperties("product")
-    @Fetch(FetchMode.JOIN)
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<PriceLists> priceLists;
 
-    @JsonIgnoreProperties("product")
-    @Fetch(FetchMode.JOIN)
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Specifications> specifications;
 
-    @JsonIgnoreProperties("product")
-    @Fetch(FetchMode.JOIN)
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<ImageProducts> imageProducts;
 
@@ -81,7 +69,6 @@ public class Products {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<DetailOrders> detailOrders;
 
-    @JsonIgnoreProperties("product")
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Evaluations> evaluations;
 

@@ -55,6 +55,7 @@ public class SecurityConfig {
                         .requestMatchers("/status/**").permitAll()
                         .requestMatchers("/tax/**").permitAll()
                         .requestMatchers("/evaluation/**").permitAll()
+                        .requestMatchers("/admin/report/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

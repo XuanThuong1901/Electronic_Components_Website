@@ -28,7 +28,7 @@ const AddProduct = () => {
 
   const [priceList, setPriceList] = useState([]);
   const [showFormListPrice, setShowFormListPrice] = useState(true);
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState();
   const [type, setType] = useState("export");
 
   const [category, setCategory] = useState([]);
@@ -90,6 +90,106 @@ const AddProduct = () => {
     // }
     // if()
 
+    
+
+    if (productName.trim() === "") {
+      return toast.error("Tên sản phẩm không được để trống !", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    if (selectedCategory === 0) {
+      return toast.error("Vui lòng chọn loại danh mục sản phẩm !", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    if (selectedSupplier === 0) {
+      return toast.error("Vui lòng chọn nhà cung cấp sản phẩm !", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    if (selectedTax === 0) {
+      return toast.error("Vui lòng chọn thuế sản phẩm !", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    if (feature.trim("") === "") {
+      return toast.error("Tính năng không được để trống !", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    if (contents.trim() === "") {
+      return toast.error("Phần mô tả không được để trống !", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    if (priceList.length === 0) {
+      return toast.error("Vui lòng thêm giá sản phẩm !", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    if (specifications.length === 0) {
+      return toast.error("Vui lòng thêm thông số kỹ thuật cho sản phẩm !", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    
     const newProduct = {
       productName: productName,
       category: selectedCategory,
@@ -101,104 +201,8 @@ const AddProduct = () => {
       priceList: priceList,
       specification: specifications,
     };
+    console.log(newProduct)
     formData.append("productDTO", JSON.stringify(newProduct));
-
-    if (newProduct.productName.trim() === "") {
-      return toast.error("VALIDATION_NAME_PRODUCT_ERROR001", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
-    if (newProduct.category === 0) {
-      return toast.error("VALIDATION_CATEGORY_PRODUCT_ERROR001", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
-    if (newProduct.supplier === 0) {
-      return toast.error("VALIDATION_SUPPLIER_PRODUCT_ERROR001", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
-    if (newProduct.tax === 0) {
-      return toast.error("VALIDATION_TAX_PRODUCT_ERROR001", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
-    if (newProduct.feature.trim() === "") {
-      return toast.error("VALIDATION_FEATURE_PRODUCT_ERROR001", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
-    if (newProduct.contents.trim() === "") {
-      return toast.error("VALIDATION_CONTENTS_PRODUCT_ERROR001", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
-    if (newProduct.priceList.length === 0) {
-      return toast.error("VALIDATION_PRICE_PRODUCT_ERROR001", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
-    if (newProduct.specification.length === 0) {
-      return toast.error("VALIDATION_SPECIFICATION_PRODUCT_ERROR001", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
 
     if (
       newProduct.productName.trim() !== "" &&
@@ -219,7 +223,7 @@ const AddProduct = () => {
           },
         })
         .then(() => {
-          toast.success("ADD_PRODUCT_SUCCESS", {
+          toast.success("Thêm sản phẩm thành công", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: true,
@@ -234,19 +238,25 @@ const AddProduct = () => {
           }, 2000);
         })
         .catch((err) => {
-          return toast.error("ADD_PRODUCT_ERROR001", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
+          console.log(err)
+          formData.delete("productDTO");
+          if(err.response.data === "VALIDATION_NAME_PRODUCT_ERROR002")
+          {
+            toast.error("Trùng tên sản phẩm", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }
         });
     } else {
-      return toast.error("ADD_PRODUCT_ERROR001", {
+      formData.delete("productDTO");
+      return toast.error("Thêm sản phẩm thất bại, vui lòng thử lại !", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,
@@ -392,13 +402,14 @@ const AddProduct = () => {
         ></div>
         <div className={classes["specification"]}>
           <Form onSubmit={handleSubmit}>
+          
             <Form.Group
               controlId="price"
               className={classes["specification-form"]}
             >
               <Form.Label>Giá sản phẩm</Form.Label>
               <Form.Control
-                type="text"
+                type="number"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 required
@@ -436,6 +447,11 @@ const AddProduct = () => {
   };
 
   const handleAddPrice = () => {
+
+    if (parseFloat(price) <= 0 || isNaN(parseFloat(price))) {
+      alert("Giá sản phẩm phải là một số dương.");
+      return; // Không thực hiện thêm giá nếu không hợp lệ
+    }
     if (price.trim() !== 0) {
       const newPrice = {
         idprice: Math.random(),

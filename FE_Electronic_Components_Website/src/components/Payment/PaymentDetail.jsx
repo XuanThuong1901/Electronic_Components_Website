@@ -122,51 +122,51 @@ const PaymentDetail = () => {
       });
     }
     if (pays === 0) {
-      return toast.error("VALIDATION_PAYMENT_ORDER_ERROR001", {
+      return toast.error("Bạn chưa chọn phương thức thanh toán !", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 2000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored",
+        theme: "light",
       });
     }
     if (selectedShipper === 0) {
-      return toast.error("VALIDATION_SHIPPING_UNIT_ORDER_ERROR001", {
+      return toast.error("Bạn chưa chọn đơn vị vận chuyển !", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 2000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored",
+        theme: "light",
       });
     }
     if (address === "") {
-      return toast.error("VALIDATION_ADDRESS_ORDER_ERROR001", {
+      return toast.error("Bạn chưa nhập địa chỉ giao hàng !", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 2000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored",
+        theme: "light",
       });
     }
     if (telephone === "") {
-      return toast.error("VALIDATION_TELEPHONE_ORDER_ERROR001", {
+      return toast.error("Bạn chưa nhập số điện thoại người nhận !", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 2000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored",
+        theme: "light",
       });
     } else {
       try {
@@ -194,7 +194,7 @@ const PaymentDetail = () => {
           .then((res) => {
             console.log(res);
             setValue(value + 1);
-            toast.success("ORDER_SUCCESS", {
+            toast.success("Đặt hàng thành công", {
               position: "top-right",
               autoClose: 5000,
               hideProgressBar: true,
@@ -211,7 +211,7 @@ const PaymentDetail = () => {
           .catch((err) => {
             console.log(err);
             setError(err.response.data.message);
-            toast.error("ORDER_ERROR001", {
+            toast.error("Đặt hàng thất bại, vui lòng thử lại !", {
               position: "top-right",
               autoClose: 5000,
               hideProgressBar: true,

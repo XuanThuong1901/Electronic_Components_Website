@@ -18,16 +18,16 @@ const validateLogin = (values) => {
   const errors = {};
 
   if (!values.email || values.email.trim().length === 0) {
-    errors.email = "VALIDATION_EMAIL_ERROR001"; }
+    errors.email = "Email không được để trống !"; }
   else if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{4,}$/i.test(values.email)) {
-    errors.email = "VALIDATION_EMAIL_ERROR002";
+    errors.email = "Email sai kiểu định dạng !";
   }
 
   if (!values.password || values.password.trim().length === 0) {
-    errors.password = "VALIDATION_PASSWORD_ERROR001"; }
-   else if (!/(?=.*\d)[A-Za-z\d]{6,}$/.test(values.password)) {
-    errors.password = "VALIDATION_PASSWORD_ERROR002";
-  }
+    errors.password = "Mật khẩu không được để trống !"; }
+  //  else if (!/(?=.*\d)[A-Za-z\d]{6,}$/.test(values.password)) {
+  //   errors.password = "VALIDATION_PASSWORD_ERROR002";
+  // }
 
   return errors;
 };
@@ -89,7 +89,7 @@ const LoginForm = (props) => {
         localStorage.setItem('token',res.data.token);
         localStorage.setItem('timeOut',res.data.expireTime)
         props.setToken(res.data.token)
-        toast.success("UPDATE_PRODUCT_SUCCESS", {
+        return toast.success("Đăng nhập thành công", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: true,
@@ -102,7 +102,7 @@ const LoginForm = (props) => {
     }
     catch(err){
         console.log(err)
-        setError("LOGIN_ERROR001")
+        setError("Đăng nhập thất bại, Email hoặc mật khẩu không đúng !")
     } 
 }
     
