@@ -1,12 +1,12 @@
 package com.poly.ecommercestore.service.report;
 
-import com.poly.ecommercestore.DTO.system.ReportDTO;
+import com.poly.ecommercestore.model.request.ReportRequest;
 import com.poly.ecommercestore.entity.ImportStocks;
 import com.poly.ecommercestore.entity.Orders;
 import com.poly.ecommercestore.repository.ImportStockRepository;
 import com.poly.ecommercestore.repository.OrderRepository;
-import com.poly.ecommercestore.response.report.ReportSaleProductResponse;
-import com.poly.ecommercestore.response.report.ReportSaleResponse;
+import com.poly.ecommercestore.model.response.report.ReportSaleProductResponse;
+import com.poly.ecommercestore.model.response.report.ReportSaleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ public class ReportServiceImpl implements IReportService{
     private final OrderRepository orderRepository;
 
     @Override
-    public ReportSaleResponse reportSale(ReportDTO request) {
+    public ReportSaleResponse reportSale(ReportRequest request) {
 
 //        List<BigDecimal> saleOrder = saleOrder(request);
 //        List<BigDecimal> saleImport = saleImport(request);
@@ -35,11 +35,11 @@ public class ReportServiceImpl implements IReportService{
     }
 
     @Override
-    public ReportSaleProductResponse reportSaleProduct(ReportDTO request) {
+    public ReportSaleProductResponse reportSaleProduct(ReportRequest request) {
         return null;
     }
 
-    private List<BigDecimal> saleImport(ReportDTO request){
+    private List<BigDecimal> saleImport(ReportRequest request){
 
         Calendar calendarA = Calendar.getInstance();
         calendarA.setTime(request.getStartDay());
@@ -94,7 +94,7 @@ public class ReportServiceImpl implements IReportService{
         return saleImportList;
     }
 
-    private List<Date> listDay( ReportDTO request){
+    private List<Date> listDay( ReportRequest request){
 
         Calendar calendarA = Calendar.getInstance();
         calendarA.setTime(request.getStartDay());
@@ -191,7 +191,7 @@ public class ReportServiceImpl implements IReportService{
     }
 
 
-    private List<BigDecimal> saleOrder(ReportDTO request){
+    private List<BigDecimal> saleOrder(ReportRequest request){
 
         Calendar calendarA = Calendar.getInstance();
         calendarA.setTime(request.getStartDay());

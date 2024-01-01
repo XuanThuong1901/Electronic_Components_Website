@@ -1,6 +1,6 @@
 package com.poly.ecommercestore.service.product;
 
-import com.poly.ecommercestore.DTO.system.PriceListDTO;
+import com.poly.ecommercestore.model.request.PriceListRequest;
 import com.poly.ecommercestore.entity.Employers;
 import com.poly.ecommercestore.entity.PriceLists;
 import com.poly.ecommercestore.entity.Products;
@@ -27,15 +27,15 @@ public class PriceListService implements IPriceListService{
 
     @Override
     public List<PriceLists> getPriceListByProduct(int iDProduct) {
-        return priceListRepository.getPriceListsByProduct(iDProduct);
+        return priceListRepository.findByProduct(iDProduct);
     }
 
     @Override
-    public PriceLists addPriceList(PriceListDTO priceListDTO, String iDEmployer, int iDProduct) {
+    public PriceLists addPriceList(PriceListRequest request, String iDEmployer, int iDProduct) {
 
-        Employers employer = employerRepository.getEmployersById(iDEmployer);
+        Employers employer = employerRepository.findById(iDEmployer).orElse(null);
         Products product = productRepository.findById(iDProduct).get();
-        PriceLists priceList = priceListRepository.checkPriceList(priceListDTO.getIdprice());
+        PriceLists priceList = priceListRepository.checkPriceList(request.getIdprice());
         if(employer == null || product == null || priceList != null)
             return null;
 
@@ -43,11 +43,11 @@ public class PriceListService implements IPriceListService{
         newPriceList.setEmployer(employer);
         newPriceList.setProduct(product);
         newPriceList.setUpdateDate(new Date());
-        newPriceList.setType(priceListDTO.getType());
+        newPriceList.setType(request.getType());
 //        newPriceList.setApplicableDate(priceList.getApplicableDate());
         newPriceList.setApplicableDate(new Date());
 
-        newPriceList.setPrice(priceListDTO.getPrice());
+        newPriceList.setPrice(request.getPrice());
         newPriceList.setStatus(true);
 
         priceListRepository.save(newPriceList);

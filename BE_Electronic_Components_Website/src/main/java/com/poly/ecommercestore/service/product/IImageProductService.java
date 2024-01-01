@@ -1,6 +1,5 @@
 package com.poly.ecommercestore.service.product;
 
-import com.poly.ecommercestore.DTO.system.ImageProductDTO;
 import com.poly.ecommercestore.entity.ImageProducts;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;

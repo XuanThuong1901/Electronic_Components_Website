@@ -1,11 +1,11 @@
 import {React} from 'react';
 import Footer from '../components//UI/Footer/index';
-import ListOders from '../components/ListOrders/ListOrder';
+import ManageOrder from '../components/ManageOrder/ManageOrder';
 
 const  Oders = () => {
     return(
         <div style={{marginTop:'4.75rem'}}>
-            <ListOders/>
+            <ManageOrder/>
             <Footer/>
         </div>
     );

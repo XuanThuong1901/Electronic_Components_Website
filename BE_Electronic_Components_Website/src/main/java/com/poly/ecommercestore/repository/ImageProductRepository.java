@@ -12,8 +12,8 @@ import java.util.List;
 public interface ImageProductRepository extends JpaRepository<ImageProducts, Integer> {
 
     @Query("SELECT img FROM ImageProducts img WHERE img.product.iDProduct = :IDProduct")
-    List<ImageProducts> getImageProductsByProduct(@Param("IDProduct") int IDProduct);
+    List<ImageProducts> findByProduct(@Param("IDProduct") int IDProduct);
 
     @Query("SELECT img FROM ImageProducts img WHERE img.uRLImg = :uRLImg")
-    ImageProducts getImageProductsByURL(@Param("uRLImg") String uRLImg);
+    ImageProducts findByURL(@Param("uRLImg") String uRLImg);
 }

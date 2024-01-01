@@ -1,21 +1,19 @@
 package com.poly.ecommercestore.controller.system;
 
 import com.poly.ecommercestore.common.Message;
-import com.poly.ecommercestore.configuration.JWTUnit;
+import com.poly.ecommercestore.service.order.IOrderService;
 import com.poly.ecommercestore.service.order.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/order")
+@RequiredArgsConstructor
 public class OrderSystemController {
 
-    @Autowired
-    private JWTUnit jwtUnit;
-
-    @Autowired
-    private OrderService orderService;
+    private final IOrderService orderService;
 
     @GetMapping("")
     public ResponseEntity<?> getAllOrder(@RequestHeader("access_token") String tokenHeader){

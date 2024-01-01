@@ -1,6 +1,6 @@
 package com.poly.ecommercestore.controller.client;
 
-import com.poly.ecommercestore.DTO.client.EvaluationDTO;
+import com.poly.ecommercestore.model.request.EvaluationRequest;
 import com.poly.ecommercestore.common.Message;
 import com.poly.ecommercestore.service.Evaluation.EvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +22,12 @@ public class EvaluationController {
     }
 
     @PostMapping("/create/{id}")
-    public ResponseEntity<?> createEvaluation(@RequestHeader("access_token") String tokenHeader, @PathVariable(value = "id") int id, @RequestBody EvaluationDTO evaluationDTO)
+    public ResponseEntity<?> createEvaluation(@RequestHeader("access_token") String tokenHeader, @PathVariable(value = "id") int id, @RequestBody EvaluationRequest request)
     {
-        if(evaluationDTO.getEvaluate() == 0){
+        if(request.getEvaluate() == 0){
             return ResponseEntity.badRequest().body(Message.VALIDATION_EVALUATE_ERROR001);
         }
-        if(evaluationService.addEvaluation(tokenHeader, id, evaluationDTO))
+        if(evaluationService.addEvaluation(tokenHeader, id, request))
             return ResponseEntity.ok(Message.EVALUATION_SUCCESS);
         return ResponseEntity.badRequest().body(Message.EVALUATION_ERROR001);
     }

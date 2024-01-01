@@ -1,13 +1,14 @@
 package com.poly.ecommercestore.controller.system;
 
-import com.poly.ecommercestore.DTO.system.ReportDTO;
-import com.poly.ecommercestore.response.report.ReportSaleResponse;
-import com.poly.ecommercestore.service.report.IReportService;
+import com.poly.ecommercestore.model.request.ReportRequest;
+import com.poly.ecommercestore.model.response.report.ReportSaleResponse;
 import com.poly.ecommercestore.service.report.ReportServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.function.EntityResponse;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ public class ReportController {
     private final ReportServiceImpl iReportService;
 
     @PostMapping("")
-    public ResponseEntity<ReportSaleResponse> getSale(@RequestBody ReportDTO request){
+    public ResponseEntity<ReportSaleResponse> getSale(@RequestBody ReportRequest request){
         try {
             System.out.println(request.getStartDay());
             ReportSaleResponse response = iReportService.reportSale(request);

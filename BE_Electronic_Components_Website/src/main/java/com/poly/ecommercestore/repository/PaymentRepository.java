@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PaymentRepository extends JpaRepository<Payments, Integer> {
 
-    @Query("SELECT payment FROM Payments payment WHERE payment.paymentName = :paymentName")
-    public Payments getPaymentsByName(@Param("paymentName") String paymentName);
+    public Payments findByPaymentName(String paymentName);
 
 }

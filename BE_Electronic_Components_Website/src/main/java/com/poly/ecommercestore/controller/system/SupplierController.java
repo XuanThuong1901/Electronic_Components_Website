@@ -1,20 +1,20 @@
 package com.poly.ecommercestore.controller.system;
 
-import com.poly.ecommercestore.DTO.system.SupplierDTO;
+import com.poly.ecommercestore.model.request.SupplierRequest;
 import com.poly.ecommercestore.common.Message;
-import com.poly.ecommercestore.service.shared.ECommerceMessage;
 import com.poly.ecommercestore.service.supplier.SupplierService;
-import com.poly.ecommercestore.util.ValidateInput;
+import com.poly.ecommercestore.util.validator.ValidateInput;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/supplier")
+@RequiredArgsConstructor
 public class SupplierController {
 
-    @Autowired
-    private SupplierService supplierService;
+    private final SupplierService supplierService;
 
     @GetMapping("")
     public ResponseEntity<?> getAllSupplier(){
@@ -22,49 +22,49 @@ public class SupplierController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addSupplier(@RequestHeader("access_token") String tokenHeader, @RequestBody SupplierDTO supplier){
-        if(supplier.getSupplierName().isEmpty()){
+    public ResponseEntity<?> addSupplier(@RequestHeader("access_token") String tokenHeader, @RequestBody SupplierRequest request){
+        if(request.getSupplierName().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_NAME_SUPPLIER_ERROR001);
         }
-        if(supplier.getEmail().isEmpty()){
+        if(request.getEmail().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_EMAIL_SUPPLIER_ERROR001);
         }
-        if(supplier.getTelephone().isEmpty()){
+        if(request.getTelephone().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_TELEPHONE_SUPPLIER_ERROR001);
         }
-        if(supplier.getAddress().isEmpty()){
+        if(request.getAddress().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_ADDRESS_SUPPLIER_ERROR001);
         }
-        if(!ValidateInput.isPhoneNumber(supplier.getTelephone())){
+        if(!ValidateInput.isPhoneNumber(request.getTelephone())){
             return ResponseEntity.badRequest().body(Message.VALIDATION_TELEPHONE_SUPPLIER_ERROR002);
         }
 
 
-        if(supplierService.addSupplier(tokenHeader, supplier))
+        if(supplierService.addSupplier(tokenHeader, request))
             return ResponseEntity.ok(Message.ADD_SUPPLIER_SUCCESS);
         return ResponseEntity.badRequest().body(Message.ADD_SUPPLIER_ERROR001);
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<?> updateSupplier(@RequestHeader("access_token") String tokenHeader, @RequestBody SupplierDTO supplier, @PathVariable(value = "id") int id){
+    public ResponseEntity<?> updateSupplier(@RequestHeader("access_token") String tokenHeader, @RequestBody SupplierRequest request, @PathVariable(value = "id") int id){
 
-        if(supplier.getSupplierName().isEmpty()){
+        if(request.getSupplierName().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_NAME_SUPPLIER_ERROR001);
         }
-        if(supplier.getEmail().isEmpty()){
+        if(request.getEmail().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_EMAIL_SUPPLIER_ERROR001);
         }
-        if(supplier.getTelephone().isEmpty()){
+        if(request.getTelephone().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_TELEPHONE_SUPPLIER_ERROR001);
         }
-        if(supplier.getAddress().isEmpty()){
+        if(request.getAddress().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_ADDRESS_SUPPLIER_ERROR001);
         }
-        if(!ValidateInput.isPhoneNumber(supplier.getTelephone())){
+        if(!ValidateInput.isPhoneNumber(request.getTelephone())){
             return ResponseEntity.badRequest().body(Message.VALIDATION_TELEPHONE_SUPPLIER_ERROR002);
         }
 
-        if(supplierService.updateSupplier(tokenHeader,supplier, id)){
+        if(supplierService.updateSupplier(tokenHeader,request, id)){
             return ResponseEntity.ok(Message.UPDATE_SUPPLIER_SUCCESS);
         }
         return ResponseEntity.badRequest().body(Message.UPDATE_SUPPLIER_ERROR001);

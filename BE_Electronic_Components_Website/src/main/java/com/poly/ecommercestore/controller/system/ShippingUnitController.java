@@ -1,23 +1,21 @@
 package com.poly.ecommercestore.controller.system;
 
-import com.poly.ecommercestore.DTO.system.ShippingUnitDTO;
+import com.poly.ecommercestore.model.request.ShippingUnitRequest;
 import com.poly.ecommercestore.common.Message;
-import com.poly.ecommercestore.configuration.JWTUnit;
-import com.poly.ecommercestore.entity.Accounts;
-import com.poly.ecommercestore.service.shared.ECommerceMessage;
+import com.poly.ecommercestore.service.shippingunit.IShippingUnitService;
 import com.poly.ecommercestore.service.shippingunit.ShippingUnitService;
-import com.poly.ecommercestore.service.token.TokenService;
-import com.poly.ecommercestore.util.ValidateInput;
+import com.poly.ecommercestore.util.validator.ValidateInput;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/shipping_unit")
+@RequiredArgsConstructor
 public class ShippingUnitController {
 
-    @Autowired
-    private ShippingUnitService shippingUnitService;
+    private final IShippingUnitService shippingUnitService;
 
     @GetMapping("")
     public ResponseEntity<?> getAllShippingUnit(){
@@ -25,45 +23,44 @@ public class ShippingUnitController {
     }
 
     @PostMapping("/add")
-    private ResponseEntity<?> addShippingUnit(@RequestHeader("access_token")String tokenHeader, @RequestBody ShippingUnitDTO shippingUnit){
-        System.out.printf("1");
-        if(shippingUnit.getShippingUnitName().isEmpty()){
+    private ResponseEntity<?> addShippingUnit(@RequestHeader("access_token")String tokenHeader, @RequestBody ShippingUnitRequest request){
+        if(request.getShippingUnitName().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_NAME_SHIPPING_UNIT_ERROR001);
         }
-        if(shippingUnit.getEmail().isEmpty()){
+        if(request.getEmail().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_EMAIL_SHIPPING_UNIT_ERROR001);
         }
-        if(shippingUnit.getTelephone().isEmpty()){
+        if(request.getTelephone().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_TELEPHONE_SHIPPING_UNIT_ERROR001);
         }
-        if(shippingUnit.getAddress().isEmpty()){
+        if(request.getAddress().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_ADDRESS_SHIPPING_UNIT_ERROR001);
         }
-        if(!ValidateInput.isPhoneNumber(shippingUnit.getTelephone())){
+        if(!ValidateInput.isPhoneNumber(request.getTelephone())){
             return ResponseEntity.badRequest().body(Message.VALIDATION_TELEPHONE_SHIPPING_UNIT_ERROR002);
         }
 
-        if(shippingUnitService.addShippingUnit(tokenHeader, shippingUnit) == false)
+        if(shippingUnitService.addShippingUnit(tokenHeader, request) == false)
             return ResponseEntity.badRequest().body(Message.ADD_SHIPPING_UNIT_ERROR001);
 
         return ResponseEntity.ok(Message.ADD_SHIPPING_UNIT_SUCCESS);
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<?> updateShippingUnit(@RequestHeader("access_token") String tokenHeader, @RequestBody ShippingUnitDTO shippingUnit, @PathVariable(value = "id") int id){
-        if(shippingUnit.getShippingUnitName() == null || shippingUnit.getShippingUnitName().isEmpty()){
+    public ResponseEntity<?> updateShippingUnit(@RequestHeader("access_token") String tokenHeader, @RequestBody ShippingUnitRequest request, @PathVariable(value = "id") int id){
+        if(request.getShippingUnitName() == null || request.getShippingUnitName().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_NAME_SHIPPING_UNIT_ERROR001);
         }
-        if(shippingUnit.getEmail() == null || shippingUnit.getEmail().isEmpty()){
+        if(request.getEmail() == null || request.getEmail().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_EMAIL_SHIPPING_UNIT_ERROR001);
         }
-        if(shippingUnit.getTelephone() == null || shippingUnit.getTelephone().isEmpty()){
+        if(request.getTelephone() == null || request.getTelephone().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_TELEPHONE_SHIPPING_UNIT_ERROR001);
         }
-        if(shippingUnit.getAddress() == null || shippingUnit.getAddress().isEmpty()){
+        if(request.getAddress() == null || request.getAddress().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_ADDRESS_SHIPPING_UNIT_ERROR001);
         }
-        if(shippingUnitService.updateShippingUnit(tokenHeader, shippingUnit, id) == null){
+        if(shippingUnitService.updateShippingUnit(tokenHeader, request, id) == null){
             return ResponseEntity.badRequest().body(Message.UPDATE_SHIPPING_UNIT_ERROR001);
         }
 

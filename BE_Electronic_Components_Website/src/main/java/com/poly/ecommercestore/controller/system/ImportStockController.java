@@ -1,18 +1,20 @@
 package com.poly.ecommercestore.controller.system;
 
-import com.poly.ecommercestore.DTO.system.ImportStockDTO;
+import com.poly.ecommercestore.model.request.ImportStockRequest;
 import com.poly.ecommercestore.common.Message;
+import com.poly.ecommercestore.service.importstock.IImportStockService;
 import com.poly.ecommercestore.service.importstock.ImportStockService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/import")
+@RequiredArgsConstructor
 public class ImportStockController {
 
-    @Autowired
-    private ImportStockService importStockService;
+    private final IImportStockService importStockService;
 
     @GetMapping("")
     public ResponseEntity<?> getAllImport(){
@@ -26,22 +28,20 @@ public class ImportStockController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<?> addImport(@RequestHeader("access_token") String tokenHeader, @RequestBody ImportStockDTO importStock){
-        System.out.printf(importStock.toString());
-        if(importStock.getImportStockName() == null){
+    public ResponseEntity<?> addImport(@RequestHeader("access_token") String tokenHeader, @RequestBody ImportStockRequest request){
+
+        if(request.getImportStockName() == null){
             return ResponseEntity.badRequest().body(Message.VALIDATION_NAME_IMPORT_ERROR001);
         }
-//        if(importStock.getEmployer() == null){
-//            return ResponseEntity.badRequest().body("Import not employer");
-//        }
-        if(importStock.getSupplier() == null){
+
+        if(request.getSupplier() == null){
             return ResponseEntity.badRequest().body(Message.VALIDATION_SUPPLIER_IMPORT_ERROR001);
         }
-        if(importStock.getDetailImportStocks() == null){
+        if(request.getDetailImportStocks() == null){
             return ResponseEntity.badRequest().body(Message.VALIDATION_DETAIL_IMPORT_ERROR001);
         }
 
-        if(!importStockService.addImportStock(importStock, tokenHeader)){
+        if(!importStockService.addImportStock(request, tokenHeader)){
             return ResponseEntity.badRequest().body(Message.VALIDATION_IMPORT_ERROR001);
         }
 

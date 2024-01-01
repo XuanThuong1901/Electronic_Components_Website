@@ -3,7 +3,7 @@
     background-color: rgba(1, 1, 1, 0.9);
     /* background-image: url(https://sackim.com/wp-content/uploads/2020/01/1.jpg); */
     display: block;
-    /* margin-bottom: 2rem; */
+    margin-bottom: 2rem;
     margin-left: 170px;
 }
 .main-content >div > h1{
@@ -29,10 +29,9 @@
     border-width: 2px;
 }
 .select-datetime{
+    display: flex;
     margin-top: 20px;
-    margin-right: 60px;
     margin-left: 40px;
-
 }
 .select-datetime > p{
     font-size: 20px;
@@ -42,85 +41,5 @@
     /* width: 90%;
     height: 700px; */
     margin-top: 100px;
-    padding-left: 70px;
-}
-.row{
-    display: flex;
-}
-/* .button-report{
-    margin-top: 45px;
-    height: 40px;
-}
-.button-report > button{
-    height: 40px;
-    width: 120px;
-    border-radius: 10px;
-} */
-
-.button-report > button{
-    margin-top: 40px;
-    width:12.5rem;
-    font-size: 1rem;
-    border: none;
-    text-transform: uppercase;
-    line-height: normal;
-    padding: 5px;
-    height: 3rem;
-    min-width: 50px;
-    background-color: rgb(255, 217, 0);
-    color: var(--text);
-    font-weight: 600;
-    
-    border-radius: 8px;
-    transition: all 0.3s;
     margin-left: 20px;
-    font-weight: 700;
-  }
-  .button-report > button:hover{
-    background-color: var(--primary-dark);
-    color: white;
-  }
-  .container{
-    margin-left: 0px;
-    margin-bottom: 50px;
-}
-.container > p{
-    margin-left: 60px;
-    margin-top: 50px;
-    font-weight:600;
-    font-size: 30px;
-
-}
-.container__employees{
-    width:90%;
-    /* margin-left: 7.5%; */
-}
-.cart-item{
-    display:flex;
-    text-align: center;
-    align-items: center;
-    margin-top: 20px;
-    margin-left: 70px;
-    height: 100px;
-    background-color: var(--milk-bg);
-    border-radius: 10px;
-}
-.cart-item > div {
-    width: 20%;
-}
-.main > p {
-    font-weight:600;
-    font-size: 18px;
-}
-.item {
-    font-weight:550;
-    font-size: 16px;
-}
-.sum-sale{
-    margin-bottom: 200px;
-}
-.sum-sale > p{
-    margin-left: 900px;
-    font-weight:550;
-    font-size: 20px;
 }

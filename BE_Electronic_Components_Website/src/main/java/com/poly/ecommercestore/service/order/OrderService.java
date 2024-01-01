@@ -1,16 +1,15 @@
 package com.poly.ecommercestore.service.order;
 
-import com.poly.ecommercestore.configuration.JWTUnit;
 import com.poly.ecommercestore.entity.*;
 import com.poly.ecommercestore.entity.embeddable.DetailOrderId;
 import com.poly.ecommercestore.repository.*;
-import com.poly.ecommercestore.DTO.client.DetailOrderDTO;
-import com.poly.ecommercestore.DTO.client.OrderDTO;
+import com.poly.ecommercestore.model.request.DetailOrderRequest;
+import com.poly.ecommercestore.model.request.OrderRequest;
+import com.poly.ecommercestore.util.extractToken.IExtractToken;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,7 +19,7 @@ import java.util.List;
 public class OrderService implements IOrderService{
 
     @Autowired
-    private JWTUnit jwtUnit;
+    private IExtractToken iExtractToken;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -30,12 +29,6 @@ public class OrderService implements IOrderService{
 
     @Autowired
     private  AccountRepository accountRepository;
-
-    @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private EmployerRepository employerRepository;
 
     @Autowired
     private StatusRepository statusRepository;
@@ -67,50 +60,50 @@ public class OrderService implements IOrderService{
 
     @Override
     public Orders getOneOrder(String tokenHeader, int iDOrder) {
-        return orderRepository.findById(iDOrder).get();
+        return orderRepository.findById(iDOrder).orElse(null);
     }
 
     @Override
     public List<Orders> getOrderByCustomer(String tokenHeader) {
-        Accounts accounts = getUserByToken(tokenHeader);
-        return orderRepository.getOrderByCustomer(accounts.getCustomers().getIDCustomer());
+        Customers customer = iExtractToken.extractCustomer(tokenHeader);
+        return orderRepository.findByCustomer(customer);
     }
 
     @Override
     public List<Orders> getAllOrder(String tokenHeader) {
-        Accounts account = getUserByToken(tokenHeader);
-        if(account.getEmployer() == null)
+        Employers employer= iExtractToken.extractEmployee(tokenHeader);
+        if(employer == null)
             return null;
         return orderRepository.findAll();
     }
 
     @Transactional
     @Override
-    public int addOrder(String tokenHeader, OrderDTO order) {
+    public int addOrder(String tokenHeader, OrderRequest request) {
 
-        if(order.getDetailOrders().size() == 0)
+        if(request.getDetailOrders().size() == 0)
             return 0;
-        Accounts account = getUserByToken(tokenHeader);
-        ShippingUnits shippingUnit = shippingUnitRepository.getReferenceById(order.getShippingUnit());
-        Payments payment = paymentRepository.getReferenceById(order.getPayment());
+        Customers customer = iExtractToken.extractCustomer(tokenHeader);
+        ShippingUnits shippingUnit = shippingUnitRepository.getReferenceById(request.getShippingUnit());
+        Payments payment = paymentRepository.getReferenceById(request.getPayment());
         Status status = statusRepository.getReferenceById(UNCONFIRMED);
 
-        if(account == null || shippingUnit == null || payment == null || status == null)
+        if(customer == null || shippingUnit == null || payment == null || status == null)
             return 0;
         Orders newOrder = new Orders();
         Date dateOrder = new Date();
 
-        newOrder.setAddress(order.getAddress());
-        newOrder.setTelephone(order.getTelephone());
-        newOrder.setNote(order.getNote());
+        newOrder.setAddress(request.getAddress());
+        newOrder.setTelephone(request.getTelephone());
+        newOrder.setNote(request.getNote());
         newOrder.setDateOrder(dateOrder);
-        newOrder.setDiscountAmount(order.getDiscountAmount());
-        newOrder.setCustomer(account.getCustomers());
+        newOrder.setDiscountAmount(request.getDiscountAmount());
+        newOrder.setCustomer(customer);
         newOrder.setShippingUnit(shippingUnit);
         newOrder.setPayment(payment);
         newOrder.setStatus(status);
 
-        if(checkAddressShipping(order.getAddress())){
+        if(checkAddressShipping(request.getAddress())){
             newOrder.setShippingFee(new BigDecimal(20000));
         }
         else {
@@ -121,7 +114,7 @@ public class OrderService implements IOrderService{
         List<DetailOrders> newDetailOrders = new ArrayList<>();
         BigDecimal amount = newOrder.getShippingFee();
         BigDecimal taxAmount = new BigDecimal(0);
-        for(DetailOrderDTO detailOrder : order.getDetailOrders()){
+        for(DetailOrderRequest detailOrder : request.getDetailOrders()){
             Products product = productRepository.getReferenceById(detailOrder.getProduct());
 
             if(product == null || product.getQuantity() < detailOrder.getQuantity())
@@ -130,7 +123,7 @@ public class OrderService implements IOrderService{
                 return 2;
             }
 
-            Carts cart = cartRepository.getCart(account.getCustomers().getIDCustomer(), product.getIDProduct());
+            Carts cart = cartRepository.findByCustomerAndProduct(customer.getIDCustomer(), product.getIDProduct());
             if(cart == null)
             {
                 orderRepository.delete(newOrder);
@@ -143,49 +136,39 @@ public class OrderService implements IOrderService{
                     priceProduct = priceProduct.add(priceList.getPrice());
                 }
             }
-            System.out.printf("5");
 //            BigDecimal countTax = countTax(priceProduct, product.getTax().getTaxPercentage());
             BigDecimal lineAmount = priceProduct.multiply(BigDecimal.valueOf(detailOrder.getQuantity()));
             taxAmount = taxAmount.add(lineAmount.multiply(BigDecimal.valueOf(((double) product.getTax().getTaxPercentage()/100.0))));
 
             DetailOrderId detailOrderId = new DetailOrderId(newOrder.getIDOrder(), product.getIDProduct());
-            DetailOrders detailOrderTemp = new DetailOrders(detailOrderId, detailOrder.getQuantity(), priceProduct, lineAmount, newOrder, product, product.getTax());
+            DetailOrders detailOrderTemp = new DetailOrders(detailOrderId, detailOrder.getQuantity(), priceProduct, lineAmount, newOrder, product, product.getTax(), false);
 
-            System.out.printf("\n6");
 
             newDetailOrders.add(detailOrderTemp);
             amount = amount.add(lineAmount);
             product.setQuantity(product.getQuantity() - detailOrder.getQuantity());
             productRepository.save(product);
-            System.out.printf("\n6");
             detailOrderRepository.save(detailOrderTemp);
-            System.out.printf("\n10\n");
         }
-        System.out.printf("\n6\n");
 
         amount = amount.add(taxAmount);
-        System.out.printf("\n7");
         newOrder.setAmount(amount);
-        System.out.printf("\n7");
         newOrder.setTaxAmount(taxAmount);
-        System.out.printf("\n7");
         newOrder.setDetailOrders(newDetailOrders);
-        System.out.printf("\n7");
 
         orderRepository.save(newOrder);
-        System.out.printf("\n8");
         return 1;
     }
 
     @Override
     public Boolean statusConfirmedOrder(String tokenHeader, int iDOrder) {
 
-        Accounts account = getUserByToken(tokenHeader);
+        Employers employer = iExtractToken.extractEmployee(tokenHeader);
         Orders order = orderRepository.getReferenceById(iDOrder);
-        if(account == null || order == null)
+        if(employer == null || order == null)
             return false;
         if(order.getEmployer() == null)
-            order.setEmployer(account.getEmployer());
+            order.setEmployer(employer);
         if(order.getStatus().getIDStatus() == UNCONFIRMED){
             order.setStatus(statusRepository.getReferenceById(CONFIRMED));
             orderRepository.save(order);
@@ -198,13 +181,13 @@ public class OrderService implements IOrderService{
 
     @Override
     public Boolean statusDeliveryOrder(String tokenHeader, int iDOrder) {
-        Accounts account = getUserByToken(tokenHeader);
-        Orders order = orderRepository.getReferenceById(iDOrder);
-        if(account == null || order == null)
+        Employers employer = iExtractToken.extractEmployee(tokenHeader);
+        Orders order = orderRepository.findById(iDOrder).orElse(null);
+        if(employer == null || order == null)
             return false;
 
         if(order.getStatus().getIDStatus() == CONFIRMED){
-            order.setStatus(statusRepository.getReferenceById(DELIVERY));
+            order.setStatus(statusRepository.findById(DELIVERY).get());
             orderRepository.save(order);
 
             return true;
@@ -215,13 +198,13 @@ public class OrderService implements IOrderService{
 
     @Override
     public Boolean statusDeliveredOrder(String tokenHeader, int iDOrder) {
-        Accounts account = getUserByToken(tokenHeader);
-        Orders order = orderRepository.getReferenceById(iDOrder);
-        if(account == null || order == null)
+        Employers employer = iExtractToken.extractEmployee(tokenHeader);
+        Orders order = orderRepository.findById(iDOrder).orElse(null);
+        if(employer == null || order == null)
             return false;
 
         if(order.getStatus().getIDStatus() == DELIVERY){
-            order.setStatus(statusRepository.getReferenceById(DELIVERED));
+            order.setStatus(statusRepository.findById(DELIVERED).get());
             orderRepository.save(order);
 
             return true;
@@ -232,9 +215,9 @@ public class OrderService implements IOrderService{
 
     @Override
     public Boolean statusCanceledOrder(String tokenHeader, int iDOrder) {
-        Accounts account = getUserByToken(tokenHeader);
+        Employers employer = iExtractToken.extractEmployee(tokenHeader);
         Orders order = orderRepository.getReferenceById(iDOrder);
-        if(account == null || order == null)
+        if(employer == null || order == null)
             return false;
 
         if(order.getStatus().getIDStatus() == UNCONFIRMED ||order.getStatus().getIDStatus() == CONFIRMED){
@@ -266,14 +249,4 @@ public class OrderService implements IOrderService{
         return false;
     }
 
-//    private BigDecimal countTax(BigDecimal price, int taxPercentage){
-//        return price.multiply(BigDecimal.valueOf(taxPercentage/ONE_HUNDRED));
-//    }
-
-    private Accounts getUserByToken(String tokenHeader){
-        String token = tokenHeader.replace("Bearer ", "");
-        String email = jwtUnit.extractEmail(token);
-        Accounts account = accountRepository.getByEmail(email);
-        return  account;
-    }
 }

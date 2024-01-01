@@ -9,7 +9,9 @@ import org.hibernate.annotations.FetchMode;
 
 import java.util.List;
 
-@Data
+//@Data
+@Getter
+@Setter
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "Roles")

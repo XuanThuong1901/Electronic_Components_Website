@@ -1,45 +1,45 @@
 package com.poly.ecommercestore.service.product;
 
-import com.poly.ecommercestore.DTO.system.SpecificationDTO;
+import com.poly.ecommercestore.model.request.SpecificationRequest;
 import com.poly.ecommercestore.entity.Products;
 import com.poly.ecommercestore.entity.Specifications;
 import com.poly.ecommercestore.repository.ProductRepository;
 import com.poly.ecommercestore.repository.SpecificationRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SpecificationService implements ISpecificationService{
 
-    @Autowired
-    private SpecificationRepository specificationRepository;
+    private final SpecificationRepository specificationRepository;
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public List<Specifications> getByProduct(int iDProduct) {
-        return specificationRepository.getSpecificationsByProduct(iDProduct);
+        return specificationRepository.findByProduct(iDProduct);
     }
 
     @Override
-    public Specifications add(SpecificationDTO specificationDTO, int iDProduct) {
+    public Specifications add(SpecificationRequest request, int iDProduct) {
 
-        if(specificationDTO.getSpecificationName().equals("")){
+        if(request.getSpecificationName().equals("")){
             return null;
         }
-        if(specificationDTO.getParameter().equals("")){
+        if(request.getParameter().equals("")){
             return null;
         }
 
-        Specifications specifications = specificationRepository.checkSpecification(specificationDTO.getIdspecification());
+        Specifications specifications = specificationRepository.checkSpecification(request.getIdspecification());
         if(specifications != null)
             return null;
         try {
             Products products = productRepository.findById(iDProduct).get();
-            Specifications newSpecifications = new Specifications(specificationDTO.getSpecificationName(), specificationDTO.getParameter(), products);
+            Specifications newSpecifications = new Specifications(request.getSpecificationName(), request.getParameter(), products);
 
             return specificationRepository.save(newSpecifications);
         }catch (Exception e){
@@ -50,7 +50,7 @@ public class SpecificationService implements ISpecificationService{
     }
 
     @Override
-    public Boolean update(SpecificationDTO specificationDTO, int idSpec) {
+    public Boolean update(SpecificationRequest specificationDTO, int idSpec) {
         if(specificationDTO.getSpecificationName().equals("")){
             return false;
         }

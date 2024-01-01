@@ -12,7 +12,7 @@ import java.util.List;
 public interface PriceListRepository extends JpaRepository<PriceLists, Integer> {
 
     @Query("SELECT priceList FROM PriceLists priceList WHERE priceList.product.iDProduct = :iDProduct")
-    List<PriceLists> getPriceListsByProduct(@Param("iDProduct") int iDProduct);
+    List<PriceLists> findByProduct(@Param("iDProduct") int iDProduct);
 
     @Query("SELECT priceList FROM PriceLists priceList WHERE priceList.iDPrice = :iDPrice")
     PriceLists checkPriceList(@Param("iDPrice") int iDPrice);

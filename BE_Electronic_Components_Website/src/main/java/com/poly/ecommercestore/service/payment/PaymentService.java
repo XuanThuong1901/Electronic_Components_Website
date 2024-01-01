@@ -2,7 +2,7 @@ package com.poly.ecommercestore.service.payment;
 
 import com.poly.ecommercestore.entity.Payments;
 import com.poly.ecommercestore.repository.PaymentRepository;
-import com.poly.ecommercestore.DTO.system.PaymentDTO;
+import com.poly.ecommercestore.model.request.PaymentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +20,11 @@ public class PaymentService implements IPaymentService{
     }
 
     @Override
-    public Payments addPayment(PaymentDTO payment) {
-        if(paymentRepository.getPaymentsByName(payment.getPaymentName()) != null)
+    public Payments addPayment(PaymentRequest request) {
+        if(paymentRepository.findByPaymentName(request.getPaymentName()) != null)
             return null;
 
-        Payments newPayment = new Payments(payment.getPaymentName(), payment.getContents());
+        Payments newPayment = new Payments(request.getPaymentName(), request.getContents());
 
         if(paymentRepository.save(newPayment) == null)
             return null;
@@ -33,7 +33,7 @@ public class PaymentService implements IPaymentService{
     }
 
     @Override
-    public Boolean updatePayment(PaymentDTO payment, int iDPayment) {
+    public Boolean updatePayment(PaymentRequest payment, int iDPayment) {
 
         Payments updatePayment = paymentRepository.getReferenceById(iDPayment);
         if(updatePayment == null)

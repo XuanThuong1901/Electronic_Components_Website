@@ -125,7 +125,7 @@ const InfoUser = () => {
               controlId="specificationName"
               className={classes["specification-form"]}
             >
-              <Form.Label>Mật khẩu hiện tại</Form.Label>
+              <Form.Label>Mật khẩu củ</Form.Label>
               <Form.Control
               className={classes["specification-form-text"]}
                 type="password"

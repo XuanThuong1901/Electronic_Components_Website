@@ -11,7 +11,9 @@ import org.hibernate.annotations.FetchMode;
 
 import java.math.BigDecimal;
 
-@Data
+//@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "DetailImportStocks")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

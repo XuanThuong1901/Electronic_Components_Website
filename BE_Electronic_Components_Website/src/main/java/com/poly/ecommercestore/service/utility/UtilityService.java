@@ -4,19 +4,18 @@ import com.poly.ecommercestore.entity.Customers;
 import com.poly.ecommercestore.entity.Employers;
 import com.poly.ecommercestore.repository.CustomerRepository;
 import com.poly.ecommercestore.repository.EmployerRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UtilityService implements IUtilityService{
 
-    @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private EmployerRepository employerRepository;
+    private final CustomerRepository customerRepository;
+    private final EmployerRepository employerRepository;
 
     @Override
     public List<Customers> getAllCustomer() {

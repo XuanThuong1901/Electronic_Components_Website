@@ -10,7 +10,9 @@ import org.hibernate.annotations.FetchMode;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Data
+//@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "ShippingUnits")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

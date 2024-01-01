@@ -3,28 +3,21 @@ package com.poly.ecommercestore.controller.user;
 import com.poly.ecommercestore.common.Message;
 import com.poly.ecommercestore.repository.AccountRepository;
 import com.poly.ecommercestore.repository.EmployerRepository;
-import com.poly.ecommercestore.DTO.client.AccountDTO;
-import com.poly.ecommercestore.DTO.client.UserDTO;
-import com.poly.ecommercestore.service.shared.ECommerceMessage;
-import com.poly.ecommercestore.service.user.IUserService;
+import com.poly.ecommercestore.model.request.AccountRequest;
+import com.poly.ecommercestore.model.request.UserRequest;
 import com.poly.ecommercestore.service.user.UserService;
-import com.poly.ecommercestore.util.ValidateInput;
+import com.poly.ecommercestore.util.validator.ValidateInput;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private EmployerRepository employerRepository;
-
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
 
     @GetMapping("")
@@ -33,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<String> updateUser(@RequestHeader("access_token") String tokenHeader, @PathVariable(value = "id") String idAccount, @RequestBody UserDTO userDTO){
+    public ResponseEntity<String> updateUser(@RequestHeader("access_token") String tokenHeader, @PathVariable(value = "id") String idAccount, @RequestBody UserRequest userDTO){
 
         if(userService.updateUser(tokenHeader, idAccount, userDTO) != null){
             return ResponseEntity.ok(Message.UPDATE_USER_SUCCESS);
@@ -42,16 +35,16 @@ public class UserController {
     }
 
     @PostMapping("/updatepassword")
-    public ResponseEntity<String> updatePass(@RequestHeader("access_token") String tokenHeader,@RequestBody AccountDTO accountDTO){
+    public ResponseEntity<String> updatePass(@RequestHeader("access_token") String tokenHeader,@RequestBody AccountRequest accountRequest){
 
-        if(accountDTO.getPassword().isEmpty())
+        if(accountRequest.getPassword().isEmpty())
         {
             return ResponseEntity.badRequest().body(Message.VALIDATION_PASSWORD_ERROR001);
         }
-        if(!ValidateInput.isPasswordValid(accountDTO.getPassword()))
+        if(!ValidateInput.isPasswordValid(accountRequest.getPassword()))
             return ResponseEntity.badRequest().body(Message.VALIDATION_PASSWORD_ERROR002);
 
-        if(userService.updatePassword(tokenHeader, accountDTO))
+        if(userService.updatePassword(tokenHeader, accountRequest))
             return ResponseEntity.ok(Message.UPDATE_PASSWORD_SUCCESS);
         return ResponseEntity.badRequest().body(Message.UPDATE_PASSWORD_ERROR001);
     }

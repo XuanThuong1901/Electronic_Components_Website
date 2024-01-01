@@ -1,9 +1,10 @@
 package com.poly.ecommercestore.controller.client;
 
-import com.poly.ecommercestore.DTO.client.OrderDTO;
+import com.poly.ecommercestore.model.request.OrderRequest;
 import com.poly.ecommercestore.common.Message;
+import com.poly.ecommercestore.service.order.IOrderService;
 import com.poly.ecommercestore.service.order.OrderService;
-import com.poly.ecommercestore.util.ValidateInput;
+import com.poly.ecommercestore.util.validator.ValidateInput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     @Autowired
-    private OrderService orderService;
+    private IOrderService orderService;
 
 
     @GetMapping("")
@@ -27,23 +28,23 @@ public class OrderController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addOrder(@RequestHeader("access_token") String tokenHeader, @RequestBody OrderDTO order){
+    public ResponseEntity<?> addOrder(@RequestHeader("access_token") String tokenHeader, @RequestBody OrderRequest request){
 
-        if(order.getDetailOrders().size() == 0)
+        if(request.getDetailOrders().size() == 0)
             return ResponseEntity.badRequest().body(Message.VALIDATION_DETAIL_ORDER_ERROR001);
-        if(order.getAddress() == null || order.getAddress().equals(""))
+        if(request.getAddress() == null || request.getAddress().equals(""))
             return ResponseEntity.badRequest().body(Message.VALIDATION_ADDRESS_ORDER_ERROR001);
-        if(order.getTelephone() == null || order.getTelephone().equals(""))
+        if(request.getTelephone() == null || request.getTelephone().equals(""))
             return ResponseEntity.badRequest().body(Message.VALIDATION_TELEPHONE_ORDER_ERROR001);
-        if(order.getShippingUnit() == null)
+        if(request.getShippingUnit() == null)
             return ResponseEntity.badRequest().body(Message.VALIDATION_SHIPPING_UNIT_ORDER_ERROR001);
-        if(order.getPayment() == null)
+        if(request.getPayment() == null)
             return ResponseEntity.badRequest().body(Message.VALIDATION_PAYMENT_ORDER_ERROR001);
 
-        if(!ValidateInput.isPhoneNumber(order.getTelephone()))
+        if(!ValidateInput.isPhoneNumber(request.getTelephone()))
             return ResponseEntity.badRequest().body(Message.VALIDATION_TELEPHONE_ORDER_ERROR002);
 
-        int check = orderService.addOrder(tokenHeader, order);
+        int check = orderService.addOrder(tokenHeader, request);
         if(check == 0){
             return ResponseEntity.badRequest().body(Message.ORDER_ERROR001);
         }

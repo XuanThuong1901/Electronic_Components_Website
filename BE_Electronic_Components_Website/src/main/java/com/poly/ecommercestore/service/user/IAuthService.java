@@ -1,16 +1,18 @@
 package com.poly.ecommercestore.service.user;
 
 import com.poly.ecommercestore.entity.Accounts;
-import com.poly.ecommercestore.DTO.client.UserDTO;
+import com.poly.ecommercestore.model.request.AccountRequest;
+import com.poly.ecommercestore.model.request.UserRequest;
+import com.poly.ecommercestore.model.response.AuthResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface IAuthService {
 
-    boolean createCustomer(UserDTO user);
+    AuthResponse login(AccountRequest request);
 
-    boolean createEmployee(UserDTO user, MultipartFile avatar);
+    boolean registerCustomer(UserRequest user);
 
-    public Accounts getAccountByLogin(String email, String password);
+    boolean registerEmployee(UserRequest user, MultipartFile avatar);
 
     Boolean resetPassword(String email);
 }

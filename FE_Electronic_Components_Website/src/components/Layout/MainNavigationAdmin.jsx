@@ -82,7 +82,15 @@ const MainNavigationAdmin = () => {
                   to="/admin/order"
                   className={(props) => (props.isActive ? classes.active : "")}
                 >
-                  Đơn hàng
+                  Đơn đặt hàng
+                </NavLink>
+              </li>
+              <li className={classes["menu-item"]}>
+                <NavLink
+                  to="/admin/return_order"
+                  className={(props) => (props.isActive ? classes.active : "")}
+                >
+                  Đơn đổi, trả
                 </NavLink>
               </li>
               <li className={classes["menu-item"]}>

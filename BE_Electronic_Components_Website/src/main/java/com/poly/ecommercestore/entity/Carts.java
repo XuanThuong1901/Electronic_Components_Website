@@ -10,7 +10,9 @@ import org.hibernate.annotations.FetchMode;
 
 import java.util.Date;
 
-@Data
+//@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "Carts")
 public class Carts {

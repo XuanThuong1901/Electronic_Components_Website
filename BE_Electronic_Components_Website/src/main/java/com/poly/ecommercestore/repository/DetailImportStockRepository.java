@@ -8,6 +8,4 @@ import java.util.List;
 
 public interface DetailImportStockRepository extends JpaRepository<DetailImportStocks, Integer> {
 
-    @Query("SELECT detailImportStock FROM DetailImportStocks detailImportStock WHERE detailImportStock.importStock.iDImportStock = :iDImportStock")
-    public List<DetailImportStocks> getDetailImportStocks(int iDImportStock);
 }

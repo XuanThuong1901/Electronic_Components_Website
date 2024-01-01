@@ -12,7 +12,9 @@ import org.hibernate.annotations.FetchMode;
 
 import java.util.List;
 
-@Data
+//@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "Categories")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

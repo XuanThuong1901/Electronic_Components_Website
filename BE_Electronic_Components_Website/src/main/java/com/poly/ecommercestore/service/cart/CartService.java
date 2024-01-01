@@ -1,6 +1,7 @@
 package com.poly.ecommercestore.service.cart;
 
-import com.poly.ecommercestore.configuration.JWTUnit;
+import com.poly.ecommercestore.configuration.jwt.JwtService;
+import com.poly.ecommercestore.entity.Accounts;
 import com.poly.ecommercestore.entity.Carts;
 import com.poly.ecommercestore.entity.Customers;
 import com.poly.ecommercestore.entity.Products;
@@ -8,7 +9,9 @@ import com.poly.ecommercestore.entity.embeddable.CartId;
 import com.poly.ecommercestore.repository.CartRepository;
 import com.poly.ecommercestore.repository.CustomerRepository;
 import com.poly.ecommercestore.repository.ProductRepository;
-import com.poly.ecommercestore.DTO.client.CartDTO;
+import com.poly.ecommercestore.model.request.CartRequest;
+import com.poly.ecommercestore.util.extractToken.IExtractToken;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,38 +19,28 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CartService implements ICartService{
 
-
-    @Autowired
-    private JWTUnit jwtUnit;
-
-    @Autowired
-    private CartRepository cartRepository;
-
-    @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
+    private final IExtractToken iExtractToken;
+    private final CartRepository cartRepository;
+    private final ProductRepository productRepository;
 
     private final Boolean SELECT_STATE = false;
 
     @Override
     public List<Carts> getCartByCustomer(String tokenHeader) {
-        String token = tokenHeader.replace("Bearer ", "");
-        String email = jwtUnit.extractEmail(token);
-        Customers customer = customerRepository.getCustomersByEmail(email);
-        System.out.printf("name"+customer.getName());
+
+        Customers customer = getCustomer(tokenHeader);
+
         if(customer == null)
             return null;
-        return cartRepository.getCartCustomer(customer.getIDCustomer());
+        return cartRepository.findByCustomer(customer.getIDCustomer());
     }
 
     @Override
-    public Carts addCart(String tokenHeader, int iDProduct, CartDTO cartDTO) {
+    public Carts addCart(String tokenHeader, int iDProduct, CartRequest request) {
         Customers customer = getCustomer(tokenHeader);
-//        System.out.printf("name"+customer.getName());
         if(customer == null)
             return null;
 
@@ -57,13 +50,13 @@ public class CartService implements ICartService{
 
         Date dateUpdate = new Date();
 
-        Carts newCart = cartRepository.getCart(customer.getIDCustomer(), product.getIDProduct());
+        Carts newCart = cartRepository.findByCustomerAndProduct(customer.getIDCustomer(), product.getIDProduct());
         if(newCart == null){
             CartId cartId = new CartId(customer.getIDCustomer(), product.getIDProduct());
-            newCart = new Carts(cartId, SELECT_STATE, dateUpdate, cartDTO.getQuantity(), customer, product);
+            newCart = new Carts(cartId, SELECT_STATE, dateUpdate, request.getQuantity(), customer, product);
         }
         else {
-            newCart.setQuantity(newCart.getQuantity() + cartDTO.getQuantity());
+            newCart.setQuantity(newCart.getQuantity() + request.getQuantity());
             newCart.setUpdatedDate(dateUpdate);
         }
 
@@ -75,7 +68,7 @@ public class CartService implements ICartService{
     @Override
     public Boolean deleteCart(String tokenHeader, int iDProduct) {
         Customers customer = getCustomer(tokenHeader);
-        Carts cart = cartRepository.getCart(customer.getIDCustomer(), iDProduct);
+        Carts cart = cartRepository.findByCustomerAndProduct(customer.getIDCustomer(), iDProduct);
         if(cart == null)
             return false;
 
@@ -84,13 +77,13 @@ public class CartService implements ICartService{
     }
 
     @Override
-    public Boolean updateCart(String tokenHeader, int iDProduct, CartDTO cartRequest) {
+    public Boolean updateCart(String tokenHeader, int iDProduct, CartRequest request) {
         Customers customer = getCustomer(tokenHeader);
-        Carts cart = cartRepository.getCart(customer.getIDCustomer(), iDProduct);
+        Carts cart = cartRepository.findByCustomerAndProduct(customer.getIDCustomer(), iDProduct);
         if(cart == null)
             return false;
 
-        cart.setQuantity(cartRequest.getQuantity());
+        cart.setQuantity(request.getQuantity());
 
         if(cartRepository.save(cart) == null)
             return false;
@@ -98,24 +91,8 @@ public class CartService implements ICartService{
         return true;
     }
 
-    @Override
-    public List<Carts> selectCart(String iDCustomer, List<CartDTO> cart) {
-
-//        List<Carts> cartList = cartRepository.getCartCustomer(iDCustomer);
-//        if(cartList == null)
-//            return null;
-//
-//        for (CartRequest c : cart){
-//            if(c.)
-//        }
-
-        return null;
-    }
-
     private Customers getCustomer(String tokenHeader){
-        String token = tokenHeader.replace("Bearer ", "");
-        String email = jwtUnit.extractEmail(token);
-        Customers customer = customerRepository.getCustomersByEmail(email);
-        return  customer;
+        return  iExtractToken.extractCustomer(tokenHeader);
     }
+
 }

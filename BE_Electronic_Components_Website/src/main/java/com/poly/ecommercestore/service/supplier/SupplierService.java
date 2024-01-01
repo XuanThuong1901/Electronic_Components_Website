@@ -1,38 +1,34 @@
 package com.poly.ecommercestore.service.supplier;
 
-import com.poly.ecommercestore.configuration.JWTUnit;
 import com.poly.ecommercestore.entity.Accounts;
 import com.poly.ecommercestore.entity.Suppliers;
 import com.poly.ecommercestore.repository.AccountRepository;
 import com.poly.ecommercestore.repository.SupplierRepository;
-import com.poly.ecommercestore.DTO.system.SupplierDTO;
+import com.poly.ecommercestore.model.request.SupplierRequest;
+import com.poly.ecommercestore.util.extractToken.IExtractToken;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SupplierService implements ISupplierService{
 
-    @Autowired
-    private JWTUnit jwtUnit;
-
-    @Autowired
-    private SupplierRepository supplierRepository;
-
-    @Autowired
-    private AccountRepository accountRepository;
+    private final IExtractToken iExtractToken;
+    private final SupplierRepository supplierRepository;
 
     @Override
-    public Boolean addSupplier(String tokenHeader, SupplierDTO supplier) {
-        Accounts user = getUserByToken(tokenHeader);
+    public Boolean addSupplier(String tokenHeader, SupplierRequest request) {
+        Accounts user = iExtractToken.extractAccount(tokenHeader);
         if(user == null || user.getRole().getIDRole() != 2)
             return false;
 
-        if(supplierRepository.getSuppliers(supplier.getSupplierName(), supplier.getEmail(), supplier.getTelephone()).size() != 0)
+        if(supplierRepository.findSuppliers(request.getSupplierName(), request.getEmail(), request.getTelephone()).size() != 0)
             return false;
 
-        Suppliers newSupplier = new Suppliers(supplier.getSupplierName(), supplier.getEmail(), supplier.getTelephone(), supplier.getAddress());
+        Suppliers newSupplier = new Suppliers(request.getSupplierName(), request.getEmail(), request.getTelephone(), request.getAddress());
 
         supplierRepository.save(newSupplier);
 
@@ -45,9 +41,9 @@ public class SupplierService implements ISupplierService{
     }
 
     @Override
-    public Boolean updateSupplier(String tokenHeader, SupplierDTO supplier, int iDSupplier) {
+    public Boolean updateSupplier(String tokenHeader, SupplierRequest request, int iDSupplier) {
 
-        Accounts user = getUserByToken(tokenHeader);
+        Accounts user = iExtractToken.extractAccount(tokenHeader);
         if(user == null || user.getRole().getIDRole() != 2)
             return false;
         Suppliers updateSupplier = supplierRepository.getReferenceById(iDSupplier);
@@ -57,7 +53,7 @@ public class SupplierService implements ISupplierService{
 //        updateSupplier.setSupplierName(supplier.getSupplierName());
 //        updateSupplier.setEmail(supplier.getEmail());
 //        updateSupplier.setTelephone(supplier.getTelephone());
-        updateSupplier.setAddress(supplier.getAddress());
+        updateSupplier.setAddress(request.getAddress());
 
         supplierRepository.save(updateSupplier);
 
@@ -73,12 +69,5 @@ public class SupplierService implements ISupplierService{
 
         supplierRepository.delete(supplier);
         return true;
-    }
-
-    private Accounts getUserByToken(String tokenHeader){
-        String token = tokenHeader.replace("Bearer", "");
-        String email = jwtUnit.extractEmail(token);
-        Accounts account = accountRepository.getByEmail(email);
-        return account;
     }
 }

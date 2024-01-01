@@ -5,25 +5,20 @@ import com.poly.ecommercestore.service.Tax.TaxService;
 import com.poly.ecommercestore.service.status.StatusService;
 import com.poly.ecommercestore.service.user.UserService;
 import com.poly.ecommercestore.service.utility.UtilityService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("")
+@RequiredArgsConstructor
 public class UtilityController {
 
-    @Autowired
-    private StatusService statusServices;
-
-    @Autowired
-    private TaxService taxService;
-
-    @Autowired
-    private UtilityService utilityService;
-
-    @Autowired
-    private UserService userService;
+    private final StatusService statusServices;
+    private final TaxService taxService;
+    private final UtilityService utilityService;
+    private final UserService userService;
 
     @GetMapping("/status/{type}")
     public ResponseEntity<?> getStatus(@PathVariable(value = "type") String type){

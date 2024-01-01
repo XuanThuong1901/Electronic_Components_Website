@@ -11,7 +11,9 @@ import org.hibernate.annotations.OnDeleteAction;
 import jakarta.persistence.*;
 import java.util.List;
 
-@Data
+//@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "Customers")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -22,9 +24,10 @@ public class Customers {
     private String iDCustomer;
 
     @MapsId
-    @JsonIgnoreProperties("customer")
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+//    @ToString.Exclude
     @JoinColumn(name = "IDCustomer")
     private Accounts account;
 
@@ -49,6 +52,10 @@ public class Customers {
     @OneToMany(mappedBy = "customer")
     private List<Evaluations> evaluations;
 
+    @JsonIgnore()
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    private List<ReturnOrder> returnOrderList;
+
     public Customers() {
     }
 
@@ -60,7 +67,7 @@ public class Customers {
         this.telephone = telephone;
     }
 
-    public Customers(String iDCustomer, Accounts account, String name, String address, String telephone, List<Carts> carts, List<Orders> orders) {
+    public Customers(String iDCustomer, Accounts account, String name, String address, String telephone, List<Carts> carts, List<Orders> orders, List<ReturnOrder> returnOrderList) {
         this.iDCustomer = iDCustomer;
         this.account = account;
         this.name = name;
@@ -68,6 +75,7 @@ public class Customers {
         this.telephone = telephone;
         this.carts = carts;
         this.orders = orders;
+        this.returnOrderList = returnOrderList;
     }
 
 }

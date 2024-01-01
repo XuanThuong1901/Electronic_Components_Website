@@ -12,6 +12,6 @@ import java.util.List;
 public interface ShippingUnitRepository extends JpaRepository<ShippingUnits, Integer> {
 
     @Query("SELECT ship FROM ShippingUnits ship WHERE ship.shippingUnitName = :shippingUnitName OR ship.email = :email OR ship.telephone = :telephone")
-    List<ShippingUnits> getShippingUnits(@Param("shippingUnitName") String shippingUnitName , @Param("email") String email, @Param("telephone") String telephone);
+    List<ShippingUnits> findShippingUnits(@Param("shippingUnitName") String shippingUnitName , @Param("email") String email, @Param("telephone") String telephone);
 
 }

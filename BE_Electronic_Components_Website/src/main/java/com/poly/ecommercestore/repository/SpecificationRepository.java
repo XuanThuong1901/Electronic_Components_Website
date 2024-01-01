@@ -12,7 +12,7 @@ import java.util.List;
 public interface SpecificationRepository extends JpaRepository<Specifications, Integer> {
 
     @Query("SELECT specification FROM Specifications specification WHERE specification.product.iDProduct = :iDProduct")
-    List<Specifications> getSpecificationsByProduct(@Param("iDProduct") int iDProduct);
+    List<Specifications> findByProduct(@Param("iDProduct") int iDProduct);
 
     @Query("SELECT specification FROM Specifications specification WHERE specification.iDSpecification = :iDSpecification")
     Specifications checkSpecification(@Param("iDSpecification") int iDSpecification);

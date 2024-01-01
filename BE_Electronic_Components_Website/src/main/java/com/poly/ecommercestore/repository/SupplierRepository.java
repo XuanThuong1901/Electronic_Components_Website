@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface SupplierRepository extends JpaRepository<Suppliers, Integer> {
     @Query("SELECT supllier FROM Suppliers supllier WHERE supllier.supplierName = :supplierName OR supllier.email = :email OR supllier.telephone = :telephone")
-    List<Suppliers> getSuppliers(@Param("supplierName") String supplierName , @Param("email") String email, @Param("telephone") String telephone);
+    List<Suppliers> findSuppliers(@Param("supplierName") String supplierName , @Param("email") String email, @Param("telephone") String telephone);
 
 }

@@ -6,15 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface AccountRepository extends JpaRepository<Accounts, String> {
 
-    @Query("SELECT account FROM Accounts account WHERE account.iDAccount = :iDAccount")
-    Accounts getById(String iDAccount);
+    Optional<Accounts> findByEmail(String email);
 
-    @Query("SELECT account FROM Accounts account WHERE account.email = :email")
-    Accounts getByEmail(@Param("email") String email);
-
-    @Query("SELECT account FROM Accounts account WHERE account.email = :email and account.password = :password")
-    Accounts findByLogin(String email, String password);
 }

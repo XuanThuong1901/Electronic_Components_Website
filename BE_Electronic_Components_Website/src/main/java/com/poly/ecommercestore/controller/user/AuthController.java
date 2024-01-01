@@ -3,14 +3,11 @@ package com.poly.ecommercestore.controller.user;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poly.ecommercestore.common.Message;
-import com.poly.ecommercestore.configuration.JWTUnit;
-import com.poly.ecommercestore.entity.Accounts;
+import com.poly.ecommercestore.model.request.AccountRequest;
 import com.poly.ecommercestore.repository.AccountRepository;
-import com.poly.ecommercestore.DTO.client.AccountDTO;
-import com.poly.ecommercestore.DTO.client.UserDTO;
-import com.poly.ecommercestore.response.AuthResponse;
+import com.poly.ecommercestore.model.request.UserRequest;
 import com.poly.ecommercestore.service.user.AuthService;
-import com.poly.ecommercestore.util.ValidateInput;
+import com.poly.ecommercestore.util.validator.ValidateInput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,11 +24,8 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @Autowired
-    private JWTUnit jwtUtil;
-
     @PostMapping("/register/customer")
-    public ResponseEntity<String> register(@RequestBody UserDTO request){
+    public ResponseEntity<String> register(@RequestBody UserRequest request){
         if(request.getName().isEmpty())
         {
             return ResponseEntity.badRequest().body(Message.VALIDATION_NAME_ERROR001);
@@ -71,11 +65,11 @@ public class AuthController {
         if(!ValidateInput.isPasswordValid(request.getPassword()))
             return ResponseEntity.badRequest().body(Message.VALIDATION_PASSWORD_ERROR002);
 
-        if(accountRepository.getByEmail(request.getEmail()) != null){
+        if(accountRepository.findByEmail(request.getEmail()) != null){
             return ResponseEntity.badRequest().body(Message.VALIDATION_EMAIL_ERROR003);
         }
 
-        boolean isCheck = authService.createCustomer(request);
+        boolean isCheck = authService.registerCustomer(request);
 
         if(!isCheck)
             return ResponseEntity.badRequest().body(Message.REGISTER_ERROR001);
@@ -86,7 +80,7 @@ public class AuthController {
     @PostMapping("/register/employee")
     public ResponseEntity<String> registerEmployee(@RequestParam("user") String userDTO, @RequestParam("avatar") MultipartFile avatar) throws JsonProcessingException {
 
-        UserDTO user = new ObjectMapper().readValue(userDTO, UserDTO.class);
+        UserRequest user = new ObjectMapper().readValue(userDTO, UserRequest.class);
         if(user.getName().isEmpty())
         {
             return ResponseEntity.badRequest().body(Message.VALIDATION_NAME_ERROR001);
@@ -126,11 +120,11 @@ public class AuthController {
         if(!ValidateInput.isPasswordValid(user.getPassword()))
             return ResponseEntity.badRequest().body(Message.VALIDATION_PASSWORD_ERROR002);
 
-        if(accountRepository.getByEmail(user.getEmail()) != null){
+        if(accountRepository.findByEmail(user.getEmail()) != null){
             return ResponseEntity.badRequest().body(Message.VALIDATION_EMAIL_ERROR003);
         }
 
-        boolean isCheck = authService.createEmployee(user, avatar);
+        boolean isCheck = authService.registerEmployee(user, avatar);
 
         if(!isCheck)
             return ResponseEntity.badRequest().body(Message.REGISTER_ERROR001);
@@ -139,30 +133,18 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AccountDTO accountDTO){
-        if(accountDTO.getEmail().isEmpty())
+    public ResponseEntity<?> login(@RequestBody AccountRequest request){
+        if(request.getEmail().isEmpty())
             return ResponseEntity.badRequest().body(Message.VALIDATION_EMAIL_ERROR001);
 
-        if(accountDTO.getPassword().isEmpty())
+        if(request.getPassword().isEmpty())
             return ResponseEntity.badRequest().body(Message.VALIDATION_PASSWORD_ERROR001);
 
-        if(!ValidateInput.containsGmail(accountDTO.getEmail()))
+        if(!ValidateInput.containsGmail(request.getEmail()))
             return ResponseEntity.badRequest().body(Message.VALIDATION_EMAIL_ERROR002);
         try {
-//            System.out.printf(accountDTO.getEmail() + "  pass: " + accountDTO.getPassword());
-            Accounts account = authService.getAccountByLogin(accountDTO.getEmail(), accountDTO.getPassword());
-            String email = accountDTO.getEmail();
+//            System.out.printf(accountRequest.getEmail() + "  pass: " + accountRequest.getPassword());
 
-            if(account != null && account.getStatus().getIDStatus() == 1){
-                String token = jwtUtil.generateToken(email);
-                var authResponse = AuthResponse.builder()
-                        .token(token)
-                        .account(account)
-                        .message(Message.LOGIN_SUCCESS)
-                        .build();
-
-                return ResponseEntity.ok(authResponse);
-            }
             return ResponseEntity.badRequest().body(Message.LOGIN_ERROR001);
         }
         catch (Exception e){

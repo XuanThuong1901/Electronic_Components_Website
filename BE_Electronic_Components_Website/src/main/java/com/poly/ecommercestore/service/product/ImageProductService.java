@@ -3,7 +3,6 @@ package com.poly.ecommercestore.service.product;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;
 import com.google.firebase.cloud.StorageClient;
-import com.poly.ecommercestore.DTO.system.ImageProductDTO;
 import com.poly.ecommercestore.entity.ImageProducts;
 import com.poly.ecommercestore.entity.Products;
 import com.poly.ecommercestore.repository.ImageProductRepository;
@@ -29,7 +28,7 @@ public class ImageProductService implements IImageProductService{
 
     @Override
     public List<ImageProducts> getByProduct(int iDProduct) {
-        return imageProductRepository.getImageProductsByProduct(iDProduct);
+        return imageProductRepository.findByProduct(iDProduct);
     }
 
     @Override
@@ -39,7 +38,7 @@ public class ImageProductService implements IImageProductService{
 
         try {
             Products product = productRepository.findById(iDProduct).get();
-            ImageProducts imageProduct = imageProductRepository.getImageProductsByURL(image);
+            ImageProducts imageProduct = imageProductRepository.findByURL(image);
 
             if(product == null || imageProduct != null)
                 return null;

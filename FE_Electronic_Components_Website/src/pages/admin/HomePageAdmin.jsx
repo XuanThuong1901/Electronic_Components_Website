@@ -14,7 +14,8 @@ const HomePageAdmin = () => {
         <button>Đơn vị vận chuyển</button>
         <button>Sản phẩm</button>
         <button>Phiếu nhập</button>
-        <button>Đơn hàng</button>
+        <button>Đơn đặt hàng</button>
+        <button>Đơn đổi, trả</button>
         <button>Thống kê</button>
         <button>Tài khoản</button>
       </div>

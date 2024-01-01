@@ -1,27 +1,22 @@
 package com.poly.ecommercestore.service.shippingunit;
 
-import com.poly.ecommercestore.configuration.JWTUnit;
 import com.poly.ecommercestore.entity.Accounts;
 import com.poly.ecommercestore.entity.ShippingUnits;
 import com.poly.ecommercestore.repository.ShippingUnitRepository;
-import com.poly.ecommercestore.DTO.system.ShippingUnitDTO;
-import com.poly.ecommercestore.service.token.TokenService;
+import com.poly.ecommercestore.model.request.ShippingUnitRequest;
+import com.poly.ecommercestore.util.extractToken.IExtractToken;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ShippingUnitService implements IShippingUnitService{
 
-    @Autowired
-    private JWTUnit jwtUnit;
-
-    @Autowired
-    private TokenService tokenService;
-
-    @Autowired
-    private ShippingUnitRepository shippingUnitRepository;
+    private final IExtractToken iExtractToken;
+    private final ShippingUnitRepository shippingUnitRepository;
 
     @Override
     public List<ShippingUnits> getAllShippingUnit() {
@@ -29,25 +24,25 @@ public class ShippingUnitService implements IShippingUnitService{
     }
 
     @Override
-    public Boolean addShippingUnit(String tokenHeader, ShippingUnitDTO shippingUnit) {
-        Accounts user = tokenService.getAccountByToken(tokenHeader);
+    public Boolean addShippingUnit(String tokenHeader, ShippingUnitRequest request) {
+        Accounts user = iExtractToken.extractAccount(tokenHeader);
         if(user == null || user.getRole().getIDRole() != 2)
             return false;
 
-        if(shippingUnitRepository.getShippingUnits(shippingUnit.getShippingUnitName(), shippingUnit.getEmail(), shippingUnit.getTelephone()).size() != 0)
+        if(shippingUnitRepository.findShippingUnits(request.getShippingUnitName(), request.getEmail(), request.getTelephone()).size() != 0)
             return false;
         System.out.println("11");
 
-        ShippingUnits newShippingUnit = new ShippingUnits(shippingUnit.getShippingUnitName(), shippingUnit.getEmail(), shippingUnit.getTelephone(), shippingUnit.getAddress());
+        ShippingUnits newShippingUnit = new ShippingUnits(request.getShippingUnitName(), request.getEmail(), request.getTelephone(), request.getAddress());
         shippingUnitRepository.save(newShippingUnit);
 
         return true;
     }
 
     @Override
-    public Boolean updateShippingUnit(String tokenHeader, ShippingUnitDTO shippingUnit, int iDShippingUnit) {
+    public Boolean updateShippingUnit(String tokenHeader, ShippingUnitRequest request, int iDShippingUnit) {
 
-        Accounts account = tokenService.getAccountByToken(tokenHeader);
+        Accounts account = iExtractToken.extractAccount(tokenHeader);
         if(account == null || account.getRole().getIDRole() != 2)
             return false;
 
@@ -57,7 +52,7 @@ public class ShippingUnitService implements IShippingUnitService{
             return false;
 
 
-        updateShippingUnit.setAddress(shippingUnit.getAddress());
+        updateShippingUnit.setAddress(request.getAddress());
 
         if (shippingUnitRepository.save(updateShippingUnit) == null)
             return false;

@@ -12,5 +12,5 @@ import java.util.List;
 public interface EvaluationRepository extends JpaRepository<Evaluations, Integer> {
 
     @Query("SELECT evaluation FROM Evaluations evaluation WHERE evaluation.product.iDProduct = :iDProduct")
-    List<Evaluations> getEvaluationsByProduct(@Param("iDProduct") int iDProduct);
+    List<Evaluations> findByProduct(@Param("iDProduct") int iDProduct);
 }

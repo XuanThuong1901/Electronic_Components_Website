@@ -1,40 +1,28 @@
 package com.poly.ecommercestore.service.user;
 
-import com.poly.ecommercestore.configuration.JWTUnit;
 import com.poly.ecommercestore.entity.*;
+import com.poly.ecommercestore.model.request.AccountRequest;
 import com.poly.ecommercestore.repository.*;
-import com.poly.ecommercestore.DTO.client.AccountDTO;
-import com.poly.ecommercestore.DTO.client.UserDTO;
+import com.poly.ecommercestore.model.request.UserRequest;
+import com.poly.ecommercestore.util.extractToken.IExtractToken;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserService implements  IUserService{
 
-    @Autowired
-    private JWTUnit jwtUnit;
-    @Autowired
-    private AccountRepository accountRepository;
-
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private StatusRepository statusRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private EmployerRepository employerRepository;
+    private final IExtractToken iExtractToken;
+    private final AccountRepository accountRepository;
+    private final StatusRepository statusRepository;
+    private final CustomerRepository customerRepository;
+    private final EmployerRepository employerRepository;
 
     @Override
     public Accounts getUser(String tokenHeader) {
-        Accounts account = getUserByToken(tokenHeader);
+        Accounts account = iExtractToken.extractAccount(tokenHeader);
 //        if(account.getCustomers() != null)
 //            return account.getCustomers();
 
@@ -42,16 +30,16 @@ public class UserService implements  IUserService{
     }
 
     @Override
-    public Boolean updateUser(String tokenHeader, String idAccount, UserDTO userDTO) {
+    public Boolean updateUser(String tokenHeader, String idAccount, UserRequest request) {
 
-        Accounts user = getUserByToken(tokenHeader);
+        Accounts user = iExtractToken.extractAccount(tokenHeader);
 
         try {
             if(user.getCustomers() != null){
                 Customers updateCus = user.getCustomers();
-                updateCus.setName(userDTO.getName());
-                updateCus.setAddress(userDTO.getAddress());
-                updateCus.setTelephone(userDTO.getTelephone());
+                updateCus.setName(request.getName());
+                updateCus.setAddress(request.getAddress());
+                updateCus.setTelephone(request.getTelephone());
 
                 customerRepository.save(updateCus);
 
@@ -60,12 +48,12 @@ public class UserService implements  IUserService{
             else{
                 Accounts updateAccount = accountRepository.findById(idAccount).get();
                 Employers updateEmp = updateAccount.getEmployer();
-                updateEmp.setName(userDTO.getName());
-                updateEmp.setAddress(userDTO.getAddress());
-                updateEmp.setTelephone(userDTO.getTelephone());
-                updateEmp.setBirthday(userDTO.getBirthday());
-                updateEmp.setGender(userDTO.isGender());
-                updateEmp.setIdentityCard(userDTO.getIdentityCard());
+                updateEmp.setName(request.getName());
+                updateEmp.setAddress(request.getAddress());
+                updateEmp.setTelephone(request.getTelephone());
+                updateEmp.setBirthday(request.getBirthday());
+                updateEmp.setGender(request.isGender());
+                updateEmp.setIdentityCard(request.getIdentityCard());
                 employerRepository.save(updateEmp);
 
                 return true;
@@ -78,11 +66,11 @@ public class UserService implements  IUserService{
     }
 
     @Override
-    public Boolean updatePassword(String tokenHeader, AccountDTO accountDTO) {
+    public Boolean updatePassword(String tokenHeader, AccountRequest request) {
         try {
-            Accounts updateAccount = getUserByToken(tokenHeader);
-            if(updateAccount != null && updateAccount.getPassword().equals(accountDTO.getPassword())){
-                updateAccount.setPassword(accountDTO.getNewPassword());
+            Accounts updateAccount = iExtractToken.extractAccount(tokenHeader);
+            if(updateAccount != null && updateAccount.getPassword().equals(request.getPassword())){
+                updateAccount.setPassword(request.getNewPassword());
                 accountRepository.save(updateAccount);
                 return true;
             }
@@ -96,7 +84,7 @@ public class UserService implements  IUserService{
 
     @Override
     public Boolean setStatusUser(String tokenHeader, String idAccount, int idStatus) {
-        Accounts accountAdmin = getUserByToken(tokenHeader);
+        Accounts accountAdmin = iExtractToken.extractAccount(tokenHeader);
         Accounts user = accountRepository.getById(idAccount);
         if(accountAdmin == null || user == null || accountAdmin.getIDAccount() == user.getIDAccount()){
             return false;
@@ -105,12 +93,5 @@ public class UserService implements  IUserService{
         user.setStatus(status);
         accountRepository.save(user);
         return true;
-    }
-
-    private Accounts getUserByToken(String tokenHeader){
-        String token = tokenHeader.replace("Bearer ", "");
-        String email = jwtUnit.extractEmail(token);
-        Accounts account = accountRepository.getByEmail(email);
-        return  account;
     }
 }

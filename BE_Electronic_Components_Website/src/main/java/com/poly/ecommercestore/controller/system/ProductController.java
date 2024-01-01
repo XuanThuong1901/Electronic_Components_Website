@@ -3,27 +3,26 @@ package com.poly.ecommercestore.controller.system;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poly.ecommercestore.common.Message;
+import com.poly.ecommercestore.model.request.ProductRequest;
 import com.poly.ecommercestore.repository.ProductRepository;
-import com.poly.ecommercestore.DTO.system.ProductDTO;
+import com.poly.ecommercestore.service.product.IProductService;
 import com.poly.ecommercestore.service.product.ProductService;
-import com.poly.ecommercestore.service.shared.ECommerceMessage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
 @RequestMapping("/product")
+@RequiredArgsConstructor
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
-
-    @Autowired
-    private ProductRepository productRepository;
+    private final IProductService productService;
 
     private final int SIZE = 14;
 
@@ -44,13 +43,13 @@ public class ProductController {
     }
 
     @GetMapping("/product={id}")
-    public ResponseEntity<?> getOneProduct(@PathVariable(value = "id") int id){
+    public ResponseEntity<?> getOneProduct(@PathVariable(value = "id") int id) throws IOException {
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
 //    @PostMapping("/add")
 //    public ResponseEntity<?> addProduct(@RequestHeader("access_token") String tokenHeader, @RequestParam("productDTO") String productDTO, @RequestParam("imageProduct") List<MultipartFile> imageProduct) throws JsonProcessingException {
-//        ProductDTO product = new ObjectMapper().readValue(productDTO, ProductDTO.class);
+//        ProductRequest product = new ObjectMapper().readValue(productDTO, ProductRequest.class);
 //        System.out.println(product);
 //
 //        if(product.getProductName() == null){
@@ -74,8 +73,8 @@ public class ProductController {
 //    }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addProduct(@RequestHeader("access_token") String tokenHeader, @RequestParam("productDTO") String productDTO, @RequestParam("imageProduct") List<MultipartFile> imageProduct) throws JsonProcessingException {
-        ProductDTO product = new ObjectMapper().readValue(productDTO, ProductDTO.class);
+    public ResponseEntity<?> addProduct(@RequestHeader("access_token") String tokenHeader, @RequestParam("productDTO") String request, @RequestParam("imageProduct") List<MultipartFile> imageProduct) throws JsonProcessingException {
+        ProductRequest product = new ObjectMapper().readValue(request, ProductRequest.class);
 
         if(product.getProductName().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_NAME_PRODUCT_ERROR001);
@@ -116,9 +115,9 @@ public class ProductController {
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<?> updateProduct(@RequestHeader("access_token") String tokenHeader , @PathVariable(value = "id") int id, @RequestParam("productDTO") String productDTO, @RequestParam("imageProduct") List<MultipartFile> imageProduct) throws JsonProcessingException {
+    public ResponseEntity<?> updateProduct(@RequestHeader("access_token") String tokenHeader , @PathVariable(value = "id") int id, @RequestParam("productDTO") String request, @RequestParam("imageProduct") List<MultipartFile> imageProduct) throws JsonProcessingException {
 
-        ProductDTO product = new ObjectMapper().readValue(productDTO, ProductDTO.class);
+        ProductRequest product = new ObjectMapper().readValue(request, ProductRequest.class);
 
         if(product.getProductName().isEmpty()){
             return ResponseEntity.badRequest().body(Message.VALIDATION_NAME_PRODUCT_ERROR001);
@@ -153,15 +152,6 @@ public class ProductController {
             return ResponseEntity.ok(Message.UPDATE_PRODUCT_SUCCESS);
 
         return ResponseEntity.badRequest().body(Message.UPDATE_PRODUCT_ERROR001);
-    }
-
-    @GetMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable(value = "id") int id){
-        if(productRepository.getReferenceById(id) == null)
-            return ResponseEntity.badRequest().body(Message.DELETE_PRODUCT_ERROR001);
-
-        productService.removeProduct(id);
-        return ResponseEntity.ok(Message.DELETE_PRODUCT_SUCCESS);
     }
 
 }

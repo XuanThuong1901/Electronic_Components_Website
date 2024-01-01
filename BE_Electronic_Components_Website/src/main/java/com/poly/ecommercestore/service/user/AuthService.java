@@ -1,9 +1,17 @@
 package com.poly.ecommercestore.service.user;
 
+import com.poly.ecommercestore.common.Message;
+import com.poly.ecommercestore.configuration.jwt.JwtService;
 import com.poly.ecommercestore.entity.*;
+import com.poly.ecommercestore.model.request.AccountRequest;
+import com.poly.ecommercestore.model.response.AuthResponse;
 import com.poly.ecommercestore.repository.*;
-import com.poly.ecommercestore.DTO.client.UserDTO;
+import com.poly.ecommercestore.model.request.UserRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,25 +22,19 @@ import java.nio.file.Paths;
 import java.util.Random;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService implements IAuthService{
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
-    @Autowired
-    private StatusRepository statusRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private EmployerRepository employerRepository;
+    private final StatusRepository statusRepository;
+    private final RoleRepository roleRepository;
+    private final CustomerRepository customerRepository;
+    private final EmployerRepository employerRepository;
 
     private static final int lengthID = 10;
     private static final int iDStatus = 1;
@@ -40,21 +42,61 @@ public class AuthService implements IAuthService{
 
 
     @Override
-    public boolean createCustomer(UserDTO user) {
+    public AuthResponse login(AccountRequest request) {
+
+        try{
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+
+            var account = accountRepository.findByEmail(request.getEmail()).orElse(null);
+
+            System.out.println(account.getAuthorities());
+
+            if(account == null)
+            {
+                return AuthResponse.builder()
+                        .message(Message.LOGIN_ERROR001)
+                        .build();
+            }
+
+            var jwtToken = jwtService.generateToken(account);
+
+            AuthResponse response =  AuthResponse.builder()
+                    .account(account)
+                    .token(jwtToken)
+                    .message(Message.LOGIN_SUCCESS)
+                    .build();
+
+            return response;
+
+        }catch (Exception e){
+            System.out.printf(e.toString());
+            return AuthResponse.builder()
+                    .message(Message.LOGIN_ERROR001)
+                    .build();
+        }
+    }
+
+    @Override
+    public boolean registerCustomer(UserRequest request) {
         try {
             Accounts newAccount = new Accounts();
-            Status status = statusRepository.getStatusById(iDStatus);
-            Roles role = roleRepository.getRoleById(1);
+            Status status = statusRepository.findById(iDStatus).orElse(null);
+            Roles role = roleRepository.findById(1).get();
 //        String encoderPassword = passwordEncoder.encode(user.getPassword());
 
-            newAccount.setEmail(user.getEmail());
+            newAccount.setEmail(request.getEmail());
             newAccount.setStatus(status);
             newAccount.setRole(role);
             String newID = "CUS" + generateRandomString();
             newAccount.setIDAccount(newID);
-            newAccount.setPassword(user.getPassword());
+            newAccount.setPassword(passwordEncoder.encode(request.getPassword()));
 
-            Customers newCustomer = new Customers(newID, newAccount, user.getName(), user.getAddress(), user.getTelephone());
+            Customers newCustomer = new Customers(newID, newAccount, request.getName(), request.getAddress(), request.getTelephone());
 
             newAccount.setCustomers(newCustomer);
             this.accountRepository.save(newAccount);
@@ -67,24 +109,24 @@ public class AuthService implements IAuthService{
     }
 
     @Override
-    public boolean createEmployee(UserDTO user, MultipartFile avatar) {
+    public boolean registerEmployee(UserRequest request, MultipartFile avatar) {
         try {
             Accounts newAccount = new Accounts();
-            Status status = statusRepository.getStatusById(iDStatus);
-            Roles role = roleRepository.getRoleById(user.getRole());
+            Status status = statusRepository.findById(iDStatus).orElse(null);
+            Roles role = roleRepository.findById(request.getRole()).orElse(null);
 //        String encoderPassword = passwordEncoder.encode(user.getPassword());
 
-            newAccount.setEmail(user.getEmail());
+            newAccount.setEmail(request.getEmail());
             newAccount.setStatus(status);
             newAccount.setRole(role);
 
             String newID = "EMP" + generateRandomString();
             newAccount.setIDAccount(newID);
             Random random = new Random();
-            int newPassword = random.nextInt(999999 - 100000 + 1) + 100000;
-            newAccount.setPassword(Integer.toString(newPassword));
+//            int newPassword = random.nextInt(999999 - 100000 + 1) + 100000;
+            newAccount.setPassword(passwordEncoder.encode("123456"));
             String newAvatar = saveImage(avatar);
-            Employers newEmployer = new Employers(newID, newAccount,user.getName(), user.getAddress(), user.getBirthday(), user.isGender(), user.getTelephone(), user.getIdentityCard(), "avatar3.jpg");
+            Employers newEmployer = new Employers(newID, newAccount,request.getName(), request.getAddress(), request.getBirthday(), request.isGender(), request.getTelephone(), request.getIdentityCard(), "avatar3.jpg");
 
 
             newAccount.setEmployer(newEmployer);
@@ -97,14 +139,8 @@ public class AuthService implements IAuthService{
     }
 
     @Override
-    public Accounts getAccountByLogin(String email, String password) {
-        //        String encoderPassword = passwordEncoder.encode(password);
-        return accountRepository.findByLogin(email, password);
-    }
-
-    @Override
     public Boolean resetPassword(String email) {
-        Accounts account = accountRepository.getByEmail(email);
+        Accounts account = accountRepository.findByEmail(email).orElse(null);
         if(account == null)
             return false;
         Random random = new Random();

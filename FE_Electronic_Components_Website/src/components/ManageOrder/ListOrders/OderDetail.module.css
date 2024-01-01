@@ -1,0 +1,186 @@
+.container{
+    margin-top: 75px;
+    margin-bottom: 100px;
+}
+.title{
+    display: flex;
+    justify-content:flex-start;
+    align-items: center;
+    margin-bottom: 50px;
+    height: 100px;
+    background-image: url(https://demo2.pavothemes.com/poco/wp-content/uploads/2020/09/breadcrumb1.jpg);
+}
+.title > h1{
+    font-size:36px;
+    font-weight: 600;
+}
+
+.list__items{
+    width: 100%;
+    margin-left: 10px;
+}
+
+
+.cart-item{
+    display:flex;
+    text-align: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.cart-item > div {
+    width: 20%;
+}
+.icon {
+    cursor: pointer;
+    width: 25px;
+}
+.icon:hover{
+    background-color: var(--primary);
+}
+
+.name-item{
+    font-weight:600;
+    font-size: 18px;
+}
+
+.input-quantity{
+    align-items: center;
+    text-align: center;
+}
+.input-quantity > input{
+    width: 45px;
+    height: 45px;
+}
+
+
+.price > p{
+    font-weight:600;
+    font-size: 18px;
+}
+
+.total-price > p {
+    font-weight:600;
+    font-size: 18px;
+}
+.evaluate > button{
+    margin-bottom: 10px;
+    width: 80px;
+    height: 30px;
+    /* padding: 5px 10px; */
+    background-color: var(--primary);
+    font-weight: 550;
+}
+
+.info__order{
+    margin-left: 30px;
+    margin-top: 50px;
+    margin-right: 20px;
+    border: thin solid black;
+}
+.info__order-title{
+    display:flex;
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+.info__order-title{
+    justify-content: center;
+    font-size: 26px;
+    font-weight:600
+}
+
+.info__user{
+    margin-left: 10px;
+}
+
+.info__user-item, .info__user-pay, .info__user-deliveryfee{
+    display:flex;
+}
+.info__user-item, .info__user-pay, .info__user-deliveryfee > h1{
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+.info__user-item, .info__user-pay, .info__user-deliveryfee > p{
+    margin-bottom: 20px;
+    margin-left: 5px;
+    font-size: 20px;
+    font-weight:600;
+    margin-top: 3px;
+}
+.info__user-pay > p{
+    color: var(--green);
+    margin-top: 3px;
+    margin-left: 5px;
+}
+.info__user-deliveryfee > p{
+    color: var(--primary)
+}
+.info__user-deliveryfee > h1{
+    margin-left: 8px;
+}
+.info__user-item > p{
+    margin-top:3px ;
+}
+
+
+.text-confirm{
+    font-size:18px;
+    color: var(--green);
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+.text-cancel{
+    font-size:18px;
+    color: var(--red);
+    font-weight: 500;
+}
+.text-wait{
+    font-size:18px;
+    color: var(--primary);
+    font-weight: 600;
+    margin-top: 2px;
+}
+.cancle-button{
+    margin-top: 20px;
+    height: 40px;
+    background-color: var(--red);
+    color:#fff;
+    border-radius: 2px;
+    border-color: var(--red);
+    font-size: 16px;
+}
+.view-evaluate{
+    display: flex;
+    justify-content: center;
+}
+.specification {
+    height: 230px;
+    width: 80%;
+    /* margin: 30px; */
+    position: relative;
+    background-color: white;
+    border-radius: 20px;
+}
+.specification-form{
+    padding-top: 20px;
+    margin: 0px 20px;
+    font-size:18px;
+    font-weight:550;
+}
+.star-rating {
+    display: flex;
+    justify-content: center;
+    font-size: 25px;
+    /* margin: 100px; */
+}
+.specification-form-button{
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+}
+.specification-form-button > button{
+    padding: 7px 30px;
+    margin: 0 20px;
+    font-size:18px;
+    font-weight:550;
+    border-radius: 10px;
+}

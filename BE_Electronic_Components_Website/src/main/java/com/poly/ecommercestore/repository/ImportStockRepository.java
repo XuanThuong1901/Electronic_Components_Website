@@ -16,5 +16,4 @@ public interface ImportStockRepository extends JpaRepository<ImportStocks, Integ
 
     @Query("SELECT import FROM ImportStocks import WHERE import.dateAdded BETWEEN :startDay AND :endDay")
     List<ImportStocks> findByStartEndDay(Date startDay, Date endDay);
-
 }

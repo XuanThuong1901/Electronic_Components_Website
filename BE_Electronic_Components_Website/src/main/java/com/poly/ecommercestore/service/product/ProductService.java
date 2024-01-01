@@ -1,85 +1,56 @@
 package com.poly.ecommercestore.service.product;
 
-import com.poly.ecommercestore.DTO.system.PriceListDTO;
-import com.poly.ecommercestore.configuration.JWTUnit;
+import com.poly.ecommercestore.model.request.PriceListRequest;
 import com.poly.ecommercestore.entity.*;
+import com.poly.ecommercestore.model.request.ProductRequest;
 import com.poly.ecommercestore.repository.*;
-import com.poly.ecommercestore.DTO.system.ImageProductDTO;
-import com.poly.ecommercestore.DTO.system.ProductDTO;
-import com.poly.ecommercestore.DTO.system.SpecificationDTO;
-import com.poly.ecommercestore.response.ProductResponse;
-import com.poly.ecommercestore.service.token.TokenService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import com.poly.ecommercestore.model.request.SpecificationRequest;
+import com.poly.ecommercestore.util.extractToken.IExtractToken;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService implements IProductService{
 
-//    @Autowired
-//    private JWTUnit jwtUnit;
-
-    @Autowired
-    private TokenService tokenService;
-
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private PriceListService priceListService;
-
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    private ImageProductService imageProductService;
-
-    @Autowired
-    private SpecificationService specificationService;
-
-    @Autowired
-    private SupplierRepository supplierRepository;
-
-    @Autowired
-    private TaxRepository taxRepository;
+    private final IExtractToken iExtractToken;
+    private final PriceListService priceListService;
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
+    private final ImageProductService imageProductService;
+    private final SpecificationService specificationService;
+    private final SupplierRepository supplierRepository;
+    private final TaxRepository taxRepository;
 
     private static final String UPLOAD_DIR = "D:\\NAM4-HK3\\THUCTAPTOTNGHIEP\\ecommercestore-web-customer\\src\\assets\\images\\product";
 
     @Transactional
     @Override
-    public int addProduct(ProductDTO product, List<MultipartFile> imageProduct, String tokenHeader) {
+    public int addProduct(ProductRequest request, List<MultipartFile> imageProduct, String tokenHeader) {
         try {
-            Accounts user = tokenService.getAccountByToken(tokenHeader);
-            Categories category = categoryRepository.findById(product.getCategory()).get();
+            Employers employer = iExtractToken.extractEmployee(tokenHeader);
+            Categories category = categoryRepository.findById(request.getCategory()).get();
 
-            Suppliers supplier = supplierRepository.findById(product.getSupplier()).get();
+            Suppliers supplier = supplierRepository.findById(request.getSupplier()).get();
 
 //            Products pd = productRepository.checkProduct(supplier, product.getProductName());
 //            if(pd != null){
 //                return 2;
 //            }
-            boolean checkProduct = productRepository.existsByProductName(product.getProductName());
+            boolean checkProduct = productRepository.existsByProductName(request.getProductName());
             if (checkProduct == true){
                 return 2;
             }
 
-            Tax tax = taxRepository.findById(product.getTax()).get();
+            Tax tax = taxRepository.findById(request.getTax()).get();
 
 ////            return 2;
 //            int check = 1;
@@ -87,14 +58,14 @@ public class ProductService implements IProductService{
 //                return 2;
 
             Products newProduct = new Products();
-            newProduct.setProductName(product.getProductName());
+            newProduct.setProductName(request.getProductName());
             newProduct.setCategory(category);
             newProduct.setSupplier(supplier);
             newProduct.setTax(tax);
-            newProduct.setQuantity(product.getQuantity());
-            newProduct.setFeature(product.getFeature());
-            newProduct.setContents(product.getContents());
-            newProduct.setGuarantee(product.getGuarantee());
+            newProduct.setQuantity(request.getQuantity());
+            newProduct.setFeature(request.getFeature());
+            newProduct.setContents(request.getContents());
+            newProduct.setGuarantee(request.getGuarantee());
 
             newProduct = productRepository.save(newProduct);
             List<ImageProducts> imageProducts = new ArrayList<>();
@@ -106,15 +77,15 @@ public class ProductService implements IProductService{
             }
 
             List<Specifications> specifications = new ArrayList<>();
-            for (SpecificationDTO specification : product.getSpecification()){
+            for (SpecificationRequest specification : request.getSpecification()){
                 System.out.println(specification);
                 Specifications specificationTemp = specificationService.add(specification, newProduct.getIDProduct());
                 specifications.add(specificationTemp);
             }
 
             List<PriceLists> priceLists = new ArrayList<>();
-            for (PriceListDTO priceListDTO : product.getPriceList()){
-                PriceLists priceListsTemp = priceListService.addPriceList(priceListDTO, user.getIDAccount(), newProduct.getIDProduct());
+            for (PriceListRequest priceListDTO : request.getPriceList()){
+                PriceLists priceListsTemp = priceListService.addPriceList(priceListDTO, employer.getIDEmployer(), newProduct.getIDProduct());
                 priceLists.add(priceListsTemp);
             }
 
@@ -132,53 +103,44 @@ public class ProductService implements IProductService{
     }
 
     @Override
-    public boolean updateProduct(String tokenHeader, int iDProduct, ProductDTO productDTO, List<MultipartFile> imageProduct) {
+    public boolean updateProduct(String tokenHeader, int iDProduct, ProductRequest request, List<MultipartFile> imageProduct) {
 
-        Accounts user = tokenService.getAccountByToken(tokenHeader);
-        if(user == null)
+        Employers employer = iExtractToken.extractEmployee(tokenHeader);
+        if(employer == null)
         {
-            System.out.printf("user null\n");
             return false;
         }
 
-        System.out.printf("user\n");
         Products productUpdate = productRepository.findById(iDProduct).get();
         if(productUpdate == null)
         {
-            System.out.printf("productUpdate null\n");
             return false;
         }
 
-        System.out.printf("product\n");
-        Categories category = categoryRepository.findById(productDTO.getCategory()).get();
+        Categories category = categoryRepository.findById(request.getCategory()).get();
         if(category == null){
-            System.out.printf("category null\n");
             return false;
         }
 
-        System.out.printf("category\n");
-        Suppliers supplier = supplierRepository.findById(productDTO.getSupplier()).get();
+        Suppliers supplier = supplierRepository.findById(request.getSupplier()).get();
         if(supplier == null){
-            System.out.printf("supplier null\n");
             return false;
         }
 
-        System.out.printf("tax\n");
-        Tax tax = taxRepository.findById(productDTO.getTax()).get();
+        Tax tax = taxRepository.findById(request.getTax()).get();
         if(tax == null){
-            System.out.printf("tax null\n");
             return false;
         }
 
 
-        productUpdate.setProductName(productDTO.getProductName());
+        productUpdate.setProductName(request.getProductName());
         productUpdate.setCategory(category);
         productUpdate.setSupplier(supplier);
         productUpdate.setTax(tax);
-        productUpdate.setQuantity(productDTO.getQuantity());
-        productUpdate.setFeature(productDTO.getFeature());
-        productUpdate.setContents(productDTO.getContents());
-        productUpdate.setGuarantee(productDTO.getGuarantee());
+        productUpdate.setQuantity(request.getQuantity());
+        productUpdate.setFeature(request.getFeature());
+        productUpdate.setContents(request.getContents());
+        productUpdate.setGuarantee(request.getGuarantee());
 
         List<ImageProducts> imageProducts = new ArrayList<>();
         for (MultipartFile image : imageProduct){
@@ -186,16 +148,15 @@ public class ProductService implements IProductService{
             ImageProducts imageProductTemp = imageProductService.add(imageUrl, iDProduct);
             imageProducts.add(imageProductTemp);
         }
-        System.out.printf("1111\n");
         List<Specifications> specifications = new ArrayList<>();
-        for (SpecificationDTO specification : productDTO.getSpecification()){
+        for (SpecificationRequest specification : request.getSpecification()){
             Specifications specificationTemp = specificationService.add(specification,iDProduct);
             specifications.add(specificationTemp);
         }
         System.out.printf("2222\n");
         List<PriceLists> priceLists = new ArrayList<>();
-        for (PriceListDTO priceListDTO : productDTO.getPriceList()){
-            PriceLists priceListsTemp = priceListService.addPriceList(priceListDTO, user.getIDAccount(),iDProduct);
+        for (PriceListRequest priceListDTO : request.getPriceList()){
+            PriceLists priceListsTemp = priceListService.addPriceList(priceListDTO, employer.getIDEmployer(),iDProduct);
             priceLists.add(priceListsTemp);
         }
         System.out.printf("3333\n");
@@ -234,7 +195,7 @@ public class ProductService implements IProductService{
     public List<Products> getProductByPage(int page, int size) {
         int offset = (page-1) * size;
         Pageable pageable = PageRequest.of(page, size);
-        List<Products> productList = productRepository.getProductsByPage(offset, size);
+        List<Products> productList = productRepository.findByPage(offset, size);
 
         for(Products product : productList){
             List<PriceLists> price = new ArrayList<>();
@@ -253,7 +214,7 @@ public class ProductService implements IProductService{
     @Override
     public List<Products> getProductByCategoryByPage(int iDCategory, int page, int size) {
         int offset = (page-1) * size;
-        List<Products> productList = productRepository.getProductsByCategoryByPage(iDCategory, offset, size);
+        List<Products> productList = productRepository.findByCategoryByPage(iDCategory, offset, size);
 
         for(Products product : productList){
             List<PriceLists> price = new ArrayList<>();

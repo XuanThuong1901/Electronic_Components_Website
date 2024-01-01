@@ -10,7 +10,7 @@ import Menu from './pages/Menu';
 import Profile from './components/Profile/Profile';
 import CheckOut from './components/CheckOut/CheckOut';
 import Oders from './pages/Oders';
-import OrderDetail from './components/ListOrders/OderDetail';
+import OrderDetail from './components/ManageOrder/ListOrders/OderDetail';
 import ChangePassword from './components/Changepw/ChangePassword';
 import Payment from './components/Payment/Payment';
 import Discount from './components/Discount/Discount';
@@ -33,6 +33,10 @@ import InfoEmployee from './components/admin/Employee/EmloyeeDetail';
 import AddEmployee from './components/admin/Employee/AddEmployee';
 import Statistical from './components/admin/Statistical/Statistical';
 import InfoUser from './components/admin/User/UserAdmin';
+import CreateReturnOrder from './components/CreateReturnOrder/CreateReturnOrder';
+import ReturnOrder from './components/ManageOrder/ReturnOrder/ReturnOrder';
+import ListReturnOders from './components/admin/ReturnOrder/ListReturnOrderSystem';
+import ReturnOrderDetailAdmin from './components/admin/ReturnOrder/ReturnOrderDetailAdmin';
 function App() {
 
   useEffect(() => {  
@@ -76,6 +80,12 @@ function App() {
           <Route path="/admin/employee/add" element={<AddEmployee/>}/>
           <Route path="/admin/statistical" element={<Statistical/>}/>
           <Route path="/admin/user" element={<InfoUser/>}/>
+
+          <Route path="/createReturnOrder" element={<CreateReturnOrder/>}/>
+          <Route path="/return_order/:id" element={<ReturnOrder/>}/>
+          <Route path="/admin/return_order" element={<ListReturnOders/>}/>
+          <Route path="/admin/return_order/:id" element={<ReturnOrderDetailAdmin/>}/>
+
         </Routes>
       </Layout>
     </div>

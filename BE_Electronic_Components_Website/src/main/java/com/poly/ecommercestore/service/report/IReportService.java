@@ -1,11 +1,11 @@
 package com.poly.ecommercestore.service.report;
 
-import com.poly.ecommercestore.DTO.system.ReportDTO;
-import com.poly.ecommercestore.response.report.ReportSaleProductResponse;
-import com.poly.ecommercestore.response.report.ReportSaleResponse;
+import com.poly.ecommercestore.model.request.ReportRequest;
+import com.poly.ecommercestore.model.response.report.ReportSaleProductResponse;
+import com.poly.ecommercestore.model.response.report.ReportSaleResponse;
 
 public interface IReportService {
-    ReportSaleResponse reportSale(ReportDTO request);
+    ReportSaleResponse reportSale(ReportRequest request);
 
-    ReportSaleProductResponse reportSaleProduct(ReportDTO request);
+    ReportSaleProductResponse reportSaleProduct(ReportRequest request);
 }

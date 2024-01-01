@@ -228,6 +228,7 @@ const ProductDetail = () => {
             </>
           )}
         </div>
+        
         <div className={classes["detail-product"]}>
           <div className={classes["button-review"]}>
             <button

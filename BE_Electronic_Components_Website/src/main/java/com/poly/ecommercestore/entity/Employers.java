@@ -13,7 +13,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-@Data
+//@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "Employers")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -24,7 +26,7 @@ public class Employers {
     private String iDEmployer;
 
     @MapsId
-    @JsonIgnoreProperties("employer")
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "IDEmployer")
@@ -63,6 +65,10 @@ public class Employers {
     @OneToMany(mappedBy = "employer", fetch = FetchType.LAZY)
     private List<PriceLists> priceLists;
 
+    @JsonIgnore()
+    @OneToMany(mappedBy = "employer", fetch = FetchType.LAZY)
+    private List<ReturnOrder> returnOrderList;
+
     public Employers() {
     }
 
@@ -78,7 +84,7 @@ public class Employers {
         this.avatar = avatar;
     }
 
-    public Employers(String iDEmployer, Accounts account, String name, String address, Date birthday, Boolean gender, String telephone, String identityCard, String avatar, List<Orders> orders, List<ImportStocks> importStocks) {
+    public Employers(String iDEmployer, Accounts account, String name, String address, Date birthday, Boolean gender, String telephone, String identityCard, String avatar, List<Orders> orders, List<ImportStocks> importStocks, List<ReturnOrder> returnOrderList) {
         this.iDEmployer = iDEmployer;
         this.account = account;
         this.name = name;
@@ -90,5 +96,6 @@ public class Employers {
         this.avatar = avatar;
         this.orders = orders;
         this.importStocks = importStocks;
+        this.returnOrderList = returnOrderList;
     }
 }

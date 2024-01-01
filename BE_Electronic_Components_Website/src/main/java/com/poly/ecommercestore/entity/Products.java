@@ -10,7 +10,9 @@ import org.hibernate.annotations.FetchMode;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Data
+//@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "Products")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -72,6 +74,10 @@ public class Products {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Evaluations> evaluations;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private List<ReturnOrder> returnOrderList;
+
     public Products() {
     }
 
@@ -85,7 +91,7 @@ public class Products {
         this.supplier = supplier;
     }
 
-    public Products(String productName, int quantity, String feature, String contents, String guarantee, Categories category, Suppliers supplier, List<PriceLists> priceLists, List<Specifications> specifications, List<ImageProducts> imageProducts, List<DetailImportStocks> detailImportStocks, List<Carts> carts, List<DetailOrders> detailOrders) {
+    public Products(String productName, int quantity, String feature, String contents, String guarantee, Categories category, Suppliers supplier, List<PriceLists> priceLists, List<Specifications> specifications, List<ImageProducts> imageProducts, List<DetailImportStocks> detailImportStocks, List<Carts> carts, List<DetailOrders> detailOrders, List<ReturnOrder> returnOrderList) {
         this.productName = productName;
         this.quantity = quantity;
         this.feature = feature;
@@ -99,5 +105,6 @@ public class Products {
         this.detailImportStocks = detailImportStocks;
         this.carts = carts;
         this.detailOrders = detailOrders;
+        this.returnOrderList = returnOrderList;
     }
 }

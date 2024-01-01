@@ -11,7 +11,9 @@ import org.hibernate.annotations.FetchMode;
 
 import java.math.BigDecimal;
 
-@Data
+//@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "DetailOrders")
 @JsonIgnoreProperties("detailOrder")
@@ -29,6 +31,9 @@ public class DetailOrders {
     @Column(name = "LineAmount")
     private BigDecimal lineAmount;
 
+    @Column(name = "check_return_order")
+    private boolean checkReturnOrder;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "IDOrder", referencedColumnName = "IDOrder", insertable = false, updatable = false)
@@ -45,7 +50,7 @@ public class DetailOrders {
     public DetailOrders() {
     }
 
-    public DetailOrders(DetailOrderId detailOrderId, int quantity, BigDecimal price, BigDecimal lineAmount, Orders order, Products product, Tax tax) {
+    public DetailOrders(DetailOrderId detailOrderId, int quantity, BigDecimal price, BigDecimal lineAmount, Orders order, Products product, Tax tax, boolean checkReturnOrder) {
         this.detailOrderId = detailOrderId;
         this.quantity = quantity;
         this.price = price;
@@ -53,5 +58,6 @@ public class DetailOrders {
         this.order = order;
         this.product = product;
         this.tax = tax;
+        this.checkReturnOrder = checkReturnOrder;
     }
 }
